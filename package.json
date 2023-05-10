@@ -1,0 +1,16 @@
+{
+  "name": "root",
+  "private": true,
+  "workspaces": [
+    "packages/*"
+  ],
+  "dependencies": {
+    "lodash": "^4.17.21"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.194",
+    "lerna": "^6.6.2",
+    "tslib": "^2.0.0",
+    "typescript": "^5.0.0"
+  }
+}

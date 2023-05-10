@@ -1,0 +1,37 @@
+{
+  "name": "@orginone/core",
+  "version": "0.1.0",
+  "description": "奥集能核心",
+  "author": "LoveKicher <szlproche@163.com>",
+  "license": "MIT",
+  "main": "lib/index.js",
+  "module": "lib/index.js",
+  "types": "lib/index.d.ts",
+  "repository": {
+    "type": "git",
+    "url": ""
+  },
+  "directories": {
+    "lib": "lib",
+    "test": "__tests__"
+  },
+  "files": [
+    "lib"
+  ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "scripts": {
+    "build": "tsc",
+    "publish:private": "npm publish --registry http://192.168.1.211:30677/",
+    "publish:npm": "npm publish --registry https://registry.npmjs.org/"
+  },
+  "dependencies": {
+    "@babel/core": "^7.21.8",
+    "@babel/standalone": "^7.21.8",
+    "@babel/types": "^7.21.5"
+  },
+  "devDependencies": {
+
+  }
+}
