@@ -34,14 +34,18 @@
 
 ### 运行环境
 
-* `@orginone/web`
+* `@orginone/runtime-web`
 
-  * 使用`axios`和原生WebSocket进行网络请求
+  * 使用`axios`和`signalr`进行网络请求
   * 使用Storage API进行持久化
-  * 使用File System API进行文件交互
+  * 使用`<input>`元素和File System API进行文件交互
 
-* `@orginone/uniapp`
+* `@orginone/runtime-node`
+
+  * 由于`axios`和`signalr`库是同构(isomorphic)的，因此也可以在nodejs上运行
+  * 使用nodejs的`fs`模块来进行文件读写
+
+* `@orginone/runtime-uniapp`
 
   * 使用uni-app提供的`uni.request`和`uni.connectSocket`等API进行网络请求
-  * 使用uni-app提供的数据缓存API进行持久化
-  * 使用uni-app提供的文件读写API
+  * 使用uni-app提供的数据缓存API和文件读写API
