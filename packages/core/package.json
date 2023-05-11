@@ -9,7 +9,7 @@
   "types": "lib/index.d.ts",
   "repository": {
     "type": "git",
-    "url": ""
+    "url": "git+https://github.com/SwingCosmic/orginone-core.git"
   },
   "directories": {
     "lib": "lib",

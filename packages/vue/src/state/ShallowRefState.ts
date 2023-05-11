@@ -1,9 +1,12 @@
-import { shallowRef }from "@vue/reactivity";
-import type { IState, StateFactory } from "@orginone/core"
+import { shallowRef, isShallow, ShallowRef } from "@vue/reactivity";
+import type { IState, StateAction } from "@orginone/core"
 
 
-export const ShallowRefState : StateFactory = {
+export const ShallowRefState : StateAction<ShallowRef<any>> = {
   create<T>(initialValue: T): IState<T> {
     return shallowRef<T>(initialValue);
-  }
+  },
+  is(state: IState<any>): state is ShallowRef<any> {
+    return isShallow(state);
+  },
 }
