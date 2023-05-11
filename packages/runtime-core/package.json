@@ -25,5 +25,9 @@
   },
   "bugs": {
     "url": "https://github.com/SwingCosmic/orginone-core/issues"
+  },
+  "dependencies": {
+    "@microsoft/signalr": "^7.0.5",
+    "@msgpack/msgpack": "^3.0.0-beta2"
   }
 }
