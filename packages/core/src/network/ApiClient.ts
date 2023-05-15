@@ -1,4 +1,4 @@
-import { ResultType } from "src/lib/base/model";
+import { ResultType } from "@/lib/base/model";
 import { RequestType } from "./request";
 
  

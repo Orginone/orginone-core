@@ -1,13 +1,13 @@
 
-import { ResultType } from "src/lib/base/model";
+import { ResultType } from "@/lib/base/model";
 import { ApiClient } from "./ApiClient";
-import { Dictionary, JSONElementLike, JSONPrimitive } from "src/types/base";
+import { Dictionary, JSONElementLike, JSONPrimitive } from "@/types/base";
 import { RequestType } from "./request";
 
 
-type HttpMethod_L = "get" | "post" | "put" | "delete" | "head";
-type HttpMethod_U = Uppercase<HttpMethod_L>;
-export type HttpMethod = HttpMethod_L | HttpMethod_U;
+export type HttpMethod_Upper = "GET" | "POST" | "PUT" | "DELETE" | "HEAD" | "OPTIONS";
+export type HttpMethod_Lower = Lowercase<HttpMethod_Upper>;
+export type HttpMethod = HttpMethod_Lower | HttpMethod_Upper;
 
 export interface HttpRequestConfig {
   url: string;

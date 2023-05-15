@@ -29,6 +29,7 @@
     ],
     "baseUrl": ".",
     "types": [
+      "@dcloudio/types"
     ],
     "paths": {
       "@/*": [

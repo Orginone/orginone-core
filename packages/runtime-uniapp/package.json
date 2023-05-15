@@ -21,9 +21,15 @@
     "url": "git+https://github.com/SwingCosmic/orginone-core.git"
   },
   "scripts": {
-    "test": "node ./__tests__/@orginone/runtime-uniapp.test.js"
+    "build": "tsc",
+    "publish:private": "npm publish --registry http://192.168.1.211:30677/",
+    "publish:npm": "npm publish --registry https://registry.npmjs.org/",
+    "test": "jest"
   },
   "bugs": {
     "url": "https://github.com/SwingCosmic/orginone-core/issues"
+  },
+  "devDependencies": {
+    "@dcloudio/types": "^3.3.3"
   }
 }

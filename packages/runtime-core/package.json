@@ -21,7 +21,7 @@
     "url": "git+https://github.com/SwingCosmic/orginone-core.git"
   },
   "scripts": {
-    "build": "tsc",
+    "build": "tsc && tsc-alias",
     "publish:private": "npm publish --registry http://192.168.1.211:30677/",
     "publish:npm": "npm publish --registry https://registry.npmjs.org/",
     "test": "jest"

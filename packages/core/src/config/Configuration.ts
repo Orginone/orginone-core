@@ -1,6 +1,6 @@
 
-import { PlatformNotSupportError } from "src/errors";
-import { Dictionary } from "src/types/base";
+import { PlatformNotSupportError } from "@/errors";
+import { Dictionary } from "@/types/base";
 
 
 declare const process: { env: any };
