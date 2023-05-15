@@ -1,7 +1,7 @@
 
-import { ResultType } from "@/lib/base/model";
+import { ResultType } from "src/lib/base/model";
 import { ApiClient } from "./ApiClient";
-import { Dictionary, JSONElementLike, JSONPrimitive } from "@/types/base";
+import { Dictionary, JSONElementLike, JSONPrimitive } from "src/types/base";
 import { RequestType } from "./request";
 
 

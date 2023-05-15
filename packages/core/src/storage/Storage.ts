@@ -1,4 +1,4 @@
-import { JSONElement, JSONElementLike } from "@/types/base";
+import { JSONElement, JSONElementLike } from "src/types/base";
 
 /**
  * 精简过的DOM Storage

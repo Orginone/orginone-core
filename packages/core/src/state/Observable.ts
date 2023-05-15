@@ -1,4 +1,4 @@
-import { AnyKey } from "@/types/base";
+import { AnyKey } from "src/types/base";
 
 export interface IObservable {}
 export interface ObservableAction<O extends IObservable> {

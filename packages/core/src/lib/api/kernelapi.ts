@@ -1,5 +1,5 @@
 
-import { ApiClient } from '@/network';
+import { ApiClient } from 'src/network';
 import * as model from '../base/model';
 import type * as schema from '../base/schema';
 

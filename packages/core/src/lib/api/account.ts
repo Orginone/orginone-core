@@ -1,11 +1,11 @@
 
-import { ApiClient } from '@/network';
+import { ApiClient } from 'src/network';
 import * as model from '../base/model';
 
 /**
  * 奥集能账号api
  */
-export default class KernelApi {
+export default class AccountApi {
 
   private readonly client: ApiClient;
 

@@ -35,3 +35,4 @@ export class StateImplementationHost {
 }
 
 export default new StateImplementationHost();
+export * from "./State";

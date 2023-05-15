@@ -1,4 +1,4 @@
-import { Dictionary, JSONElement, JSONElementLike } from "@/types/base";
+import { Dictionary, JSONElement, JSONElementLike } from "src/types/base";
 import { IStorage } from "./Storage";
 
 /**

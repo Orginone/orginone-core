@@ -4,14 +4,23 @@
   "workspaces": [
     "packages/*"
   ],
+  "scripts": {
+    "test": "lerna run test",
+    "build": "lerna run build"
+  },
   "dependencies": {
+    "@babel/core": "^7.21.8",
     "lodash": "^4.17.21",
     "reflect-metadata": "^0.1.13",
     "tiny-emitter": "^2.1.0"
   },
   "devDependencies": {
     "@types/lodash": "^4.14.194",
+    "@types/node": "^20.1.4",
+    "babel-jest": "^29.5.0",
+    "jest": "^29.5.0",
     "lerna": "^6.6.2",
+    "ts-jest": "^29.1.0",
     "tslib": "^2.0.0",
     "typescript": "^5.0.0"
   }

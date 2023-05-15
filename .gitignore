@@ -22,3 +22,7 @@ pnpm-debug.log*
 *.sw?
 *.code-workspace
 *.lock
+
+
+/packages/*/coverage
+/packages/*/lib
