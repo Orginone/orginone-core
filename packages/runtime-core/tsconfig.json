@@ -1,0 +1,48 @@
+{
+  "compilerOptions": {
+    "target": "es2020",
+    "module": "esnext",
+    "strict": true,
+
+    "jsx": "preserve",
+    "importHelpers": true,
+    "strictFunctionTypes": false,
+    "moduleResolution": "node",
+    "useDefineForClassFields": true,
+    
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "esModuleInterop": true,
+    "allowSyntheticDefaultImports": true,
+    "allowJs": true,
+
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
+    "declaration": true,
+    "skipLibCheck": true,
+    "sourceMap": true,
+
+    "lib": [
+      "esnext",
+      "dom",
+      "dom.iterable",
+    ],
+    "baseUrl": ".",
+    "types": [
+    ],
+    "paths": {
+      "@/*": [
+        "./src/*"
+      ]
+    },
+    "outDir": "./lib"
+  },
+  "include": [
+    "./src/**/*.ts",
+    "./src/**/*.js",
+    "./src/**/*.tsx"
+  ],
+  "exclude": [
+    "node_modules"
+  ]
+}

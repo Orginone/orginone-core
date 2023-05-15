@@ -1,4 +1,4 @@
-import { Dictionary, JSONElementLike } from "@/types/base";
+import { Dictionary, JSONElement, JSONElementLike } from "@/types/base";
 import { IStorage } from "./Storage";
 
 /**
@@ -10,7 +10,7 @@ export default class MemoryCacheStorage implements IStorage {
   clear(): void {
     this._cache.clear();
   }
-  getItem<T extends JSONElementLike>(key: string): T | null {
+  getItem<T extends JSONElement>(key: string): T | null {
     return this._cache.get(key) as T;
   }
   removeItem(key: string): void {
