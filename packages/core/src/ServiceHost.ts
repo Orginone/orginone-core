@@ -8,7 +8,7 @@ export interface ServiceProvider {
   name: string;
 
   state: StateAction<IState<any>>;
-  observe: ObservableAction<any>;
+  // observe: ObservableAction<any>;
   storage: IStorage;
   api: ApiClient;
 }

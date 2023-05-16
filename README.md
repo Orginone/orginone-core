@@ -1,4 +1,4 @@
-## 奥集能核心库
+# 奥集能核心库
 
 
 项目分为多个包，使用`lerna`来管理多个包之间的依赖关系。
@@ -49,3 +49,46 @@
 
   * 使用uni-app提供的`uni.request`和`uni.connectSocket`等API进行网络请求
   * 使用uni-app提供的数据缓存API和文件读写API
+
+## 快速开始
+
+1. 根据自己的项目情况，安装`core`包和对应的`runtime-xxx`包，例如`@orginone/runtime-uniapp`
+2. 
+```typescript
+import { App } from "@orginone/core";
+import { useUniappRuntime } from "@orginone/runtime-uniapp";
+
+const app = App.create(useUniappRuntime(uni));
+app.start();
+
+```
+
+## 开发项目
+
+### 安装
+
+> ⚠️项目使用了yarn workspace，请不要使用其他包管理工具安装依赖
+
+```bash
+yarn install
+```
+### 添加依赖
+
+* 项目依赖
+```bash
+yarn add <dependency> -W
+```
+* 子包依赖
+```bash
+cd packages/<package>
+yarn add xxxx
+```
+
+### 编译整个项目
+```bash
+yarn build
+```
+### 测试整个项目
+```bash
+yarn test
+```

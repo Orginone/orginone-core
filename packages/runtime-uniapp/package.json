@@ -31,5 +31,8 @@
   },
   "devDependencies": {
     "@dcloudio/types": "^3.3.3"
+  },
+  "dependencies": {
+    "@orginone/vue": "^0.1.0"
   }
 }

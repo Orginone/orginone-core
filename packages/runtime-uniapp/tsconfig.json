@@ -19,7 +19,5 @@
   "exclude": [
     "node_modules"
   ],
-  "extends": [
-    "../../tsconfig.json"
-  ]
+  "extends": "../../tsconfig.json"
 }
