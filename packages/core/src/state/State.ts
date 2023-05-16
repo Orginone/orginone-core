@@ -16,3 +16,9 @@ export interface StateAction<S extends IState<any>> {
    */
   is(state: IState<any>): state is S;
 }
+
+
+export function isState<T>(s: any): s is IState<T> {
+  return typeof s === "object" && "value" in s;
+}
+

@@ -1,5 +1,5 @@
 
-import { PlatformNotSupportError } from "@/errors";
+import { PlatformNotSupportedError } from "@/errors";
 import { Dictionary } from "@/types/base";
 
 
@@ -20,7 +20,7 @@ export class ConfigurationManager {
 
   addEnv(): this {
     if (typeof process !== "object" || typeof process.env !== "object") {
-      throw new PlatformNotSupportError("仅在nodejs环境支持env导入");
+      throw new PlatformNotSupportedError("仅在nodejs环境支持env导入");
     }
     this.addConfig(process.env);
     return this;
