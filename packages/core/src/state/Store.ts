@@ -3,11 +3,11 @@ import { IState, isState } from "./State";
 import { ServiceHost, ServiceProvider } from "../ServiceHost";
 
 export type StoreState<S extends {}> = {
-  readonly [K in keyof S & string]: IState<S[K]>;
+  readonly [K in keyof S & string]: S[K] extends IState<any> ? S[K] : IState<S[K]>;
 }
 
 export type StoreAction<S extends {}> = {
-  [K in keyof S & string as `set${Capitalize<K>}`]: (state: S, payload: S[K]) => any;
+  [K in keyof S & string as `set${Capitalize<K>}`]: (payload: S[K]) => any;
 }
 
 /**
@@ -30,7 +30,11 @@ export class StoreImpl implements StoreFactory {
     if (!name || !name.length) {
       throw new ReferenceError("name is required");
     }
-    const ret = {} as any;
+    const ret = {
+      get "[[Name]]"() {
+        return name;
+      }
+    } as any;
 
     for (const key of Object.keys(initState)) {
       const persistKey = `${name}__[${key}]`;

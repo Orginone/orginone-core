@@ -55,11 +55,15 @@
 1. 根据自己的项目情况，安装`core`包和对应的`runtime-xxx`包，例如`@orginone/runtime-uniapp`
 2. 
 ```typescript
-import { App } from "@orginone/core";
+import { App, ServiceHost } from "@orginone/core";
 import { useUniappRuntime } from "@orginone/runtime-uniapp";
 
-const app = App.create(useUniappRuntime(uni));
-app.start();
+App.create({
+    services: new ServiceHost()
+      .registerProvider(useUniappRuntime(uni))
+      .build()
+  })
+  .start();
 
 ```
 
