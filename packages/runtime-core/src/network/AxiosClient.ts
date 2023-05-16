@@ -1,5 +1,5 @@
 import { HttpRequestConfig, HttpClientBase } from "@orginone/core/lib/network";
-import _axios, { AxiosInstance } from "axios";
+import type { AxiosInstance } from "axios";
 
 export class AxiosClient extends HttpClientBase {
   constructor(axios: AxiosInstance) {
