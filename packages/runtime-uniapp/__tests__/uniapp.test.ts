@@ -6,6 +6,7 @@ import { AppState, useAppEvents } from "@orginone/core/lib/lib";
 import MemoryCacheStorage from "@orginone/core/lib/storage/MemoryCacheStorage";
 import { useUniappRuntime } from "../src";
 import { test, expect, jest, describe } from "@jest/globals";
+import { AppConfig, ConfigurationManager } from "@orginone/core/lib/config";
 
 function setImmediateAsync() {
   return new Promise<void>((s, e) => {
@@ -31,11 +32,16 @@ const uni: any = {
 describe("uni-app环境测试", () => {
 
   let app: App<AppState> = null!;
+  let config = new ConfigurationManager<AppConfig>();
+  config.addConfig({
+    apiUrl: "http://orginone.cn:888/orginone"
+  });
 
   test("服务注册", () => {
     app = App.create({
+      config,
       services: new ServiceHost()
-        .registerProvider(useUniappRuntime(uni))
+        .registerProvider(useUniappRuntime(uni, config))
         .useStorage(new MemoryCacheStorage())
         .build()
     });
@@ -60,7 +66,10 @@ describe("uni-app环境测试", () => {
     expect(mockEvent.mock.calls).toHaveLength(1);
 
     expect(app.state).toHaveProperty("user.accessToken");
-    expect(app.state.user.accessToken).toBe("666")
+    expect(app.state.user.accessToken.value).toBe("666");
+
+    app.state.user.setAccessToken("114514");
+    expect(app.state.user.accessToken.value).toBe("114514");
   });
 
 

@@ -57,13 +57,19 @@
 ```typescript
 import { App, ServiceHost } from "@orginone/core";
 import { useUniappRuntime } from "@orginone/runtime-uniapp";
+import { AppConfig, ConfigurationManager } from "@orginone/core/lib/config";
 
-App.create({
-    services: new ServiceHost()
-      .registerProvider(useUniappRuntime(uni))
-      .build()
-  })
-  .start();
+const config = new ConfigurationManager<AppConfig>()
+  .addConfig({
+    apiUrl: "http://orginone.cn:888/orginone"
+  });
+const app = App.create({
+  config,
+  services: new ServiceHost()
+    .registerProvider(useUniappRuntime(uni, config))
+    .build()
+});
+app.start();
 
 ```
 

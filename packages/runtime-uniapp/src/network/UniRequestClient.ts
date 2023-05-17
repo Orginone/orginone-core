@@ -29,19 +29,19 @@ export class UniRequestClient extends HttpClientBase {
         option.url += prefix + query;
       }
     }
-    option.url =  option.url + this.baseUrl
-    let promise = new Promise <T>((resolve, reject) =>{
+    option.url =  option.url + this.baseUrl;
+    let promise = new Promise<T>((resolve, reject) =>{
       this.uni.request({
         ...option,
         success: (res) => {
-            resolve(res.data as T)
+          resolve(res.data as T);
         },
         fail: (error) => {
-          reject(error)
+          reject(error);
         }
       })
     })
-    return await promise
+    return await promise;
   }
 
 }

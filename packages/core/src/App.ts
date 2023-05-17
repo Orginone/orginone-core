@@ -1,10 +1,12 @@
 
 import { ServiceHost } from "./ServiceHost";
+import { AppConfig, ConfigurationManager } from "./config";
 import { Dictionary } from "./types/base";
 import { TinyEmitter } from "tiny-emitter";
 export interface AppInit {
   root?: HTMLElement;
   services: ServiceHost;
+  config: ConfigurationManager<AppConfig>;
 }
 
 export interface AppEventCallback {
@@ -15,6 +17,7 @@ export class App<S extends {} = Dictionary<any>> implements AppInit {
   /** 根DOM元素，仅在web端存在 */
   readonly root?: HTMLElement | undefined;
   readonly services: ServiceHost;
+  readonly config: ConfigurationManager<AppConfig>;
   state: S = {} as any;
 
   readonly emitter = new TinyEmitter();
@@ -37,6 +40,7 @@ export class App<S extends {} = Dictionary<any>> implements AppInit {
   private constructor(config: AppInit) { 
     this.root = config.root;
     this.services = config.services;
+    this.config = config.config;
   }
 
   onAppStart(cb: AppEventCallback) {

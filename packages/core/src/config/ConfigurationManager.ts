@@ -26,7 +26,7 @@ export class ConfigurationManager<C extends {}> {
     return this;
   }
 
-  get<K extends keyof C, T>(prop: K): C[K];
+  get<K extends keyof C>(prop: K): C[K];
   get<T>(path: string): T | null {
     return this.mergedConfig[path] ?? null;
   }

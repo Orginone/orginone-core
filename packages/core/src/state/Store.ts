@@ -54,7 +54,7 @@ export class StoreImpl implements StoreFactory {
 
       // 创建setter方法
       const setValue = (v: any) => {
-        ret[key] = v;
+        ret[key].value = v;
         this.service.storage.setItem(persistKey, v);
       };
 

@@ -1,3 +1,4 @@
+import { AppConfig, ConfigurationManager } from "./config";
 import { ApiClient } from "./network";
 import { ObservableAction } from "./state/Observable";
 import { IState, StateAction } from "./state/State";
@@ -71,5 +72,3 @@ export class ServiceHost {
   }
 
 }
-
-export default new ServiceHost();
