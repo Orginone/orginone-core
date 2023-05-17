@@ -5,7 +5,7 @@ import { Dictionary } from "@/types/base";
 
 declare const process: { env: any };
 
-export class ConfigurationManager {
+export class ConfigurationManager<C extends {}> {
   private mergedConfig: Dictionary<any> = {};
 
   get root() {
@@ -13,7 +13,7 @@ export class ConfigurationManager {
   }
 
 
-  addConfig(config: Dictionary<any>): this {
+  addConfig(config: Partial<C>): this {
     this.mergedConfig = Object.assign(this.mergedConfig, config);
     return this;
   }
@@ -26,6 +26,7 @@ export class ConfigurationManager {
     return this;
   }
 
+  get<K extends keyof C, T>(prop: K): C[K];
   get<T>(path: string): T | null {
     return this.mergedConfig[path] ?? null;
   }
