@@ -1,12 +1,14 @@
 import { HttpRequestConfig, HttpClientBase, HttpMethod_Upper } from "@orginone/core/lib/network";
 
 export class UniRequestClient extends HttpClientBase {
-  constructor(uniInstance: UniNamespace.Uni) {
+  constructor(uniInstance: UniNamespace.Uni, baseUrl: string) {
     super();
     this.uni = uniInstance;
+    this.baseUrl = baseUrl
   }
 
   private readonly uni: Uni;
+  private readonly baseUrl: string;
 
   async httpRequest<T>(config: HttpRequestConfig): Promise<T> {
     const option: UniNamespace.RequestOptions = {
@@ -27,8 +29,19 @@ export class UniRequestClient extends HttpClientBase {
         option.url += prefix + query;
       }
     }
-    let res = await this.uni.request(option);
-    return res.data as T;
+    option.url =  option.url + this.baseUrl
+    let promise = new Promise <T>((resolve, reject) =>{
+      this.uni.request({
+        ...option,
+        success: (res) => {
+            resolve(res.data as T)
+        },
+        fail: (error) => {
+          reject(error)
+        }
+      })
+    })
+    return await promise
   }
 
 }
