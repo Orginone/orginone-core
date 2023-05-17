@@ -1,11 +1,12 @@
 {
   "name": "@orginone/runtime-uniapp",
-  "version": "0.1.4",
+  "version": "0.1.5",
   "description": "uni-app运行环境",
   "author": "LoveKicher <szlproche@163.com>",
   "homepage": "https://github.com/SwingCosmic/orginone-core#readme",
   "license": "MIT",
-  "main": "lib/runtime-uniapp.js",
+  "main": "lib/index.js",
+  "types": "lib/index.d.ts",
   "directories": {
     "lib": "lib",
     "test": "__tests__"

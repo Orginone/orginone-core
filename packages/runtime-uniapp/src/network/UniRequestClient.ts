@@ -29,7 +29,7 @@ export class UniRequestClient extends HttpClientBase {
         option.url += prefix + query;
       }
     }
-    option.url =  option.url + this.baseUrl;
+    option.url =  this.baseUrl + option.url;
     let promise = new Promise<T>((resolve, reject) =>{
       this.uni.request({
         ...option,
