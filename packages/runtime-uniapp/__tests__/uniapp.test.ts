@@ -43,6 +43,7 @@ describe("uni-app环境测试", () => {
 
   const builder = new ServiceBuilder();
   registerServices(builder)
+    .use(builder => useUniappRuntime(builder, uni))
     .factory(ConfigurationManager<AppConfig>, ctx => config)
     .instance<StateAction>("StateAction", FakeState)
     .instance<IStorage>("IStorage", new MemoryCacheStorage())

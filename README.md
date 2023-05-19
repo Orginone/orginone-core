@@ -61,6 +61,8 @@ import { AppConfig, ConfigurationManager } from "@orginone/core/lib/config";
 import { Store, StateAction } from "@orginone/core/lib/state";
 import { ShallowRefState } from "@orginone/vue/lib/ShallowRefState";
 import { registerServices } from "@orginone/core/lib/lib";
+import { IStorage } from "@orginone/core/lib/storage/Storage";
+import MemoryCacheStorage from "@orginone/core/lib/storage/MemoryCacheStorage";
 
 const config = new ConfigurationManager<AppConfig>()
   .addConfig({
@@ -68,8 +70,9 @@ const config = new ConfigurationManager<AppConfig>()
   });
 const builder = new ServiceBuilder();
 registerServices(builder)
+  .use(builder => useUniappRuntime(builder, uni))
   .factory(ConfigurationManager<AppConfig>, ctx => config)
-  .instance<StateAction<ShallowRef<any>>>("StateAction", ShallowRefState)
+  .instance<StateAction>("StateAction", ShallowRefState)
   .instance<IStorage>("IStorage", new MemoryCacheStorage());
 
 const services = builder.build();

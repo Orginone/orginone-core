@@ -28,10 +28,12 @@ export class ServiceBuilder {
   /**
    * 注册一个采用构造函数注入的类，并且自动扫描依赖
    * @param constructor 类的构造函数，该类必须使用 {@link service} 装饰器
+   * @param name 使用指定的名称而不是类本身来注册
    */
-  constructorInject<T extends {}>(constructor: Constructor<T>): this {
-    this._serviceDefs.set(constructor, new ServiceDescription<T>(
-      constructor,
+  constructorInject<T extends {}>(constructor: Constructor<T>, name?: string): this {
+    const type = name || constructor;
+    this._serviceDefs.set(type, new ServiceDescription<T>(
+      type,
       this.createConstructorInjector(constructor),
       true
     ));
@@ -41,10 +43,12 @@ export class ServiceBuilder {
   /**
    * 注册一个采用属性注入的类，并且自动扫描所有标注了 {@link autowired} 装饰器的属性
    * @param constructor 类的无参构造函数
+   * @param name 使用指定的名称而不是类本身来注册
    */
-  propertyInject<T extends {}>(constructor: { new(): T }): this {
-    this._serviceDefs.set(constructor, new ServiceDescription<T>(
-      constructor,
+  propertyInject<T extends {}>(constructor: { new(): T }, name?: string): this {
+    const type = name || constructor;
+    this._serviceDefs.set(type, new ServiceDescription<T>(
+      type,
       this.createPropertyInjector(constructor),
       true
     ));
@@ -76,6 +80,15 @@ export class ServiceBuilder {
       () => instance,
       false
     ));
+    return this;
+  }
+
+  /**
+   * 使用自定义的注册方法
+   * @param register 注册方法
+   */
+  use(register: (builder: ServiceBuilder) => any): this {
+    register(this);
     return this;
   }
 
