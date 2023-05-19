@@ -1,10 +1,12 @@
 
 import { ApiClient } from 'src/network';
 import * as model from '../base/model';
+import { service } from '@/di/decorator/service';
 
 /**
  * 奥集能账号api
  */
+@service(["ApiClient"])
 export default class AccountApi {
 
   private readonly client: ApiClient;

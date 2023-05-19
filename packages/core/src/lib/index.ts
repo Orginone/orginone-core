@@ -1,14 +1,20 @@
+import { Store, createStore } from "@/state/Store";
 import { App } from "../App";
-import { createUserStore } from "./store/user";
-export interface AppState {
-  user: ReturnType<typeof createUserStore>
-}
+import { AuthorizationStore } from "./store/authorization";
+import { ServiceBuilder } from "@/di";
+import { IStorage } from "@/storage/Storage";
+import { StateAction } from "@/state";
 
-export function useAppEvents(app: App<AppState>): App<AppState> {
-  app.onAppStart(async () => {
-    app.state = {
-      user: createUserStore(app.services.provider)
-    };
-  });
-  return app;
+
+export function registerServices(builder: ServiceBuilder) {
+  return builder
+    .factory("AuthorizationStore", ctx => {
+      const StoreClass = createStore<AuthorizationStore>({
+        accessToken: ""
+      }, "auth");
+      return new StoreClass(
+        ctx.resolve<IStorage>("IStorage"), 
+        ctx.resolve<StateAction>("StateAction")
+      );
+    });
 }

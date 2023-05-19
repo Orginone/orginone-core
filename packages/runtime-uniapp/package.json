@@ -1,6 +1,6 @@
 {
   "name": "@orginone/runtime-uniapp",
-  "version": "0.1.5",
+  "version": "0.2.1",
   "description": "uni-app运行环境",
   "author": "LoveKicher <szlproche@163.com>",
   "homepage": "https://github.com/SwingCosmic/orginone-core#readme",
@@ -34,7 +34,6 @@
     "@dcloudio/types": "^3.3.3"
   },
   "dependencies": {
-    "@orginone/vue": "^0.1.0",
-    "@orginone/core": "^0.1.4"
+    "@orginone/core": "^0.2.1"
   }
 }

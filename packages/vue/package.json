@@ -1,6 +1,6 @@
 {
   "name": "@orginone/vue",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "使用基于@vue/reactivity的响应式系统来使用@orginone/core",
   "author": "LoveKicher <szlproche@163.com>",
   "homepage": "",
@@ -27,7 +27,7 @@
     "test": "jest"
   },
   "dependencies": {
-    "@orginone/core": "^0.1.0",
+    "@orginone/core": "^0.2.1",
     "@vue/reactivity": "^3.2.47"
   }
 }

@@ -13,7 +13,7 @@
     "useDefineForClassFields": true,
     
     "resolveJsonModule": true,
-    "isolatedModules": true,
+    "isolatedModules": false,
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
     "allowJs": true,

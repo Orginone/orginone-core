@@ -8,5 +8,5 @@ export const ShallowRefState : StateAction<ShallowRef<any>> = {
   },
   is(state: IState<any>): state is ShallowRef<any> {
     return isShallow(state);
-  },
+  }
 }

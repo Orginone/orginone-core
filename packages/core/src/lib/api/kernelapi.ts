@@ -2,10 +2,12 @@
 import { ApiClient } from 'src/network';
 import * as model from '../base/model';
 import type * as schema from '../base/schema';
+import { service } from '@/di/decorator/service';
 
 /**
  * 奥集能内核api
  */
+@service(["ApiClient"])
 export default class KernelApi {
 
   private readonly client: ApiClient;

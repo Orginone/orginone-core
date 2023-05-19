@@ -1,7 +1,8 @@
 import { JSONElement, JSONElementLike } from "@orginone/core";
 import { IStorage } from "@orginone/core/lib/storage/Storage";
+import { service } from "@orginone/core/lib/di/decorator/service";
 
-
+@service(["Uni"])
 export default class UniStorage implements IStorage {
   constructor(uniInstance: UniNamespace.Uni) {
     this.uni = uniInstance;

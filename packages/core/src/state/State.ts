@@ -3,7 +3,7 @@ export interface IState<T> {
   value: T;
 }
 
-export interface StateAction<S extends IState<any>> {
+export interface StateAction<S extends IState<any> = IState<any>> {
   /**
    * 创建一个新的{@link IState<T>}
    * @template T 值的类型
@@ -22,3 +22,16 @@ export function isState<T>(s: any): s is IState<T> {
   return typeof s === "object" && "value" in s;
 }
 
+/**
+ * 只能用于测试的State
+ */
+export const FakeState: StateAction<IState<any>> = {
+  create: function <T>(initialValue: T): IState<T> {
+    return {
+      value: initialValue
+    };
+  },
+  is(state: IState<any>): state is IState<any> {
+    return true;
+  }
+}

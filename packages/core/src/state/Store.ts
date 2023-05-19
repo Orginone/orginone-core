@@ -1,6 +1,6 @@
-import { App } from "@/App";
-import { IState, isState } from "./State";
-import { ServiceHost, ServiceProvider } from "../ServiceHost";
+import { IState, StateAction, isState } from "./State";
+import { service } from "@/di/decorator/service";
+import { IStorage } from "@/storage/Storage";
 
 export type StoreState<S extends {}> = {
   readonly [K in keyof S & string]: S[K] extends IState<any> ? S[K] : IState<S[K]>;
@@ -15,61 +15,62 @@ export type StoreAction<S extends {}> = {
  */
 export type Store<S extends {}> = StoreState<S> & StoreAction<S>;
 
-export interface StoreFactory {
-  create<S extends {}>(name: string, initState: S | StoreState<S>): Store<S>;
+export interface StoreConstructor<S extends Store<any>> {
+  new (storage: IStorage, state: StateAction): S;
 }
 
-export class StoreImpl implements StoreFactory {
-
-  private readonly service: ServiceProvider;
-  constructor(service: ServiceHost) {
-    this.service = service.provider;
-  }
-
-  create<S extends {}>(name: string, initState: S | StoreState<S>): Store<S> {
-    if (!name || !name.length) {
-      throw new ReferenceError("name is required");
+export function createStore<S extends {}>(initState: S | StoreState<S>, name?: string): StoreConstructor<Store<S>> {
+  name ||= "<global>";
+  @service(["IStorage", "StateAction"]) 
+  class StoreImpl {
+    get ["[[Name]]"]() {
+      return name;
     }
-    const ret = {
-      get "[[Name]]"() {
-        return name;
-      }
-    } as any;
+    private readonly _storage: IStorage;
+    private readonly _state: StateAction;
 
-    for (const key of Object.keys(initState)) {
-      const persistKey = `${name}__[${key}]`;
-      const setterKey = `set${key[0].toUpperCase()}${key.slice(1)}`;
+    constructor(storage: IStorage, state: StateAction) {
+      this._storage = storage;
+      this._state = state;
 
-      // 将值转为IState
-      let value: IState<any> = (initState as any)[key];
-      if (!isState(value)) {
-        value = this.service.state.create(value);
-      }
+      const ret: any = this;
 
-      // 初始化持久化的值
-      const persistValue = this.service.storage.getItem(persistKey);
-      if (persistValue != null) {
-        value.value = persistValue;
-      }
-
-      // 创建setter方法
-      const setValue = (v: any) => {
-        ret[key].value = v;
-        this.service.storage.setItem(persistKey, v);
-      };
-
-      Object.defineProperty(ret, key, {
-        value,
-        enumerable: true
-      });
-      Object.defineProperty(ret, setterKey, {
-        value: setValue,
-        enumerable: true
-      });
-    }
-
-
-    return ret;
-  }
+      for (const key of Object.keys(initState)) {
+        const persistKey = `${name}__[${key}]`;
+        const setterKey = `set${key[0].toUpperCase()}${key.slice(1)}`;
   
+        // 将值转为IState
+        let value: IState<any> = (initState as any)[key];
+        if (!isState(value)) {
+          value = this._state.create(value);
+        }
+  
+        // 初始化持久化的值
+        const persistValue = this._storage.getItem(persistKey);
+        if (persistValue != null) {
+          value.value = persistValue;
+        }
+  
+        // 创建setter方法
+        const setValue = (v: any) => {
+          ret[key].value = v;
+          this._storage.setItem(persistKey, v);
+        };
+  
+        Object.defineProperty(ret, key, {
+          value,
+          enumerable: true
+        });
+        Object.defineProperty(ret, setterKey, {
+          value: setValue,
+          enumerable: true
+        });
+      }
+    }
+
+  };
+
+  return StoreImpl as any;
 }
+
+ 

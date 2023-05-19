@@ -58,16 +58,24 @@
 import { App, ServiceHost } from "@orginone/core";
 import { useUniappRuntime } from "@orginone/runtime-uniapp";
 import { AppConfig, ConfigurationManager } from "@orginone/core/lib/config";
+import { Store, StateAction } from "@orginone/core/lib/state";
+import { ShallowRefState } from "@orginone/vue/lib/ShallowRefState";
+import { registerServices } from "@orginone/core/lib/lib";
 
 const config = new ConfigurationManager<AppConfig>()
   .addConfig({
     apiUrl: "http://orginone.cn:888/orginone"
   });
+const builder = new ServiceBuilder();
+registerServices(builder)
+  .factory(ConfigurationManager<AppConfig>, ctx => config)
+  .instance<StateAction<ShallowRef<any>>>("StateAction", ShallowRefState)
+  .instance<IStorage>("IStorage", new MemoryCacheStorage());
+
+const services = builder.build();
 const app = App.create({
   config,
-  services: new ServiceHost()
-    .registerProvider(useUniappRuntime(uni, config))
-    .build()
+  services
 });
 app.start();
 
