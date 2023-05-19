@@ -1,3 +1,4 @@
+import "reflect-metadata";
 
 export * from "./App";
 export * from "./errors";
