@@ -2,9 +2,9 @@
 
 
 import { App } from "@orginone/core";
-import { registerServices } from "@orginone/core/lib/lib";
+import { OrginoneServices } from "@orginone/core/lib/lib";
 import MemoryCacheStorage from "@orginone/core/lib/storage/MemoryCacheStorage";
-import { useUniappRuntime } from "../src";
+import { UniappRuntime } from "../src";
 import { test, expect, jest, describe } from "@jest/globals";
 import { AppConfig, ConfigurationManager } from "@orginone/core/lib/config";
 import { ServiceBuilder } from "@orginone/core/lib/di";
@@ -41,9 +41,9 @@ describe("uni-app环境测试", () => {
     apiUrl: "http://orginone.cn:888/orginone"
   });
 
-  const builder = new ServiceBuilder();
-  registerServices(builder)
-    .use(builder => useUniappRuntime(builder, uni))
+  const builder = new ServiceBuilder()
+    .use(OrginoneServices)
+    .use(UniappRuntime, uni)
     .factory(ConfigurationManager<AppConfig>, ctx => config)
     .instance<StateAction>("StateAction", FakeState)
     .instance<IStorage>("IStorage", new MemoryCacheStorage())

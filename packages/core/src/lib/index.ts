@@ -6,7 +6,7 @@ import { IStorage } from "@/storage/Storage";
 import { StateAction } from "@/state";
 
 
-export function registerServices(builder: ServiceBuilder) {
+export function OrginoneServices(builder: ServiceBuilder) {
   return builder
     .factory("AuthorizationStore", ctx => {
       const StoreClass = createStore<AuthorizationStore>({

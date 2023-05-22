@@ -6,6 +6,7 @@ import { service } from "./decorator/service";
 import { autowired } from "./decorator/autowired";
 import { DesignMetadatas } from "./decorator/types";
 import { Dictionary } from "@/types/base";
+import { ServiceModule, ServicePlugin, ServiceRegister } from "./ServiceModule";
 
 
 export class ServiceBuilder {
@@ -85,10 +86,14 @@ export class ServiceBuilder {
 
   /**
    * 使用自定义的注册方法
-   * @param register 注册方法
+   * @param m 注册方法或者模块
    */
-  use(register: (builder: ServiceBuilder) => any): this {
-    register(this);
+  use<C = any>(m: ServiceModule<C>, config?: C): this {
+    let install: ServiceRegister<C> = m as any;
+    if (typeof (m as ServicePlugin<C>).install === "function") {
+      install = (m as ServicePlugin<C>).install;
+    }
+    install(this, config);
     return this;
   }
 

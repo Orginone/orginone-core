@@ -24,7 +24,7 @@
     "test": "node ./__tests__/@orginone/react.test.js"
   },
   "dependencies": {
-    "@orginone/core": "^0.1.0",
+    "@orginone/core": "^0.2.0",
     "react": "^18.2.0"
   },
   "devDependencies": {

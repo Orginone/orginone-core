@@ -56,30 +56,31 @@
 2. 
 ```typescript
 import { App, ServiceHost } from "@orginone/core";
-import { useUniappRuntime } from "@orginone/runtime-uniapp";
+import { UniappRuntime } from "@orginone/runtime-uniapp";
 import { AppConfig, ConfigurationManager } from "@orginone/core/lib/config";
 import { Store, StateAction } from "@orginone/core/lib/state";
 import { ShallowRefState } from "@orginone/vue/lib/ShallowRefState";
-import { registerServices } from "@orginone/core/lib/lib";
-import { IStorage } from "@orginone/core/lib/storage/Storage";
+import { OrginoneServices } from "@orginone/core/lib/lib";
 import MemoryCacheStorage from "@orginone/core/lib/storage/MemoryCacheStorage";
 
+// 创建配置
 const config = new ConfigurationManager<AppConfig>()
   .addConfig({
     apiUrl: "http://orginone.cn:888/orginone"
   });
-const builder = new ServiceBuilder();
-registerServices(builder)
-  .use(builder => useUniappRuntime(builder, uni))
+// 注册服务
+const builder = new ServiceBuilder()
+  .use(OrginoneServices)
+  .use(UniappRuntime, uni)
   .factory(ConfigurationManager<AppConfig>, ctx => config)
-  .instance<StateAction>("StateAction", ShallowRefState)
-  .instance<IStorage>("IStorage", new MemoryCacheStorage());
-
+  .instance<StateAction>("StateAction", ShallowRefState);
+// 生成服务容器并创建应用
 const services = builder.build();
 const app = App.create({
   config,
   services
 });
+// 启动应用
 app.start();
 
 ```
