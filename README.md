@@ -60,8 +60,7 @@ import { UniappRuntime } from "@orginone/runtime-uniapp";
 import { AppConfig, ConfigurationManager } from "@orginone/core/lib/config";
 import { Store, StateAction } from "@orginone/core/lib/state";
 import { ShallowRefState } from "@orginone/vue/lib/ShallowRefState";
-import { OrginoneServices } from "@orginone/core/lib/lib";
-import MemoryCacheStorage from "@orginone/core/lib/storage/MemoryCacheStorage";
+import { OrginoneServices } from "@orginone/core";
 
 // 创建配置
 const config = new ConfigurationManager<AppConfig>()

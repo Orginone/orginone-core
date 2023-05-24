@@ -2,7 +2,7 @@
 
 
 import { App } from "@orginone/core";
-import { OrginoneServices } from "@orginone/core/lib/lib";
+import { OrginoneServices } from "@orginone/core";
 import MemoryCacheStorage from "@orginone/core/lib/storage/MemoryCacheStorage";
 import { UniappRuntime } from "../src";
 import { test, expect, jest, describe } from "@jest/globals";

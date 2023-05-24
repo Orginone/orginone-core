@@ -42,6 +42,17 @@ export type ReceiveType = {
   // 数据
   data: any;
 };
+// 分页返回定义
+export type PageResult<T> = {
+  // 便宜量
+  offset: number;
+  // 最大数量
+  limit: number;
+  // 总数
+  total: number;
+  // 结果
+  result: T[];
+};
 
 // 注册消息类型
 export type RegisterType = {
@@ -251,6 +262,8 @@ export type MsgSaveModel = {
   showTxt: string;
   // 允许编辑
   allowEdit: boolean;
+  // 已读
+  tags?: { label: string; userId: string; time: string }[];
 };
 
 export type PropertyModel = {
@@ -285,8 +298,8 @@ export type DictModel = {
   icon: string;
   // 备注
   remark: string;
-  // 归属用户ID
-  belongId: string;
+  // 分类ID
+  speciesId: string;
 };
 
 export type DictItemModel = {
@@ -332,14 +345,14 @@ export type AttributeModel = {
   name: string;
   // 编号
   code: string;
-  // 类别Id
-  speciesId: string;
+  // 规则
+  rule: string;
   // 属性Id
   propId: string;
   // 工作职权Id
   authId: string;
-  // 共享用户Id
-  shareId: string;
+  // 表单项Id
+  formId: string;
   // 备注
   remark: string;
 };
@@ -351,29 +364,14 @@ export type FormModel = {
   name: string;
   // 编号
   code: string;
+  // 规则
+  rule: string;
   // 备注
   remark: string;
   // 类别Id
   speciesId: string;
   // 共享用户Id
   shareId: string;
-  // 单项集合
-  items: FormItemModel[] | undefined;
-};
-
-export type FormItemModel = {
-  // 唯一ID
-  id: string;
-  // 名称
-  name: string;
-  // 编号
-  code: string;
-  // 规则
-  rule: string;
-  // 备注
-  remark: string;
-  // 特性Id
-  attrId: string;
 };
 
 export type ThingModel = {
@@ -418,8 +416,6 @@ export type GetSpeciesResourceModel = {
   belongId: string;
   // 是否向上递归用户
   upTeam: boolean;
-  // 是否向上递归分类
-  upSpecies: boolean;
   // 分页
   page: PageModel;
 };
@@ -461,6 +457,8 @@ export type WorkDefineModel = {
   name: string;
   // 流程编号
   code: string;
+  // 图标
+  icon: string;
   // 流程节点
   resource: WorkNodeModel | undefined;
   // 备注
@@ -469,10 +467,6 @@ export type WorkDefineModel = {
   shareId: string;
   // 归属分类Id
   speciesId: string;
-  // 源数据分类Id
-  sourceIds: string;
-  // 是否创建实体
-  isCreate: boolean;
 };
 
 export type WorkInstanceModel = {
@@ -490,6 +484,14 @@ export type WorkInstanceModel = {
   hook: string;
   // 操作对象Id集合
   thingIds: string[];
+};
+export type QueryWorkReq = {
+  // 共享组织Id
+  shareId: string;
+  // 办事定义Id
+  defineId: string;
+  // 分页
+  page: PageModel;
 };
 
 export type WorkNodeModel = {

@@ -19,3 +19,15 @@ export interface ResultType<T> {
   /** 结果 */
   success: boolean;
 };
+
+/** 分页返回定义 */
+export interface PageResult<T> {
+  /** 偏移量 */
+  offset: number;
+  /** 最大数量 */
+  limit: number;
+  /** 总数 */
+  total: number;
+  /** 结果 */
+  result: T[];
+}

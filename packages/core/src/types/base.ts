@@ -38,3 +38,16 @@ export type Uppercased<T extends {}> = {
 export type Lowercased<T extends {}> = {
   [P in (keyof T & string) as Lowercase<P>]: T[P]
 }
+
+/** 按引用输出参数，离开方法作用域前，必须要对value赋值 */
+export interface OutRef<T> {
+  value: T | null;
+}
+/** 按引用输入参数，值是只读的 */
+export interface InRef<T> {
+  readonly value: T;
+}
+/** 按引用传递参数，值可以被修改 */
+export interface InOutRef<T> {
+  value: T;
+}
