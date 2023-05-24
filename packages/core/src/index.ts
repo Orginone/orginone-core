@@ -3,8 +3,9 @@ import { ServiceBuilder } from "./di";
 import { AuthorizationStore } from "./lib/store/authorization";
 import { ApiInterceptors } from "./network/interceptor";
 import { fixPageResult } from "./network/interceptors/PageResultHack";
-import { createStore, StateAction } from "./state";
+import { createStore, StateAction, Store } from "./state";
 import { IStorage } from "./storage/Storage";
+import { useHttpAuthorization } from "./network/interceptors/Authorization";
 
 export * from "./App";
 export * from "./errors";
@@ -17,14 +18,6 @@ export * from "./types/base";
 
 export function OrginoneServices(builder: ServiceBuilder) {
   return builder
-    .factory<ApiInterceptors>("ApiInterceptors", ctx => {
-      return {
-        request: [],
-        response: [
-          fixPageResult
-        ]
-      }
-    })
     .factory("AuthorizationStore", ctx => {
       const StoreClass = createStore<AuthorizationStore>({
         accessToken: ""
@@ -33,5 +26,15 @@ export function OrginoneServices(builder: ServiceBuilder) {
         ctx.resolve<IStorage>("IStorage"), 
         ctx.resolve<StateAction>("StateAction")
       );
+    })
+    .factory<ApiInterceptors>("ApiInterceptors", ctx => {
+      return {
+        request: [
+          useHttpAuthorization(ctx.resolve<Store<AuthorizationStore>>("AuthorizationStore"))
+        ],
+        response: [
+          fixPageResult
+        ]
+      };
     });
 }

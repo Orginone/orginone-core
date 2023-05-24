@@ -1,7 +1,8 @@
 
-import { ApiClient } from 'src/network';
+import { ApiClient } from '@/network';
 import * as model from '../base/model';
 import { service } from '@/di/decorator/service';
+import { AuthRequestMeta } from '@/network/interceptors/Authorization';
 
 /**
  * 奥集能账号api
@@ -28,7 +29,9 @@ export default class AccountApi {
       pwd: password,
     };
     
-    res = await this.client.request('login', req);
+    res = await this.client.request('login', req, {
+      allowAnonymous: true
+    } as AuthRequestMeta);
     return res;
   }
   
@@ -48,7 +51,9 @@ export default class AccountApi {
       password: password,
       privateKey: privatekey,
     };
-    res = await this.client.request('resetpassword', req);
+    res = await this.client.request('resetpassword', req, {
+      allowAnonymous: true
+    } as AuthRequestMeta);
     return res;
   }
 
@@ -63,7 +68,9 @@ export default class AccountApi {
    * @returns {Promise<model.ResultType<any>>} 异步注册结果
    */
   public async register(params: model.RegisterType): Promise<model.ResultType<any>> {
-    let res: model.ResultType<any> = await this.client.request('Register', params);
+    let res: model.ResultType<any> = await this.client.request('Register', params, {
+      allowAnonymous: true
+    } as AuthRequestMeta);
     return res;
   }
 

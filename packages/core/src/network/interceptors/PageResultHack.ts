@@ -5,7 +5,7 @@ import { is } from "@/types/util";
 
 type Page = ResultType<PageResult<any>>;
 
-interface PageRequestMeta extends RequestMeta {
+export interface PageRequestMeta extends RequestMeta {
   isPage?: boolean;
 }
 

@@ -49,12 +49,12 @@ export abstract class HttpClientBase implements HttpClient {
     return this.request("requests", reqs, meta);
   }
 
-  async applyResponseInterceptors<T>(interceptors: ResponseInterceptor[], response: T): Promise<T> {
+  async applyResponseInterceptors<T>(interceptors: ResponseInterceptor[], response: T, meta?: RequestMeta): Promise<T> {
     const res = {
       value: response
     };
     for (const interceptor of interceptors) {
-      const stop = await interceptor(res);
+      const stop = await interceptor(res, meta);
       if (stop) {
         break;
       }
@@ -62,17 +62,17 @@ export abstract class HttpClientBase implements HttpClient {
     return res.value;
   }
 
-  async applyRequestInterceptors<T>(interceptors: RequestInterceptor[], request: T): Promise<T> {
-    const res = {
+  async applyRequestInterceptors<T>(interceptors: RequestInterceptor[], request: T, meta?: RequestMeta): Promise<T> {
+    const req = {
       value: request
     };
     for (const interceptor of interceptors) {
-      const stop = await interceptor(res);
+      const stop = await interceptor(req, meta);
       if (stop) {
         break;
       }
     }
-    return res.value;
+    return req.value;
   }
 
 }
