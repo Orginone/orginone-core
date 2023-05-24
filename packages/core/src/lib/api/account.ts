@@ -29,7 +29,10 @@ export default class AccountApi {
       pwd: password,
     };
     
-    res = await this.client.request('login', req, {
+    res = await this.client.requestAccount({
+      methodName: 'login',
+      data: req
+    }, {
       allowAnonymous: true
     } as AuthRequestMeta);
     return res;
@@ -51,7 +54,10 @@ export default class AccountApi {
       password: password,
       privateKey: privatekey,
     };
-    res = await this.client.request('resetpassword', req, {
+    res = await this.client.requestAccount({
+      methodName: 'resetpassword',
+      data: req
+    }, {
       allowAnonymous: true
     } as AuthRequestMeta);
     return res;
@@ -59,16 +65,14 @@ export default class AccountApi {
 
   /**
    * 注册到后台核心获取accessToken
-   * @param name 姓名
-   * @param motto 座右铭
-   * @param phone 电话
-   * @param account 账户
-   * @param password 密码
-   * @param nickName 昵称
+   * @param params 注册信息
    * @returns {Promise<model.ResultType<any>>} 异步注册结果
    */
   public async register(params: model.RegisterType): Promise<model.ResultType<any>> {
-    let res: model.ResultType<any> = await this.client.request('Register', params, {
+    let res: model.ResultType<any> = await this.client.requestAccount({
+      methodName: 'Register',
+      data: params
+    }, {
       allowAnonymous: true
     } as AuthRequestMeta);
     return res;
