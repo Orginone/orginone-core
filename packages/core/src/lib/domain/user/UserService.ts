@@ -1,24 +1,44 @@
 import { service } from "@/di";
-import AccountApi from "@/lib/api/account";
+import { kernelApi, AccountApi } from "@/lib/api";
+import { PageAll, companyTypes } from "@/lib/core/public/consts";
 import { AuthorizationStore } from "@/lib/store/authorization";
-import { ResultType } from "@/network/request";
+import { UserStore } from "@/lib/store/user";
 import { Store } from "@/state/Store";
 
 
-@service([AccountApi, "AuthorizationStore"])
+@service([AccountApi, kernelApi, "AuthorizationStore", "UserStore"])
 export default class UserService {
 
-  constructor(api: AccountApi, store: Store<AuthorizationStore>) {
+  constructor(
+    api: AccountApi, 
+    kernel: kernelApi,
+    auth: Store<AuthorizationStore>, 
+    user: Store<UserStore>
+  ) {
     this.api = api;
-    this.store = store;
+    this.kernel = kernel;
+    this.auth = auth;
+    this.user = user;
   }
 
   private readonly api: AccountApi;
-  private readonly store: Store<AuthorizationStore>;
+  private readonly kernel: kernelApi;
+  private readonly auth: Store<AuthorizationStore>;
+  private readonly user: Store<UserStore>;
 
 
   async login(account: string, password: string) {
-    const res: ResultType<any> = await this.api.login(account, password);
-    this.store.setAccessToken(res.data.accessToken);
+    const res = await this.api.login(account, password);
+    this.auth.setAccessToken(res.data.accessToken);
+    this.user.setCurrentUser(res.data.target);
+  }
+
+  async loadCompanys() {
+    const res = await this.kernel.queryJoinedTargetById({
+      id: this.user.currentUser.value.id,
+      typeNames: companyTypes,
+      page: PageAll,
+    });
+    return res.data.result!;
   }
 }

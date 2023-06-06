@@ -88,17 +88,27 @@ export class ServiceBuilder {
    * 使用自定义的注册方法
    * @param m 注册方法或者模块
    */
+  use(m: ServiceModule<any>): this;
+  /**
+   * 使用自定义的注册方法
+   * @param m 注册方法或者模块
+   * @param config 注册参数
+   */
+  use<C = any>(m: ServiceModule<C>, config: C): this;
+
   use<C = any>(m: ServiceModule<C>, config?: C): this {
     let install: ServiceRegister<C> = m as any;
     if (typeof (m as ServicePlugin<C>).install === "function") {
       install = (m as ServicePlugin<C>).install;
     }
-    install(this, config);
+    install(this, config!);
     return this;
   }
 
   public build() {
     const c: ServiceContainer = new (ServiceContainer as any)(this._serviceDefs);
+    // 将容器自己也作为服务放进去
+    this.factory(ServiceContainer as any, () => c);
     return c;
   }
 

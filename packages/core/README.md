@@ -14,7 +14,7 @@ src
   │  ├ domain 业务领域代码
   │  │  ├ xx xx领域
   │  │  └ yy yy领域
-  │  └ store 存储类型定义
+  │  └ store 存储类型定义（需要持久化的对象）
   ├ network 【抽象】网络
   ├ state 【抽象】状态管理
   ├ storage 【抽象】持久化

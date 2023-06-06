@@ -1,7 +1,8 @@
 import { ServiceBuilder } from "./ServiceBuilder";
 
 export interface ServiceRegister<C> {
-  (builder: ServiceBuilder, config?: C): any;
+  (builder: ServiceBuilder): any;
+  (builder: ServiceBuilder, config: C): any;
 }
 
 export interface ServicePlugin<C> {

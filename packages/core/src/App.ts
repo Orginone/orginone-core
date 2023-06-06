@@ -1,6 +1,7 @@
 
 import { AppConfig, ConfigurationManager } from "./config";
 import { ServiceContainer } from "./di";
+import { StateAction } from "./state";
 import { Dictionary } from "./types/base";
 import { TinyEmitter } from "tiny-emitter";
 export interface AppInit {
@@ -18,6 +19,8 @@ export class App implements AppInit {
   readonly root?: HTMLElement | undefined;
   readonly services: ServiceContainer;
   readonly config: ConfigurationManager<AppConfig>;
+
+  readonly state: StateAction;
 
   readonly emitter = new TinyEmitter();
 
@@ -40,6 +43,8 @@ export class App implements AppInit {
     this.root = config.root;
     this.services = config.services;
     this.config = config.config;
+
+    this.state = config.services.resolve<StateAction>("StateAction");
   }
 
   onAppStart(cb: AppEventCallback) {

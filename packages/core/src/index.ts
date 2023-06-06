@@ -9,6 +9,7 @@ import { useHttpAuthorization } from "./network/interceptors/Authorization";
 import KernelApi from "./lib/api/kernelapi";
 import AccountApi from "./lib/api/account";
 import AnyStore from "./lib/api/anystore";
+import { UserModule } from "./lib/domain/user";
 
 export * from "./App";
 export * from "./errors";
@@ -42,5 +43,7 @@ export function OrginoneServices(builder: ServiceBuilder) {
           fixPageResult
         ]
       };
-    });
+    })
+    
+    .use(UserModule);
 }
