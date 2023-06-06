@@ -10,6 +10,8 @@
 
 核心代码，抽象了包括网络请求、持久化、状态管理之类的框架/环境依赖，可以用于Web, nodejs, 小程序, Electron/nw.js桌面端等多种环境。
 
+详细：[@orginone/core](packages/core/README.md)
+
 ### 状态和响应式
 
 * `@orginone/vue`
