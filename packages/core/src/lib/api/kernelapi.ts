@@ -3,6 +3,7 @@ import { ApiClient } from 'src/network';
 import * as model from '../base/model';
 import type * as schema from '../base/schema';
 import { service } from '@/di/decorator/service';
+import { PageRequestMeta } from '@/network/interceptors/PageResultHack';
 
 /**
  * 奥集能内核api
@@ -312,7 +313,7 @@ export default class KernelApi {
       module: 'target',
       action: 'QueryJoinedTargetById',
       params: params,
-    });
+    }, { isPage: true } as PageRequestMeta);
   }
   /**
    * 查询加入用户申请

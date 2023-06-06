@@ -3,6 +3,7 @@ import { ApiClient } from '@/network';
 import * as model from '../base/model';
 import { service } from '@/di/decorator/service';
 import { AuthRequestMeta } from '@/network/interceptors/Authorization';
+import { XTarget } from '../base/schema';
 
 /**
  * 奥集能账号api
@@ -22,7 +23,10 @@ export default class AccountApi {
    * @param password 密码
    * @returns 异步登录结果
    */
-  public async login(userName: string, password: string): Promise<model.ResultType<any>> {
+  public async login(userName: string, password: string): Promise<model.ResultType<{
+    accessToken: string;
+    target: XTarget;
+  }>> {
     let res: model.ResultType<any>;
     let req = {
       account: userName,
