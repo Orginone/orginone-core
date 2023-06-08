@@ -1,10 +1,18 @@
+import "reflect-metadata";
+
 import { test, describe, expect } from "@jest/globals";
-import axiosStatic from "axios";
 import { AxiosClient } from "../src/network/AxiosClient";
 import AccountApi from "@orginone/core/lib/lib/api/account";
 
 import { loadEnv } from "../../../env-polyfill";
 import path from "path";
+import { App, OrginoneServices } from "@orginone/core";
+import { AppConfig, ConfigurationManager } from "@orginone/core/lib/config";
+import { ServiceBuilder } from "@orginone/core/lib/di";
+import { FakeState, StateAction } from "@orginone/core/lib/state";
+import { IStorage } from "@orginone/core/lib/storage/Storage";
+import MemoryCacheStorage from "@orginone/core/lib/storage/MemoryCacheStorage";
+import { ApiClient } from "@orginone/core/lib/network";
 
 let account: string, pwd: string;
 
@@ -22,32 +30,35 @@ test("检查nodejs环境并加载env", () => {
   expect(pwd).toBeTruthy();
 });
 
-
-const state = {
-  accessToken: ""
-};
-let client: AxiosClient = null!;
-
-
-test("配置axios", () => {
-  const axios = axiosStatic.create({
-    timeout: 10 * 1000,
-    baseURL: "http://orginone.cn:888/orginone"
+describe("node环境测试", () => {
+  let app: App = null!;
+  let config = new ConfigurationManager<AppConfig>();
+  config.addConfig({
+    apiUrl: "http://orginone.cn:888/orginone"
   });
 
-  client = new AxiosClient(axios);
-});
+  const builder = new ServiceBuilder()
+    .use(OrginoneServices)
+    .factory(ConfigurationManager<AppConfig>, ctx => config)
+    .instance<StateAction>("StateAction", FakeState)
+    .instance<IStorage>("IStorage", new MemoryCacheStorage())
+    .constructorInject<ApiClient>(AxiosClient, "ApiClient");
 
+  const services = builder.build();
 
-test("测试登录", async () => {
-  const api = new AccountApi(client);
+  app = App.create({
+    config,
+    services
+  });
+  app.start();
 
-  const res = await api.login(account, pwd);
-  const data = res.data;
+  const api = services.resolve(AccountApi);
 
-  expect(res.success).toEqual(true);
+  test("测试登录", async () => {
+    const res = await api.login(account, pwd);
+    const data = res.data;
+  
+    expect(res.success).toEqual(true);
+  });
+})
 
-  state.accessToken = data.accessToken;
-  expect(state.accessToken).toBeTruthy();
-
-});
