@@ -34,7 +34,7 @@ describe("node环境测试", () => {
   let app: App = null!;
   let config = new ConfigurationManager<AppConfig>();
   config.addConfig({
-    apiUrl: "http://orginone.cn:888/orginone"
+    apiUrl: "https://orginone.cn/orginone"
   });
 
   const builder = new ServiceBuilder()
