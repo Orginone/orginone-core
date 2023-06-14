@@ -126,7 +126,14 @@ export class ServiceBuilder {
   }
 
   private createPropertyInjector<T extends {}>(constructor: Constructor<T>) {
-    const props = Object.getOwnPropertyNames(constructor.prototype);
+    let inst: T;
+    try {
+      // HACK: 获取到未在创建class时声明的属性
+      inst = new constructor();
+    } catch (error) {
+      throw new TypeError(`类 ${constructor.name} 初始化异常`);
+    }
+    const props = Object.getOwnPropertyNames(inst);
     const propertyMap: Dictionary<ServiceType<T>> = {};
     for (const prop of props) {
       const type: ServiceType<T> | undefined = Reflect.getMetadata(DesignMetadatas.Type, constructor.prototype, prop);

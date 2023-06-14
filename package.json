@@ -6,7 +6,7 @@
   ],
   "scripts": {
     "test": "lerna run test",
-    "build": "del-cli ./packages/*/lib && lerna run build"
+    "build": "del-cli ./packages/*/lib/* && lerna run build"
   },
   "devDependencies": {
     "@babel/core": "^7.21.8",

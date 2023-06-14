@@ -1,4 +1,4 @@
-import { IDisposable } from "@/types/service";
+import { IDisposable, IsAsyncInitialize } from "@/types/service";
 
 import { ServiceDescription, ServiceDescriptionMap, ServiceType } from "./ServiceDescription";
 
@@ -25,6 +25,14 @@ export class ServiceContainer implements IDisposable {
       this._instances.set(def, obj);
       return obj;
     }
+  }
+
+  async resolveInitialized<T extends {}>(type: ServiceType<T>) {
+    const obj = this.resolve<T>(type);
+    if (IsAsyncInitialize(obj)) {
+      await obj.initializeAsync();
+    }
+    return obj;
   }
 
   dispose() {
