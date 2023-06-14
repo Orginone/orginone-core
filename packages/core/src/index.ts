@@ -9,7 +9,8 @@ import { useHttpAuthorization } from "./network/interceptors/Authorization";
 import KernelApi from "./lib/api/kernelapi";
 import AccountApi from "./lib/api/account";
 import AnyStore from "./lib/api/anystore";
-import { UserModule } from "./lib/domain/user";
+import { UserModule } from "./lib/domain/target/user";
+import { CompanyModule } from "./lib/domain/target/company";
 
 export * from "./App";
 export * from "./errors";
@@ -25,25 +26,28 @@ export function OrginoneServices(builder: ServiceBuilder) {
     .constructorInject(KernelApi)
     .constructorInject(AccountApi)
     .constructorInject(AnyStore)
-    .factory("AuthorizationStore", ctx => {
-      const StoreClass = createStore<AuthorizationStore>({
-        accessToken: ""
-      }, "auth");
+    .factory("AuthorizationStore", (ctx) => {
+      const StoreClass = createStore<AuthorizationStore>(
+        {
+          accessToken: "",
+        },
+        "auth"
+      );
       return new StoreClass(
-        ctx.resolve<IStorage>("IStorage"), 
+        ctx.resolve<IStorage>("IStorage"),
         ctx.resolve<StateAction>("StateAction")
       );
     })
-    .factory<ApiInterceptors>("ApiInterceptors", ctx => {
+    .factory<ApiInterceptors>("ApiInterceptors", (ctx) => {
       return {
         request: [
-          useHttpAuthorization(ctx.resolve<Store<AuthorizationStore>>("AuthorizationStore"))
+          useHttpAuthorization(
+            ctx.resolve<Store<AuthorizationStore>>("AuthorizationStore")
+          ),
         ],
-        response: [
-          fixPageResult
-        ]
+        response: [fixPageResult],
       };
     })
-    
+    .use(CompanyModule)
     .use(UserModule);
 }
