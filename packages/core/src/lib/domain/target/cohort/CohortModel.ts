@@ -1,50 +1,21 @@
-import { service } from "@/di";
 import { XTarget } from "@/lib/base/schema";
 import { CollectionImpl } from "@/lib/model/ModelContext";
-import CohortService from "./CohortService";
-import { IState, StateAction, Store } from "@/state";
-import { UserStore } from "@/lib/store/user";
+import RelationModel from "../relation/RelationModel";
+import { autowired } from "@/di";
+import { TargetType } from "@/lib/core/public/enums";
 
-@service(["StateAction", "UserStore", CohortService])
 export default class CohortModel extends CollectionImpl<XTarget> {
-  private readonly service: CohortService;
-  private readonly userStore: Store<UserStore>;
-
-  constructor(
-    stateAction: StateAction,
-    userStore: Store<UserStore>,
-    service: CohortService
-  ) {
-    super();
-    this.userStore = userStore;
-    this.service = service;
-    this._cohorts = stateAction.create(this.collection);
-  }
-
-  private _cohorts: IState<XTarget[]>;
-  private _cohortLoaded: boolean = false;
+  @autowired(RelationModel)
+  private readonly relationModel: RelationModel = null!;
 
   get cohorts(): XTarget[] {
-    return this._cohorts.value;
+    return this.collection;
   }
 
-  TargetCohorts(targetId: string): XTarget[] {
-    return this._cohorts;
-  }
-
-  get userId(): string {
-    return this.userStore.currentUser.value.id;
-  }
-
-  async loadUserCohort(reload?: boolean | undefined): Promise<XTarget[]> {
-    if (!this._cohortLoaded || reload) {
-      const res = await this.service.queryCohorts(this.userId);
-      if (res.success) {
-        this._cohortLoaded = true;
-
-        this._cohorts.value = res.data.result ?? [];
-      }
-    }
-    return this.cohorts;
+  getCohortsByTargetId(targetId: string): XTarget[] {
+    let teamIds = this.relationModel.getTeamIdsByTargetId(targetId);
+    return this.collection
+      .filter((item) => teamIds.indexOf(item.id) != -1)
+      .filter((item) => item.typeName == TargetType.Cohort);
   }
 }

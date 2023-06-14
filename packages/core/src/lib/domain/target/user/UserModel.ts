@@ -1,12 +1,12 @@
-import { autowired, service } from "@/di";
+import { autowired } from "@/di";
 import * as schema from "@/lib/base/schema";
 import { XTarget } from "@/lib/base/schema";
 import { ModelRoot } from "@/lib/model/ModelContext";
 import { UserStore } from "@/lib/store/user";
-import { IState, StateAction, Store } from "@/state";
+import { StateAction, Store } from "@/state";
+import CohortModel from "../cohort/CohortModel";
 import CompanyModel from "../company/CompanyModel";
 import UserService from "./UserService";
-import CohortModel from "../cohort/CohortModel";
 
 /** 人员类型实现 */
 export default class UserModel implements ModelRoot<XTarget> {
@@ -27,10 +27,6 @@ export default class UserModel implements ModelRoot<XTarget> {
 
   get companies(): XTarget[] {
     return this.companyModel.companies;
-  }
-
-  get cohorts(): XTarget[] {
-    return this.cohortsModel.TargetCohorts(this.root.id);
   }
 
   get root(): XTarget {

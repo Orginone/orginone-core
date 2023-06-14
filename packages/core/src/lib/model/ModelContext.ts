@@ -1,4 +1,4 @@
-import { XEntity } from "../base/schema";
+import { XEntity, Xbase } from "../base/schema";
 
 export interface ModelRoot<T extends {}> {
   readonly root: T;
@@ -12,12 +12,12 @@ export interface ModelCollection<T extends {}> {
   getById(id: string): T | undefined;
   insert(item: T): void;
   insertBatch(items: T[]): void;
-  removeById(id: string): void;
+  removeById(id: string): T | undefined;
   removeByIds(ids: string[]): void;
   clear(): void;
 }
 
-export class CollectionImpl<T extends XEntity> implements ModelCollection<T> {
+export class CollectionImpl<T extends Xbase> implements ModelCollection<T> {
   private _collection: T[] = [];
   private _index: { [id: string]: T } = {};
 
@@ -48,13 +48,22 @@ export class CollectionImpl<T extends XEntity> implements ModelCollection<T> {
     items.forEach((item) => this.insert(item));
   }
 
-  removeById(id: string): void {
+  removeById(id: string): T | undefined {
     let position = this._collection.findIndex((item) => item.id == id);
+    let item = this.collection[position];
     this._collection.splice(position, 1);
+    return item;
   }
 
   removeByIds(ids: string[]): void {
     ids.forEach((id) => this.removeById(id));
+  }
+
+  removeFirst(predicate: (value: T, index: number) => void): T | undefined {
+    let position = this._collection.findIndex(predicate);
+    let item = this.collection[position];
+    this._collection.splice(position, 1);
+    return item;
   }
 
   clear(): void {

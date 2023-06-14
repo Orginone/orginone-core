@@ -1,22 +1,43 @@
-import { service } from "@/di";
+import { autowired } from "@/di";
 import KernelApi from "@/lib/api/kernelapi";
-import { XTargetArray } from "@/lib/base/schema";
 import { PageAll, companyTypes } from "@/lib/core/public/consts";
-import { ResultType } from "@/network";
+import { UserStore } from "@/lib/store/user";
+import { Store } from "@/state";
+import CompanyModel from "./CompanyModel";
+import RelationService from "../relation/RelationService";
 
-@service([KernelApi])
 export default class CompanyService {
-  readonly kernel: KernelApi;
+  @autowired("UserStore")
+  private readonly user: Store<UserStore> = null!;
 
-  constructor(kernel: KernelApi) {
-    this.kernel = kernel;
+  @autowired(KernelApi)
+  private readonly kernel: KernelApi = null!;
+
+  @autowired(RelationService)
+  private readonly relationService: RelationService = null!;
+
+  @autowired(CompanyModel)
+  private readonly companies: CompanyModel = null!;
+
+  get userId() {
+    return this.user.currentUser.value.id;
   }
 
-  async queryCompanies(targetId: string): Promise<ResultType<XTargetArray>> {
-    return await this.kernel.queryJoinedTargetById({
-      id: targetId,
-      typeNames: companyTypes,
-      page: PageAll,
-    });
+  private _companyLoaded: boolean = false;
+
+  async loadCompanies(reload?: boolean | undefined): Promise<void> {
+    if (!this._companyLoaded || reload) {
+      const res = await this.kernel.queryJoinedTargetById({
+        id: this.userId,
+        typeNames: companyTypes,
+        page: PageAll,
+      });
+      if (res.success) {
+        this._companyLoaded = true;
+        await this.companies.createModel(res.data.result ?? []);
+        let teamIds = this.companies.collection.map((item) => item.id);
+        this.relationService.generateRelations(this.userId, teamIds);
+      }
+    }
   }
 }
