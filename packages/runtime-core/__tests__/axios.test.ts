@@ -2,7 +2,6 @@ import "reflect-metadata";
 
 import { test, describe, expect } from "@jest/globals";
 import { AxiosClient } from "../src/network/AxiosClient";
-import AccountApi from "@orginone/core/lib/lib/api/account";
 
 import { loadEnv } from "../../../env-polyfill";
 import path from "path";
@@ -13,6 +12,9 @@ import { FakeState, StateAction } from "@orginone/core/lib/state";
 import { IStorage } from "@orginone/core/lib/storage/Storage";
 import MemoryCacheStorage from "@orginone/core/lib/storage/MemoryCacheStorage";
 import { ApiClient } from "@orginone/core/lib/network";
+import UserModel from "@orginone/core/lib/lib/domain/target/user/UserModel";
+import TargetService from "@orginone/core/lib/lib/domain/target/TargetService";
+import UserService from "@orginone/core/lib/lib/domain/target/user/UserService";
 
 let account: string, pwd: string;
 
@@ -34,12 +36,12 @@ describe("node环境测试", () => {
   let app: App = null!;
   let config = new ConfigurationManager<AppConfig>();
   config.addConfig({
-    apiUrl: "http://orginone.cn:888/orginone"
+    apiUrl: "https://orginone.cn/orginone",
   });
 
   const builder = new ServiceBuilder()
     .use(OrginoneServices)
-    .factory(ConfigurationManager<AppConfig>, ctx => config)
+    .factory(ConfigurationManager<AppConfig>, (ctx) => config)
     .instance<StateAction>("StateAction", FakeState)
     .instance<IStorage>("IStorage", new MemoryCacheStorage())
     .constructorInject<ApiClient>(AxiosClient, "ApiClient");
@@ -48,17 +50,19 @@ describe("node环境测试", () => {
 
   app = App.create({
     config,
-    services
+    services,
   });
   app.start();
 
-  const api = services.resolve(AccountApi);
+  const userService = services.resolve(UserService);
+  const userModel = services.resolve(UserModel);
 
   test("测试登录", async () => {
-    const res = await api.login(account, pwd);
-    const data = res.data;
-  
-    expect(res.success).toEqual(true);
-  });
-})
+    await userService.login(account, pwd);
+    let root = userModel.root;
+    expect(!!root).toEqual(true);
 
+    let companies = await userModel.loadCompanies();
+    expect(companies.length > 0).toEqual(true);
+  });
+});

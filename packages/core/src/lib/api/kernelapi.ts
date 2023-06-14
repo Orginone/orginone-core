@@ -415,9 +415,9 @@ export default class KernelApi {
   }
   /**
    * 查询赋予的身份
-   * @returns {model.ResultType<schema.XIdentityArray>} 请求结果
+   * @returns {model.ResultType<schema.XIdProofArray>} 请求结果
    */
-  public async queryGivedIdentitys(): Promise<model.ResultType<schema.XIdentityArray>> {
+  public async queryGivenIdentities(): Promise<model.ResultType<schema.XIdProofArray>> {
     return await this.client.requestKernel({
       module: 'target',
       action: 'QueryGivedIdentitys',
@@ -1033,7 +1033,7 @@ export default class KernelApi {
    */
   public async queryApproveTask(
     params: model.IdModel,
-  ): Promise<model.ResultType<schema.XWorkTaskArray>> {
+  ): Promise<model.ResultType<schema.XWorkRecordArray>> {
     return await this.client.requestKernel({
       module: 'work',
       action: 'QueryApproveTask',
