@@ -9,57 +9,35 @@ import UserService from "./UserService";
 import CohortModel from "../cohort/CohortModel";
 
 /** 人员类型实现 */
-// @service(["StateAction", UserService, "UserStore", CompanyModel, CohortModel])
 export default class UserModel implements ModelRoot<XTarget> {
   @autowired("StateAction")
   private readonly stateAction: StateAction = null!;
   @autowired(UserService)
   private readonly service: UserService = null!;
   @autowired("UserStore")
-  private readonly user: Store<UserStore> = null!;
-
+  private readonly userStore: Store<UserStore> = null!;
   @autowired(CompanyModel)
-  readonly companies: CompanyModel = null!;
+  readonly companyModel: CompanyModel = null!;
   @autowired(CohortModel)
-  readonly cohorts: CohortModel = null!;
+  readonly cohortsModel: CohortModel = null!;
 
-  // constructor(
-  //   stateAction: StateAction,
-  //   service: UserService,
-  //   user: Store<UserStore>,
-  //   companyModel: CompanyModel,
-  //   cohortModel: CohortModel,
-  // ) {
-  //   this.stateAction = stateAction;
-  //   this.service = service;
-  //   this.user = user;
-  //   this.companies = companyModel;
-  //   this.cohorts = cohortModel;
-  //   // this._companies = this.stateAction.create([]);
-  //   // this._cohorts = this.stateAction.create([]);
-  // }
-
-  // private _companies: IState<XTarget[]>;
-  // private _cohorts: IState<XTarget[]>;
-  // private _cohortLoaded: boolean = false;
-  // private _companyLoaded: boolean = false;
   private _givenIdentityLoaded: boolean = false;
 
   givenIdentities: schema.XIdProof[] = [];
 
-  // get companies(): XTarget[] {
-  //   return this._companies.value;
-  // }
-
-  // get cohorts(): XTarget[] {
-  //   return this._cohorts.value;
-  // }
-
-  get root(): XTarget {
-    return this.user.currentUser.value;
+  get companies(): XTarget[] {
+    return this.companyModel.companies;
   }
 
-  async createModel(root: XTarget): Promise<void> {}
+  get cohorts(): XTarget[] {
+    return this.cohortsModel.TargetCohorts(this.root.id);
+  }
+
+  get root(): XTarget {
+    return this.userStore.currentUser.value;
+  }
+
+  async createModel(_root: XTarget): Promise<void> {}
 
   async loadGivenIdentities(
     reload: boolean = false
@@ -87,28 +65,6 @@ export default class UserModel implements ModelRoot<XTarget> {
       idProofs.every((i) => i.id !== a.identity?.id)
     );
   }
-
-  // async loadCohorts(reload?: boolean | undefined): Promise<XTarget[]> {
-  //   if (!this._cohortLoaded || reload) {
-  //     const res = await this.service.queryCohorts(this.root.id);
-  //     if (res.success) {
-  //       this._cohortLoaded = true;
-  //       this._cohorts.value = res.data.result ?? [];
-  //     }
-  //   }
-  //   return this.cohorts;
-  // }
-
-  // async loadCompanies(reload?: boolean | undefined): Promise<XTarget[]> {
-  //   if (!this._companyLoaded || reload) {
-  //     const res = await this.service.queryCompanies(this.root.id);
-  //     if (res.success) {
-  //       this._companyLoaded = true;
-  //       this._companies.value = res.data.result ?? [];
-  //     }
-  //   }
-  //   return this.companies;
-  // }
 
   // async createCompany(data: model.TargetModel): Promise<XTarget | undefined> {
   //   if (!companyTypes.includes(data.typeName as TargetType)) {
