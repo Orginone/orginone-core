@@ -1,13 +1,14 @@
 import { service } from "@/di";
 import { XTarget } from "@/lib/base/schema";
 import { CollectionImpl } from "@/lib/model/ModelContext";
-import { IState } from "@/state";
+import { IState, StateAction } from "@/state";
 
-@service([])
+@service(["StateAction"])
 export default class CompanyModel extends CollectionImpl<XTarget> {
-//   private _companies: IState<XTarget[]>;
+  private _companies: IState<XTarget[]>;
 
-//   constructor(){
-
-//   }
+  constructor(stateAction: StateAction){
+    super()
+    this._companies = stateAction.create([]);
+  }
 }

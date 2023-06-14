@@ -9,7 +9,7 @@ import { XTarget } from "@/lib/base/schema";
 export function UserModule(builder: ServiceBuilder) {
   builder
     .constructorInject(UserService)
-    .constructorInject(UserModel)
+    .propertyInject(UserModel)
     .factory("UserStore", (ctx) => {
       const StoreClass = createStore<UserStore>(
         {

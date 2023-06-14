@@ -1,4 +1,4 @@
-import { service } from "@/di";
+import { autowired, service } from "@/di";
 import * as schema from "@/lib/base/schema";
 import { XTarget } from "@/lib/base/schema";
 import { ModelRoot } from "@/lib/model/ModelContext";
@@ -9,45 +9,51 @@ import UserService from "./UserService";
 import CohortModel from "../cohort/CohortModel";
 
 /** 人员类型实现 */
-@service(["StateAction", UserService, "UserStore", CompanyModel, CohortModel])
+// @service(["StateAction", UserService, "UserStore", CompanyModel, CohortModel])
 export default class UserModel implements ModelRoot<XTarget> {
-  readonly stateAction: StateAction;
-  readonly service: UserService;
-  readonly user: Store<UserStore>;
-  readonly companyModel: CompanyModel;
-  readonly cohortModel: CohortModel;
+  @autowired("StateAction")
+  private readonly stateAction: StateAction = null!;
+  @autowired(UserService)
+  private readonly service: UserService = null!;
+  @autowired("UserStore")
+  private readonly user: Store<UserStore> = null!;
 
-  constructor(
-    stateAction: StateAction,
-    service: UserService,
-    user: Store<UserStore>,
-    companyModel: CompanyModel,
-    cohortModel: CohortModel,
-  ) {
-    this.stateAction = stateAction;
-    this.service = service;
-    this.user = user;
-    this.companyModel = companyModel;
-    this.cohortModel = cohortModel;
-    this._companies = this.stateAction.create([]);
-    this._cohorts = this.stateAction.create([]);
-  }
+  @autowired(CompanyModel)
+  readonly companies: CompanyModel = null!;
+  @autowired(CohortModel)
+  readonly cohorts: CohortModel = null!;
 
-  private _companies: IState<XTarget[]>;
-  private _cohorts: IState<XTarget[]>;
-  private _cohortLoaded: boolean = false;
-  private _companyLoaded: boolean = false;
+  // constructor(
+  //   stateAction: StateAction,
+  //   service: UserService,
+  //   user: Store<UserStore>,
+  //   companyModel: CompanyModel,
+  //   cohortModel: CohortModel,
+  // ) {
+  //   this.stateAction = stateAction;
+  //   this.service = service;
+  //   this.user = user;
+  //   this.companies = companyModel;
+  //   this.cohorts = cohortModel;
+  //   // this._companies = this.stateAction.create([]);
+  //   // this._cohorts = this.stateAction.create([]);
+  // }
+
+  // private _companies: IState<XTarget[]>;
+  // private _cohorts: IState<XTarget[]>;
+  // private _cohortLoaded: boolean = false;
+  // private _companyLoaded: boolean = false;
   private _givenIdentityLoaded: boolean = false;
 
   givenIdentities: schema.XIdProof[] = [];
 
-  get companies(): XTarget[] {
-    return this._companies.value;
-  }
+  // get companies(): XTarget[] {
+  //   return this._companies.value;
+  // }
 
-  get cohorts(): XTarget[] {
-    return this._cohorts.value;
-  }
+  // get cohorts(): XTarget[] {
+  //   return this._cohorts.value;
+  // }
 
   get root(): XTarget {
     return this.user.currentUser.value;
