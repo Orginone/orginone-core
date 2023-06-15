@@ -10,23 +10,21 @@ import UserService from "./UserService";
 
 /** 人员类型实现 */
 export default class UserModel implements ModelRoot<XTarget> {
-  @autowired("StateAction")
-  private readonly stateAction: StateAction = null!;
-  @autowired(UserService)
-  private readonly service: UserService = null!;
   @autowired("UserStore")
   private readonly userStore: Store<UserStore> = null!;
   @autowired(CompanyModel)
-  readonly companyModel: CompanyModel = null!;
+  private readonly companies: CompanyModel = null!;
   @autowired(CohortModel)
-  readonly cohortsModel: CohortModel = null!;
+  private readonly cohorts: CohortModel = null!;
 
-  private _givenIdentityLoaded: boolean = false;
+  private _givenIdentities: schema.XIdProof[] = [];
 
-  givenIdentities: schema.XIdProof[] = [];
+  set givenIdentities(givenIdentities: schema.XIdProof[]) {
+    this._givenIdentities = givenIdentities;
+  }
 
-  get companies(): XTarget[] {
-    return this.companyModel.companies;
+  get givenIdentities() {
+    return this._givenIdentities;
   }
 
   get root(): XTarget {
@@ -34,50 +32,6 @@ export default class UserModel implements ModelRoot<XTarget> {
   }
 
   async createModel(_root: XTarget): Promise<void> {}
-
-  async loadGivenIdentities(
-    reload: boolean = false
-  ): Promise<schema.XIdProof[]> {
-    if (!this._givenIdentityLoaded || reload) {
-      const res = await this.service.queryGivenIdentities();
-      if (res.success) {
-        this._givenIdentityLoaded = true;
-        this.givenIdentities = res.data?.result || [];
-      }
-    }
-    return this.givenIdentities;
-  }
-
-  removeGivenIdentity(identityIds: string[], teamId?: string): void {
-    let idProofs = this.givenIdentities.filter((a) =>
-      identityIds.includes(a.identityId)
-    );
-    if (teamId) {
-      idProofs = idProofs.filter((a) => a.teamId == teamId);
-    } else {
-      idProofs = idProofs.filter((a) => a.teamId == undefined);
-    }
-    this.givenIdentities = this.givenIdentities.filter((a) =>
-      idProofs.every((i) => i.id !== a.identity?.id)
-    );
-  }
-
-  // async createCompany(data: model.TargetModel): Promise<XTarget | undefined> {
-  //   if (!companyTypes.includes(data.typeName as TargetType)) {
-  //     data.typeName = TargetType.Company;
-  //   }
-  //   data.public = false;
-  //   data.teamCode = data.teamCode || data.code;
-  //   data.teamName = data.teamName || data.name;
-  //   const res = await this.service.createTarget(data);
-  //   if (res.success && res.data?.id) {
-  //     const company = await createCompany(res.data, this);
-  //     await company.deepLoad();
-  //     this.companys.push(company);
-  //     await company.pullMembers([this.metadata]);
-  //     return company;
-  //   }
-  // }
 
   //   async createTarget(data: model.TargetModel): Promise<ITeam | undefined> {
   //     switch (data.typeName) {

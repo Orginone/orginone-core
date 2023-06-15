@@ -1,16 +1,14 @@
-
-import { ApiClient } from 'src/network';
-import * as model from '../base/model';
-import type * as schema from '../base/schema';
-import { service } from '@/di/decorator/service';
-import { PageRequestMeta } from '@/network/interceptors/PageResultHack';
+import { ApiClient } from "src/network";
+import * as model from "../base/model";
+import type * as schema from "../base/schema";
+import { service } from "@/di/decorator/service";
+import { PageRequestMeta } from "@/network/interceptors/PageResultHack";
 
 /**
  * 奥集能内核api
  */
 @service(["ApiClient"])
 export default class KernelApi {
-
   private readonly client: ApiClient;
 
   constructor(client: ApiClient) {
@@ -22,10 +20,12 @@ export default class KernelApi {
    * @param {model.LogModel} params 请求参数
    * @returns {model.ResultType<schema.XLog>} 请求结果
    */
-  public async createLog(params: model.LogModel): Promise<model.ResultType<schema.XLog>> {
+  public async createLog(
+    params: model.LogModel
+  ): Promise<model.ResultType<schema.XLog>> {
     return await this.client.requestKernel({
-      module: 'core',
-      action: 'CreateLog',
+      module: "core",
+      action: "CreateLog",
       params: params,
     });
   }
@@ -35,11 +35,11 @@ export default class KernelApi {
    * @returns {model.ResultType<schema.XLogArray>} 请求结果
    */
   public async queryLogs(
-    params: model.IdModel,
+    params: model.IdModel
   ): Promise<model.ResultType<schema.XLogArray>> {
     return await this.client.requestKernel({
-      module: 'core',
-      action: 'QueryLogs',
+      module: "core",
+      action: "QueryLogs",
       params: params,
     });
   }
@@ -49,11 +49,11 @@ export default class KernelApi {
    * @returns {model.ResultType<schema.XAuthority>} 请求结果
    */
   public async createAuthority(
-    params: model.AuthorityModel,
+    params: model.AuthorityModel
   ): Promise<model.ResultType<schema.XAuthority>> {
     return await this.client.requestKernel({
-      module: 'target',
-      action: 'CreateAuthority',
+      module: "target",
+      action: "CreateAuthority",
       params: params,
     });
   }
@@ -63,11 +63,11 @@ export default class KernelApi {
    * @returns {model.ResultType<schema.XIdentity>} 请求结果
    */
   public async createIdentity(
-    params: model.IdentityModel,
+    params: model.IdentityModel
   ): Promise<model.ResultType<schema.XIdentity>> {
     return await this.client.requestKernel({
-      module: 'target',
-      action: 'CreateIdentity',
+      module: "target",
+      action: "CreateIdentity",
       params: params,
     });
   }
@@ -77,11 +77,11 @@ export default class KernelApi {
    * @returns {model.ResultType<schema.XTarget>} 请求结果
    */
   public async createTarget(
-    params: model.TargetModel,
+    params: model.TargetModel
   ): Promise<model.ResultType<schema.XTarget>> {
     return await this.client.requestKernel({
-      module: 'target',
-      action: 'CreateTarget',
+      module: "target",
+      action: "CreateTarget",
       params: params,
     });
   }
@@ -91,11 +91,11 @@ export default class KernelApi {
    * @returns {model.ResultType<boolean>} 请求结果
    */
   public async deleteAuthority(
-    params: model.IdModel,
+    params: model.IdModel
   ): Promise<model.ResultType<boolean>> {
     return await this.client.requestKernel({
-      module: 'target',
-      action: 'DeleteAuthority',
+      module: "target",
+      action: "DeleteAuthority",
       params: params,
     });
   }
@@ -104,10 +104,12 @@ export default class KernelApi {
    * @param {model.IdModel} params 请求参数
    * @returns {model.ResultType<boolean>} 请求结果
    */
-  public async deleteIdentity(params: model.IdModel): Promise<model.ResultType<boolean>> {
+  public async deleteIdentity(
+    params: model.IdModel
+  ): Promise<model.ResultType<boolean>> {
     return await this.client.requestKernel({
-      module: 'target',
-      action: 'DeleteIdentity',
+      module: "target",
+      action: "DeleteIdentity",
       params: params,
     });
   }
@@ -116,10 +118,12 @@ export default class KernelApi {
    * @param {model.IdModel} params 请求参数
    * @returns {model.ResultType<boolean>} 请求结果
    */
-  public async deleteTarget(params: model.IdModel): Promise<model.ResultType<boolean>> {
+  public async deleteTarget(
+    params: model.IdModel
+  ): Promise<model.ResultType<boolean>> {
     return await this.client.requestKernel({
-      module: 'target',
-      action: 'DeleteTarget',
+      module: "target",
+      action: "DeleteTarget",
       params: params,
     });
   }
@@ -129,11 +133,11 @@ export default class KernelApi {
    * @returns {model.ResultType<schema.XAuthority>} 请求结果
    */
   public async updateAuthority(
-    params: model.AuthorityModel,
+    params: model.AuthorityModel
   ): Promise<model.ResultType<schema.XAuthority>> {
     return await this.client.requestKernel({
-      module: 'target',
-      action: 'UpdateAuthority',
+      module: "target",
+      action: "UpdateAuthority",
       params: params,
     });
   }
@@ -143,11 +147,11 @@ export default class KernelApi {
    * @returns {model.ResultType<schema.XIdentity>} 请求结果
    */
   public async updateIdentity(
-    params: model.IdentityModel,
+    params: model.IdentityModel
   ): Promise<model.ResultType<schema.XIdentity>> {
     return await this.client.requestKernel({
-      module: 'target',
-      action: 'UpdateIdentity',
+      module: "target",
+      action: "UpdateIdentity",
       params: params,
     });
   }
@@ -157,11 +161,11 @@ export default class KernelApi {
    * @returns {model.ResultType<schema.XTarget>} 请求结果
    */
   public async updateTarget(
-    params: model.TargetModel,
+    params: model.TargetModel
   ): Promise<model.ResultType<schema.XTarget>> {
     return await this.client.requestKernel({
-      module: 'target',
-      action: 'UpdateTarget',
+      module: "target",
+      action: "UpdateTarget",
       params: params,
     });
   }
@@ -170,10 +174,12 @@ export default class KernelApi {
    * @param {model.GiveModel} params 请求参数
    * @returns {model.ResultType<boolean>} 请求结果
    */
-  public async giveIdentity(params: model.GiveModel): Promise<model.ResultType<boolean>> {
+  public async giveIdentity(
+    params: model.GiveModel
+  ): Promise<model.ResultType<boolean>> {
     return await this.client.requestKernel({
-      module: 'target',
-      action: 'GiveIdentity',
+      module: "target",
+      action: "GiveIdentity",
       params: params,
     });
   }
@@ -183,11 +189,11 @@ export default class KernelApi {
    * @returns {model.ResultType<boolean>} 请求结果
    */
   public async removeIdentity(
-    params: model.GiveModel,
+    params: model.GiveModel
   ): Promise<model.ResultType<boolean>> {
     return await this.client.requestKernel({
-      module: 'target',
-      action: 'RemoveIdentity',
+      module: "target",
+      action: "RemoveIdentity",
       params: params,
     });
   }
@@ -197,11 +203,11 @@ export default class KernelApi {
    * @returns {model.ResultType<boolean>} 请求结果
    */
   public async applyJoinTeam(
-    params: model.GainModel,
+    params: model.GainModel
   ): Promise<model.ResultType<boolean>> {
     return await this.client.requestKernel({
-      module: 'target',
-      action: 'ApplyJoinTeam',
+      module: "target",
+      action: "ApplyJoinTeam",
       params: params,
     });
   }
@@ -211,11 +217,11 @@ export default class KernelApi {
    * @returns {model.ResultType<schema.XRelation>} 请求结果
    */
   public async joinTeamApproval(
-    params: model.ApprovalModel,
+    params: model.ApprovalModel
   ): Promise<model.ResultType<schema.XRelation>> {
     return await this.client.requestKernel({
-      module: 'target',
-      action: 'JoinTeamApproval',
+      module: "target",
+      action: "JoinTeamApproval",
       params: params,
     });
   }
@@ -225,11 +231,11 @@ export default class KernelApi {
    * @returns {model.ResultType<boolean>} 请求结果
    */
   public async pullAnyToTeam(
-    params: model.GiveModel,
+    params: model.GiveModel
   ): Promise<model.ResultType<boolean>> {
     return await this.client.requestKernel({
-      module: 'target',
-      action: 'PullAnyToTeam',
+      module: "target",
+      action: "PullAnyToTeam",
       params: params,
     });
   }
@@ -238,10 +244,12 @@ export default class KernelApi {
    * @param {model.IdModel} params 请求参数
    * @returns {model.ResultType<boolean>} 请求结果
    */
-  public async cancelJoinTeam(params: model.IdModel): Promise<model.ResultType<boolean>> {
+  public async cancelJoinTeam(
+    params: model.IdModel
+  ): Promise<model.ResultType<boolean>> {
     return await this.client.requestKernel({
-      module: 'target',
-      action: 'CancelJoinTeam',
+      module: "target",
+      action: "CancelJoinTeam",
       params: params,
     });
   }
@@ -251,11 +259,11 @@ export default class KernelApi {
    * @returns {model.ResultType<boolean>} 请求结果
    */
   public async removeOrExitOfTeam(
-    params: model.GainModel,
+    params: model.GainModel
   ): Promise<model.ResultType<boolean>> {
     return await this.client.requestKernel({
-      module: 'target',
-      action: 'RemoveOrExitOfTeam',
+      module: "target",
+      action: "RemoveOrExitOfTeam",
       params: params,
     });
   }
@@ -265,11 +273,11 @@ export default class KernelApi {
    * @returns {model.ResultType<schema.XTargetArray>} 请求结果
    */
   public async queryTargetById(
-    params: model.IdArrayModel,
+    params: model.IdArrayModel
   ): Promise<model.ResultType<schema.XTargetArray>> {
     return await this.client.requestKernel({
-      module: 'target',
-      action: 'QueryTargetById',
+      module: "target",
+      action: "QueryTargetById",
       params: params,
     });
   }
@@ -279,11 +287,11 @@ export default class KernelApi {
    * @returns {model.ResultType<schema.XTargetArray>} 请求结果
    */
   public async searchTargets(
-    params: model.SearchModel,
+    params: model.SearchModel
   ): Promise<model.ResultType<schema.XTargetArray>> {
     return await this.client.requestKernel({
-      module: 'target',
-      action: 'SearchTargets',
+      module: "target",
+      action: "SearchTargets",
       params: params,
     });
   }
@@ -293,11 +301,11 @@ export default class KernelApi {
    * @returns {model.ResultType<schema.XTargetArray>} 请求结果
    */
   public async querySubTargetById(
-    params: model.GetSubsModel,
+    params: model.GetSubsModel
   ): Promise<model.ResultType<schema.XTargetArray>> {
     return await this.client.requestKernel({
-      module: 'target',
-      action: 'QuerySubTargetById',
+      module: "target",
+      action: "QuerySubTargetById",
       params: params,
     });
   }
@@ -307,13 +315,16 @@ export default class KernelApi {
    * @returns {model.ResultType<schema.XTargetArray>} 请求结果
    */
   public async queryJoinedTargetById(
-    params: model.GetJoinedModel,
+    params: model.GetJoinedModel
   ): Promise<model.ResultType<schema.XTargetArray>> {
-    return await this.client.requestKernel({
-      module: 'target',
-      action: 'QueryJoinedTargetById',
-      params: params,
-    }, { isPage: true } as PageRequestMeta);
+    return await this.client.requestKernel(
+      {
+        module: "target",
+        action: "QueryJoinedTargetById",
+        params: params,
+      },
+      { isPage: true } as PageRequestMeta
+    );
   }
   /**
    * 查询加入用户申请
@@ -321,11 +332,11 @@ export default class KernelApi {
    * @returns {model.ResultType<schema.XRelationArray>} 请求结果
    */
   public async queryJoinTeamApply(
-    params: model.IdModel,
+    params: model.IdModel
   ): Promise<model.ResultType<schema.XRelationArray>> {
     return await this.client.requestKernel({
-      module: 'target',
-      action: 'QueryJoinTeamApply',
+      module: "target",
+      action: "QueryJoinTeamApply",
       params: params,
     });
   }
@@ -335,11 +346,11 @@ export default class KernelApi {
    * @returns {model.ResultType<schema.XRelationArray>} 请求结果
    */
   public async queryTeamJoinApproval(
-    params: model.IdModel,
+    params: model.IdModel
   ): Promise<model.ResultType<schema.XRelationArray>> {
     return await this.client.requestKernel({
-      module: 'target',
-      action: 'QueryTeamJoinApproval',
+      module: "target",
+      action: "QueryTeamJoinApproval",
       params: params,
     });
   }
@@ -349,11 +360,11 @@ export default class KernelApi {
    * @returns {model.ResultType<schema.XAuthority>} 请求结果
    */
   public async queryAuthorityTree(
-    params: model.IdModel,
+    params: model.IdModel
   ): Promise<model.ResultType<schema.XAuthority>> {
     return await this.client.requestKernel({
-      module: 'target',
-      action: 'QueryAuthorityTree',
+      module: "target",
+      action: "QueryAuthorityTree",
       params: params,
     });
   }
@@ -363,11 +374,11 @@ export default class KernelApi {
    * @returns {model.ResultType<schema.XTargetArray>} 请求结果
    */
   public async queryAuthorityTargets(
-    params: model.GainModel,
+    params: model.GainModel
   ): Promise<model.ResultType<schema.XTargetArray>> {
     return await this.client.requestKernel({
-      module: 'target',
-      action: 'QueryAuthorityTargets',
+      module: "target",
+      action: "QueryAuthorityTargets",
       params: params,
     });
   }
@@ -377,11 +388,11 @@ export default class KernelApi {
    * @returns {model.ResultType<schema.XIdentityArray>} 请求结果
    */
   public async queryTargetIdentitys(
-    params: model.IdModel,
+    params: model.IdModel
   ): Promise<model.ResultType<schema.XIdentityArray>> {
     return await this.client.requestKernel({
-      module: 'target',
-      action: 'QueryTargetIdentitys',
+      module: "target",
+      action: "QueryTargetIdentitys",
       params: params,
     });
   }
@@ -391,11 +402,11 @@ export default class KernelApi {
    * @returns {model.ResultType<schema.XTargetArray>} 请求结果
    */
   public async queryIdentityTargets(
-    params: model.IdModel,
+    params: model.IdModel
   ): Promise<model.ResultType<schema.XTargetArray>> {
     return await this.client.requestKernel({
-      module: 'target',
-      action: 'QueryIdentityTargets',
+      module: "target",
+      action: "QueryIdentityTargets",
       params: params,
     });
   }
@@ -405,11 +416,11 @@ export default class KernelApi {
    * @returns {model.ResultType<schema.XTargetArray>} 请求结果
    */
   public async queryTargetsByAuthority(
-    params: model.IdModel,
+    params: model.IdModel
   ): Promise<model.ResultType<schema.XTargetArray>> {
     return await this.client.requestKernel({
-      module: 'target',
-      action: 'QueryTargetsByAuthority',
+      module: "target",
+      action: "QueryTargetsByAuthority",
       params: params,
     });
   }
@@ -417,10 +428,12 @@ export default class KernelApi {
    * 查询赋予的身份
    * @returns {model.ResultType<schema.XIdProofArray>} 请求结果
    */
-  public async queryGivenIdentities(): Promise<model.ResultType<schema.XIdProofArray>> {
+  public async queryGivenIdentities(): Promise<
+    model.ResultType<schema.XIdProofArray>
+  > {
     return await this.client.requestKernel({
-      module: 'target',
-      action: 'QueryGivedIdentitys',
+      module: "target",
+      action: "QueryGivedIdentitys",
       params: {},
     });
   }
@@ -430,11 +443,11 @@ export default class KernelApi {
    * @returns {model.ResultType<schema.XIdentityArray>} 请求结果
    */
   public async queryTeamIdentitys(
-    params: model.IdModel,
+    params: model.IdModel
   ): Promise<model.ResultType<schema.XIdentityArray>> {
     return await this.client.requestKernel({
-      module: 'target',
-      action: 'QueryTeamIdentitys',
+      module: "target",
+      action: "QueryTeamIdentitys",
       params: params,
     });
   }
@@ -444,11 +457,25 @@ export default class KernelApi {
    * @returns {model.ResultType<boolean>} 请求结果
    */
   public async createImMsg(
-    params: model.MsgSendModel,
+    params: model.MsgSendModel
   ): Promise<model.ResultType<boolean>> {
     return await this.client.requestKernel({
-      module: 'chat',
-      action: 'CreateImMsg',
+      module: "chat",
+      action: "CreateImMsg",
+      params: params,
+    });
+  }
+  /**
+   * 创建组织变更消息
+   * @param {model.TargetMsgModel} params 请求参数
+   * @returns {model.ResultType<boolean>} 请求结果
+   */
+  public async createTargetMsg(
+    params: model.TargetMsgModel
+  ): Promise<model.ResultType<boolean>> {
+    return await this.client.requestKernel({
+      module: "chat",
+      action: "CreateTargetMsg",
       params: params,
     });
   }
@@ -458,11 +485,11 @@ export default class KernelApi {
    * @returns {model.ResultType<boolean>} 请求结果
    */
   public async recallImMsg(
-    params: model.MsgSaveModel,
+    params: model.MsgSaveModel
   ): Promise<model.ResultType<boolean>> {
     return await this.client.requestKernel({
-      module: 'chat',
-      action: 'RecallImMsg',
+      module: "chat",
+      action: "RecallImMsg",
       params: params,
     });
   }
@@ -471,10 +498,12 @@ export default class KernelApi {
    * @param {model.MsgTagModel} params 请求参数
    * @returns {model.ResultType<boolean>} 请求结果
    */
-  public async tagImMsg(params: model.MsgTagModel): Promise<model.ResultType<boolean>> {
+  public async tagImMsg(
+    params: model.MsgTagModel
+  ): Promise<model.ResultType<boolean>> {
     return await this.client.requestKernel({
-      module: 'chat',
-      action: 'TagImMsg',
+      module: "chat",
+      action: "TagImMsg",
       params: params,
     });
   }
@@ -484,11 +513,11 @@ export default class KernelApi {
    * @returns {model.ResultType<schema.XProperty>} 请求结果
    */
   public async createProperty(
-    params: model.PropertyModel,
+    params: model.PropertyModel
   ): Promise<model.ResultType<schema.XProperty>> {
     return await this.client.requestKernel({
-      module: 'thing',
-      action: 'CreateProperty',
+      module: "thing",
+      action: "CreateProperty",
       params: params,
     });
   }
@@ -498,11 +527,11 @@ export default class KernelApi {
    * @returns {model.ResultType<schema.XDict>} 请求结果
    */
   public async createDict(
-    params: model.DictModel,
+    params: model.DictModel
   ): Promise<model.ResultType<schema.XDict>> {
     return await this.client.requestKernel({
-      module: 'thing',
-      action: 'CreateDict',
+      module: "thing",
+      action: "CreateDict",
       params: params,
     });
   }
@@ -512,11 +541,11 @@ export default class KernelApi {
    * @returns {model.ResultType<schema.XDictItem>} 请求结果
    */
   public async createDictItem(
-    params: model.DictItemModel,
+    params: model.DictItemModel
   ): Promise<model.ResultType<schema.XDictItem>> {
     return await this.client.requestKernel({
-      module: 'thing',
-      action: 'CreateDictItem',
+      module: "thing",
+      action: "CreateDictItem",
       params: params,
     });
   }
@@ -526,11 +555,11 @@ export default class KernelApi {
    * @returns {model.ResultType<schema.XSpecies>} 请求结果
    */
   public async createSpecies(
-    params: model.SpeciesModel,
+    params: model.SpeciesModel
   ): Promise<model.ResultType<schema.XSpecies>> {
     return await this.client.requestKernel({
-      module: 'thing',
-      action: 'CreateSpecies',
+      module: "thing",
+      action: "CreateSpecies",
       params: params,
     });
   }
@@ -540,11 +569,11 @@ export default class KernelApi {
    * @returns {model.ResultType<schema.XAttribute>} 请求结果
    */
   public async createAttribute(
-    params: model.AttributeModel,
+    params: model.AttributeModel
   ): Promise<model.ResultType<schema.XAttribute>> {
     return await this.client.requestKernel({
-      module: 'thing',
-      action: 'CreateAttribute',
+      module: "thing",
+      action: "CreateAttribute",
       params: params,
     });
   }
@@ -554,11 +583,11 @@ export default class KernelApi {
    * @returns {model.ResultType<schema.XForm>} 请求结果
    */
   public async createForm(
-    params: model.FormModel,
+    params: model.FormModel
   ): Promise<model.ResultType<schema.XForm>> {
     return await this.client.requestKernel({
-      module: 'thing',
-      action: 'CreateForm',
+      module: "thing",
+      action: "CreateForm",
       params: params,
     });
   }
@@ -568,11 +597,11 @@ export default class KernelApi {
    * @returns {model.ResultType<schema.XThing>} 请求结果
    */
   public async createThing(
-    params: model.ThingModel,
+    params: model.ThingModel
   ): Promise<model.ResultType<schema.XThing>> {
     return await this.client.requestKernel({
-      module: 'thing',
-      action: 'CreateThing',
+      module: "thing",
+      action: "CreateThing",
       params: params,
     });
   }
@@ -581,10 +610,12 @@ export default class KernelApi {
    * @param {model.IdModel} params 请求参数
    * @returns {model.ResultType<boolean>} 请求结果
    */
-  public async deleteProperty(params: model.IdModel): Promise<model.ResultType<boolean>> {
+  public async deleteProperty(
+    params: model.IdModel
+  ): Promise<model.ResultType<boolean>> {
     return await this.client.requestKernel({
-      module: 'thing',
-      action: 'DeleteProperty',
+      module: "thing",
+      action: "DeleteProperty",
       params: params,
     });
   }
@@ -593,10 +624,12 @@ export default class KernelApi {
    * @param {model.IdModel} params 请求参数
    * @returns {model.ResultType<boolean>} 请求结果
    */
-  public async deleteDict(params: model.IdModel): Promise<model.ResultType<boolean>> {
+  public async deleteDict(
+    params: model.IdModel
+  ): Promise<model.ResultType<boolean>> {
     return await this.client.requestKernel({
-      module: 'thing',
-      action: 'DeleteDict',
+      module: "thing",
+      action: "DeleteDict",
       params: params,
     });
   }
@@ -605,10 +638,12 @@ export default class KernelApi {
    * @param {model.IdModel} params 请求参数
    * @returns {model.ResultType<boolean>} 请求结果
    */
-  public async deleteDictItem(params: model.IdModel): Promise<model.ResultType<boolean>> {
+  public async deleteDictItem(
+    params: model.IdModel
+  ): Promise<model.ResultType<boolean>> {
     return await this.client.requestKernel({
-      module: 'thing',
-      action: 'DeleteDictItem',
+      module: "thing",
+      action: "DeleteDictItem",
       params: params,
     });
   }
@@ -617,10 +652,12 @@ export default class KernelApi {
    * @param {model.IdModel} params 请求参数
    * @returns {model.ResultType<boolean>} 请求结果
    */
-  public async deleteSpecies(params: model.IdModel): Promise<model.ResultType<boolean>> {
+  public async deleteSpecies(
+    params: model.IdModel
+  ): Promise<model.ResultType<boolean>> {
     return await this.client.requestKernel({
-      module: 'thing',
-      action: 'DeleteSpecies',
+      module: "thing",
+      action: "DeleteSpecies",
       params: params,
     });
   }
@@ -630,11 +667,11 @@ export default class KernelApi {
    * @returns {model.ResultType<boolean>} 请求结果
    */
   public async deleteAttribute(
-    params: model.IdModel,
+    params: model.IdModel
   ): Promise<model.ResultType<boolean>> {
     return await this.client.requestKernel({
-      module: 'thing',
-      action: 'DeleteAttribute',
+      module: "thing",
+      action: "DeleteAttribute",
       params: params,
     });
   }
@@ -643,10 +680,12 @@ export default class KernelApi {
    * @param {model.IdModel} params 请求参数
    * @returns {model.ResultType<boolean>} 请求结果
    */
-  public async deleteForm(params: model.IdModel): Promise<model.ResultType<boolean>> {
+  public async deleteForm(
+    params: model.IdModel
+  ): Promise<model.ResultType<boolean>> {
     return await this.client.requestKernel({
-      module: 'thing',
-      action: 'DeleteForm',
+      module: "thing",
+      action: "DeleteForm",
       params: params,
     });
   }
@@ -655,10 +694,12 @@ export default class KernelApi {
    * @param {model.IdModel} params 请求参数
    * @returns {model.ResultType<boolean>} 请求结果
    */
-  public async deleteThing(params: model.IdModel): Promise<model.ResultType<boolean>> {
+  public async deleteThing(
+    params: model.IdModel
+  ): Promise<model.ResultType<boolean>> {
     return await this.client.requestKernel({
-      module: 'thing',
-      action: 'DeleteThing',
+      module: "thing",
+      action: "DeleteThing",
       params: params,
     });
   }
@@ -668,11 +709,11 @@ export default class KernelApi {
    * @returns {model.ResultType<schema.XProperty>} 请求结果
    */
   public async updateProperty(
-    params: model.PropertyModel,
+    params: model.PropertyModel
   ): Promise<model.ResultType<schema.XProperty>> {
     return await this.client.requestKernel({
-      module: 'thing',
-      action: 'UpdateProperty',
+      module: "thing",
+      action: "UpdateProperty",
       params: params,
     });
   }
@@ -682,11 +723,11 @@ export default class KernelApi {
    * @returns {model.ResultType<schema.XDict>} 请求结果
    */
   public async updateDict(
-    params: model.DictModel,
+    params: model.DictModel
   ): Promise<model.ResultType<schema.XDict>> {
     return await this.client.requestKernel({
-      module: 'thing',
-      action: 'UpdateDict',
+      module: "thing",
+      action: "UpdateDict",
       params: params,
     });
   }
@@ -696,11 +737,11 @@ export default class KernelApi {
    * @returns {model.ResultType<schema.XDictItem>} 请求结果
    */
   public async updateDictItem(
-    params: model.DictItemModel,
+    params: model.DictItemModel
   ): Promise<model.ResultType<schema.XDictItem>> {
     return await this.client.requestKernel({
-      module: 'thing',
-      action: 'UpdateDictItem',
+      module: "thing",
+      action: "UpdateDictItem",
       params: params,
     });
   }
@@ -710,11 +751,11 @@ export default class KernelApi {
    * @returns {model.ResultType<schema.XSpecies>} 请求结果
    */
   public async updateSpecies(
-    params: model.SpeciesModel,
+    params: model.SpeciesModel
   ): Promise<model.ResultType<schema.XSpecies>> {
     return await this.client.requestKernel({
-      module: 'thing',
-      action: 'UpdateSpecies',
+      module: "thing",
+      action: "UpdateSpecies",
       params: params,
     });
   }
@@ -724,11 +765,11 @@ export default class KernelApi {
    * @returns {model.ResultType<schema.XAttribute>} 请求结果
    */
   public async updateAttribute(
-    params: model.AttributeModel,
+    params: model.AttributeModel
   ): Promise<model.ResultType<schema.XAttribute>> {
     return await this.client.requestKernel({
-      module: 'thing',
-      action: 'UpdateAttribute',
+      module: "thing",
+      action: "UpdateAttribute",
       params: params,
     });
   }
@@ -738,11 +779,11 @@ export default class KernelApi {
    * @returns {model.ResultType<schema.XForm>} 请求结果
    */
   public async updateForm(
-    params: model.FormModel,
+    params: model.FormModel
   ): Promise<model.ResultType<schema.XForm>> {
     return await this.client.requestKernel({
-      module: 'thing',
-      action: 'UpdateForm',
+      module: "thing",
+      action: "UpdateForm",
       params: params,
     });
   }
@@ -752,11 +793,11 @@ export default class KernelApi {
    * @returns {model.ResultType<schema.XThing>} 请求结果
    */
   public async updateThing(
-    params: model.ThingModel,
+    params: model.ThingModel
   ): Promise<model.ResultType<schema.XThing>> {
     return await this.client.requestKernel({
-      module: 'thing',
-      action: 'UpdateThing',
+      module: "thing",
+      action: "UpdateThing",
       params: params,
     });
   }
@@ -766,11 +807,11 @@ export default class KernelApi {
    * @returns {model.ResultType<boolean>} 请求结果
    */
   public async thingSetProperty(
-    params: model.SetPropModel,
+    params: model.SetPropModel
   ): Promise<model.ResultType<boolean>> {
     return await this.client.requestKernel({
-      module: 'thing',
-      action: 'ThingSetProperty',
+      module: "thing",
+      action: "ThingSetProperty",
       params: params,
     });
   }
@@ -780,11 +821,11 @@ export default class KernelApi {
    * @returns {model.ResultType<schema.XPropertyArray>} 请求结果
    */
   public async queryPropertys(
-    params: model.IdModel,
+    params: model.IdModel
   ): Promise<model.ResultType<schema.XPropertyArray>> {
     return await this.client.requestKernel({
-      module: 'thing',
-      action: 'QueryPropertys',
+      module: "thing",
+      action: "QueryPropertys",
       params: params,
     });
   }
@@ -794,11 +835,11 @@ export default class KernelApi {
    * @returns {model.ResultType<schema.XDictArray>} 请求结果
    */
   public async queryDicts(
-    params: model.IdModel,
+    params: model.IdModel
   ): Promise<model.ResultType<schema.XDictArray>> {
     return await this.client.requestKernel({
-      module: 'thing',
-      action: 'QueryDicts',
+      module: "thing",
+      action: "QueryDicts",
       params: params,
     });
   }
@@ -808,11 +849,11 @@ export default class KernelApi {
    * @returns {model.ResultType<schema.XDictItemArray>} 请求结果
    */
   public async queryDictItems(
-    params: model.IdModel,
+    params: model.IdModel
   ): Promise<model.ResultType<schema.XDictItemArray>> {
     return await this.client.requestKernel({
-      module: 'thing',
-      action: 'QueryDictItems',
+      module: "thing",
+      action: "QueryDictItems",
       params: params,
     });
   }
@@ -822,11 +863,11 @@ export default class KernelApi {
    * @returns {model.ResultType<schema.XSpeciesArray>} 请求结果
    */
   public async querySpeciesTree(
-    params: model.GetSpeciesModel,
+    params: model.GetSpeciesModel
   ): Promise<model.ResultType<schema.XSpeciesArray>> {
     return await this.client.requestKernel({
-      module: 'thing',
-      action: 'QuerySpeciesTree',
+      module: "thing",
+      action: "QuerySpeciesTree",
       params: params,
     });
   }
@@ -836,11 +877,11 @@ export default class KernelApi {
    * @returns {model.ResultType<schema.XAttributeArray>} 请求结果
    */
   public async querySpeciesAttrs(
-    params: model.GetSpeciesResourceModel,
+    params: model.GetSpeciesResourceModel
   ): Promise<model.ResultType<schema.XAttributeArray>> {
     return await this.client.requestKernel({
-      module: 'thing',
-      action: 'QuerySpeciesAttrs',
+      module: "thing",
+      action: "QuerySpeciesAttrs",
       params: params,
     });
   }
@@ -850,11 +891,11 @@ export default class KernelApi {
    * @returns {model.ResultType<schema.XAttributeArray>} 请求结果
    */
   public async querySpeciesForms(
-    params: model.GetSpeciesResourceModel,
+    params: model.GetSpeciesResourceModel
   ): Promise<model.ResultType<schema.XFormArray>> {
     return await this.client.requestKernel({
-      module: 'thing',
-      action: 'QuerySpeciesForms',
+      module: "thing",
+      action: "QuerySpeciesForms",
       params: params,
     });
   }
@@ -864,11 +905,11 @@ export default class KernelApi {
    * @returns {model.ResultType<schema.XThingPropArray>} 请求结果
    */
   public async queryThingProperty(
-    params: model.GiveModel,
+    params: model.GiveModel
   ): Promise<model.ResultType<schema.XThingPropArray>> {
     return await this.client.requestKernel({
-      module: 'thing',
-      action: 'QueryThingProperty',
+      module: "thing",
+      action: "QueryThingProperty",
       params: params,
     });
   }
@@ -878,11 +919,11 @@ export default class KernelApi {
    * @returns {model.ResultType<schema.XThingPropHistroyArray>} 请求结果
    */
   public async queryPropertyHistroy(
-    params: model.IdModel,
+    params: model.IdModel
   ): Promise<model.ResultType<schema.XThingPropHistroyArray>> {
     return await this.client.requestKernel({
-      module: 'thing',
-      action: 'QueryPropertyHistroy',
+      module: "thing",
+      action: "QueryPropertyHistroy",
       params: params,
     });
   }
@@ -892,11 +933,11 @@ export default class KernelApi {
    * @returns {model.ResultType<schema.XOrder>} 请求结果
    */
   public async createOrder(
-    params: model.OrderModel,
+    params: model.OrderModel
   ): Promise<model.ResultType<schema.XOrder>> {
     return await this.client.requestKernel({
-      module: 'order',
-      action: 'CreateOrder',
+      module: "order",
+      action: "CreateOrder",
       params: params,
     });
   }
@@ -906,11 +947,11 @@ export default class KernelApi {
    * @returns {model.ResultType<schema.XOrderPay>} 请求结果
    */
   public async createOrderPay(
-    params: model.OrderPayModel,
+    params: model.OrderPayModel
   ): Promise<model.ResultType<schema.XOrderPay>> {
     return await this.client.requestKernel({
-      module: 'order',
-      action: 'CreateOrderPay',
+      module: "order",
+      action: "CreateOrderPay",
       params: params,
     });
   }
@@ -920,11 +961,11 @@ export default class KernelApi {
    * @returns {model.ResultType<schema.XOrderArray>} 请求结果
    */
   public async queryOrders(
-    params: model.IdModel,
+    params: model.IdModel
   ): Promise<model.ResultType<schema.XOrderArray>> {
     return await this.client.requestKernel({
-      module: 'order',
-      action: 'QueryOrders',
+      module: "order",
+      action: "QueryOrders",
       params: params,
     });
   }
@@ -934,11 +975,11 @@ export default class KernelApi {
    * @returns {model.ResultType<boolean>} 请求结果
    */
   public async cancelOrder(
-    params: model.ApprovalModel,
+    params: model.ApprovalModel
   ): Promise<model.ResultType<boolean>> {
     return await this.client.requestKernel({
-      module: 'order',
-      action: 'CancelOrder',
+      module: "order",
+      action: "CancelOrder",
       params: params,
     });
   }
@@ -948,11 +989,11 @@ export default class KernelApi {
    * @returns {model.ResultType<schema.XWorkDefine>} 请求结果
    */
   public async createWorkDefine(
-    params: model.WorkDefineModel,
+    params: model.WorkDefineModel
   ): Promise<model.ResultType<schema.XWorkDefine>> {
     return await this.client.requestKernel({
-      module: 'work',
-      action: 'CreateWorkDefine',
+      module: "work",
+      action: "CreateWorkDefine",
       params: params,
     });
   }
@@ -962,11 +1003,11 @@ export default class KernelApi {
    * @returns {model.ResultType<schema.XWorkInstance>} 请求结果
    */
   public async createWorkInstance(
-    params: model.WorkInstanceModel,
+    params: model.WorkInstanceModel
   ): Promise<model.ResultType<schema.XWorkInstance>> {
     return await this.client.requestKernel({
-      module: 'work',
-      action: 'CreateWorkInstance',
+      module: "work",
+      action: "CreateWorkInstance",
       params: params,
     });
   }
@@ -976,11 +1017,11 @@ export default class KernelApi {
    * @returns {model.ResultType<boolean>} 请求结果
    */
   public async deleteWorkDefine(
-    params: model.IdModel,
+    params: model.IdModel
   ): Promise<model.ResultType<boolean>> {
     return await this.client.requestKernel({
-      module: 'work',
-      action: 'DeleteWorkDefine',
+      module: "work",
+      action: "DeleteWorkDefine",
       params: params,
     });
   }
@@ -990,11 +1031,11 @@ export default class KernelApi {
    * @returns {model.ResultType<boolean>} 请求结果
    */
   public async recallWorkInstance(
-    params: model.IdModel,
+    params: model.IdModel
   ): Promise<model.ResultType<boolean>> {
     return await this.client.requestKernel({
-      module: 'work',
-      action: 'RecallWorkInstance',
+      module: "work",
+      action: "RecallWorkInstance",
       params: params,
     });
   }
@@ -1004,11 +1045,11 @@ export default class KernelApi {
    * @returns {model.ResultType<schema.XWorkDefineArray>} 请求结果
    */
   public async queryWorkDefine(
-    params: model.GetSpeciesResourceModel,
+    params: model.GetSpeciesResourceModel
   ): Promise<model.ResultType<schema.XWorkDefineArray>> {
     return await this.client.requestKernel({
-      module: 'work',
-      action: 'QueryWorkDefine',
+      module: "work",
+      action: "QueryWorkDefine",
       params: params,
     });
   }
@@ -1018,11 +1059,11 @@ export default class KernelApi {
    * @returns {model.ResultType<schema.WorkNodeModel>} 请求结果
    */
   public async queryWorkNodes(
-    params: model.IdModel,
+    params: model.IdModel
   ): Promise<model.ResultType<model.WorkNodeModel>> {
     return await this.client.requestKernel({
-      module: 'work',
-      action: 'QueryWorkNodes',
+      module: "work",
+      action: "QueryWorkNodes",
       params: params,
     });
   }
@@ -1032,11 +1073,11 @@ export default class KernelApi {
    * @returns {model.ResultType<schema.XWorkTaskHistoryArray>} 请求结果
    */
   public async queryApproveTask(
-    params: model.IdModel,
+    params: model.IdModel
   ): Promise<model.ResultType<schema.XWorkRecordArray>> {
     return await this.client.requestKernel({
-      module: 'work',
-      action: 'QueryApproveTask',
+      module: "work",
+      action: "QueryApproveTask",
       params: params,
     });
   }
@@ -1046,11 +1087,11 @@ export default class KernelApi {
    * @returns {model.ResultType<schema.XWorkRecordArray>} 请求结果
    */
   public async queryWorkRecord(
-    params: model.IdModel,
+    params: model.IdModel
   ): Promise<model.ResultType<schema.XWorkRecordArray>> {
     return await this.client.requestKernel({
-      module: 'work',
-      action: 'QueryWorkRecord',
+      module: "work",
+      action: "QueryWorkRecord",
       params: params,
     });
   }
@@ -1060,11 +1101,11 @@ export default class KernelApi {
    * @returns {model.ResultType<boolean>} 请求结果
    */
   public async approvalTask(
-    params: model.ApprovalTaskReq,
+    params: model.ApprovalTaskReq
   ): Promise<model.ResultType<boolean>> {
     return await this.client.requestKernel({
-      module: 'work',
-      action: 'ApprovalTask',
+      module: "work",
+      action: "ApprovalTask",
       params: params,
     });
   }
@@ -1074,11 +1115,11 @@ export default class KernelApi {
    * @returns {model.ResultType<schema.XWorkInstance>} 请求结果
    */
   public async queryWorkInstanceById(
-    params: model.IdModel,
+    params: model.IdModel
   ): Promise<model.ResultType<schema.XWorkInstance>> {
     return await this.client.requestKernel({
-      module: 'work',
-      action: 'QueryWorkInstanceById',
+      module: "work",
+      action: "QueryWorkInstanceById",
       params: params,
     });
   }
@@ -1088,13 +1129,12 @@ export default class KernelApi {
    * @returns {model.ResultType<schema.XWorkInstanceArray>} 请求结果
    */
   public async queryMyWorkInstance(
-    params: model.IdModel,
+    params: model.IdModel
   ): Promise<model.ResultType<schema.XWorkInstanceArray>> {
     return await this.client.requestKernel({
-      module: 'work',
-      action: 'QueryMyWorkInstance',
+      module: "work",
+      action: "QueryMyWorkInstance",
       params: params,
     });
   }
-
 }

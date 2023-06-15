@@ -1,30 +1,29 @@
-import { service } from "@/di";
+import { autowired, service } from "@/di";
 import { AccountApi } from "@/lib/api";
 import KernelApi from "@/lib/api/kernelapi";
-import { model } from "@/lib/base";
-import { XIdProofArray, XTarget } from "@/lib/base/schema";
+import { model, schema } from "@/lib/base";
+import { XTarget } from "@/lib/base/schema";
 import { AuthorizationStore } from "@/lib/store/authorization";
 import { UserStore } from "@/lib/store/user";
 import { Store } from "@/state/Store";
-
-@service([AccountApi, KernelApi, "AuthorizationStore", "UserStore"])
+import UserModel from "./UserModel";
 export default class UserService {
-  constructor(
-    api: AccountApi,
-    kernel: KernelApi,
-    auth: Store<AuthorizationStore>,
-    user: Store<UserStore>
-  ) {
-    this.api = api;
-    this.kernel = kernel;
-    this.auth = auth;
-    this.user = user;
-  }
+  @autowired(AccountApi)
+  private readonly api: AccountApi = null!;
 
-  readonly api: AccountApi;
-  readonly kernel: KernelApi;
-  readonly auth: Store<AuthorizationStore>;
-  readonly user: Store<UserStore>;
+  @autowired(KernelApi)
+  private readonly kernel: KernelApi = null!;
+
+  @autowired("AuthorizationStore")
+  private readonly auth: Store<AuthorizationStore> = null!;
+
+  @autowired("UserStore")
+  private readonly user: Store<UserStore> = null!;
+
+  @autowired(UserModel)
+  private readonly userModel: UserModel = null!;
+
+  private _givenIdentityLoaded: boolean = false;
 
   async login(account: string, password: string) {
     const res = await this.api.login(account, password);
@@ -38,7 +37,27 @@ export default class UserService {
     return await this.kernel.createTarget(target);
   }
 
-  async queryGivenIdentities(): Promise<model.ResultType<XIdProofArray>> {
-    return await this.kernel.queryGivenIdentities();
+  async loadGivenIdentities(reload: boolean = false): Promise<void> {
+    if (!this._givenIdentityLoaded || reload) {
+      const res = await this.kernel.queryGivenIdentities();
+      if (res.success) {
+        this._givenIdentityLoaded = true;
+        this.userModel.givenIdentities = res.data?.result || [];
+      }
+    }
+  }
+
+  removeGivenIdentity(identityIds: string[], teamId?: string): void {
+    let idProofs = this.userModel.givenIdentities.filter((a) =>
+      identityIds.includes(a.identityId)
+    );
+    if (teamId) {
+      idProofs = idProofs.filter((a) => a.teamId == teamId);
+    } else {
+      idProofs = idProofs.filter((a) => a.teamId == undefined);
+    }
+    this.userModel.givenIdentities = this.userModel.givenIdentities.filter(
+      (a) => idProofs.every((i) => i.id !== a.identity?.id)
+    );
   }
 }

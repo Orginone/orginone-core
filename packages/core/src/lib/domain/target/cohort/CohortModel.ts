@@ -2,7 +2,7 @@ import { XTarget } from "@/lib/base/schema";
 import { CollectionImpl } from "@/lib/model/ModelContext";
 import RelationModel from "../relation/RelationModel";
 import { autowired } from "@/di";
-import { TargetType } from "@/lib/core/public/enums";
+import { TargetType } from "@/lib/base/enums";
 
 export default class CohortModel extends CollectionImpl<XTarget> {
   @autowired(RelationModel)

@@ -1,4 +1,4 @@
-import { PageModel } from '../../base/model';
+import { PageModel } from './model';
 import { TargetType, ValueType } from './enums';
 
 /** 资产共享云模块权限Id */

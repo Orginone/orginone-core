@@ -1,4 +1,4 @@
-import { XForm } from './schema';
+import { XForm, XIdentity, XTarget } from './schema';
 // 请求类型定义
 export type ReqestType = {
   // 模块
@@ -88,6 +88,11 @@ export type PageModel = {
 };
 
 export type IdModel = {
+  // 唯一ID
+  id: string;
+};
+
+export type IdPageModel = {
   // 唯一ID
   id: string;
   // 分页
@@ -228,6 +233,45 @@ export type MsgSendModel = {
   msgBody: string;
 };
 
+export type IdentityMsgModel = {
+  // 接受数据
+  data: string;
+  // 是否剔除操作人
+  excludeOperater: boolean;
+  // 岗位Id
+  stationId: string;
+  // 身份Id
+  identityId: string;
+  // 组织集群
+  group: boolean;
+};
+
+export type TargetMsgModel = {
+  // 接受数据
+  data: string;
+  // 是否剔除操作人
+  excludeOperater: boolean;
+  // 用户Id
+  targetId: string;
+  // 组织集群
+  group: boolean;
+};
+
+export type TargetOperateModel = {
+  operate: string;
+  target: XTarget;
+  subTarget?: XTarget;
+  operater: XTarget;
+};
+
+export type IdentityOperateModel = {
+  operate: string;
+  operater: XTarget;
+  identity: XIdentity;
+  station?: XTarget;
+  subTarget?: XTarget;
+};
+
 export type MsgTagModel = {
   // 会话ID
   id: string;
@@ -258,12 +302,17 @@ export type MsgSaveModel = {
   createTime: string;
   // 消息变更时间
   updateTime: string;
-  // 消息显示文本
-  showTxt: string;
-  // 允许编辑
-  allowEdit: boolean;
-  // 已读
-  tags?: { label: string; userId: string; time: string }[];
+  // 消息标签
+  tags?: MsgTagLabel[];
+};
+
+export type MsgTagLabel = {
+  // 标签名称
+  label: string;
+  // 人员Id
+  userId: string;
+  // 时间
+  time: string;
 };
 
 export type PropertyModel = {
@@ -285,6 +334,8 @@ export type PropertyModel = {
   sourceId: string;
   // 备注
   remark: string;
+  // 附加信息
+  info: string;
 };
 
 export type DictModel = {
@@ -347,12 +398,16 @@ export type AttributeModel = {
   code: string;
   // 规则
   rule: string;
+  // 值类型
+  valueType: string;
   // 属性Id
   propId: string;
   // 工作职权Id
   authId: string;
   // 表单项Id
   formId: string;
+  // 字典项Id
+  dictId: string;
   // 备注
   remark: string;
 };
@@ -364,8 +419,12 @@ export type FormModel = {
   name: string;
   // 编号
   code: string;
+  // 图标
+  icon: string;
   // 规则
   rule: string;
+  // 类型
+  typeName: string;
   // 备注
   remark: string;
   // 类别Id
@@ -459,6 +518,8 @@ export type WorkDefineModel = {
   code: string;
   // 图标
   icon: string;
+  // 规则
+  rule: string;
   // 流程节点
   resource: WorkNodeModel | undefined;
   // 备注
@@ -482,8 +543,8 @@ export type WorkInstanceModel = {
   title: string;
   // 回调地址
   hook: string;
-  // 操作对象Id集合
-  thingIds: string[];
+  // 申请组织Id
+  applyId: string;
 };
 export type QueryWorkReq = {
   // 共享组织Id
@@ -530,6 +591,7 @@ export type Condition = {
   paramKey: string;
   val: string;
   type: string;
+  display: string;
 };
 
 export type QueryTaskReq = {

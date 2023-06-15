@@ -1,7 +1,7 @@
 import { autowired } from "@/di";
 import KernelApi from "@/lib/api/kernelapi";
-import { PageAll } from "@/lib/core/public/consts";
-import { TargetType } from "@/lib/core/public/enums";
+import { PageAll } from "@/lib/base/consts";
+import { TargetType } from "@/lib/base/enums";
 import { UserStore } from "@/lib/store/user";
 import { Store } from "@/state";
 import CohortModel from "./CohortModel";
