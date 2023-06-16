@@ -1,6 +1,4 @@
-import { Xbase } from "@/lib/base/schema";
 import { IState } from "@/state";
-import { IAsyncInitialize } from "@/types/service";
 import { EntityState } from "./EntityState";
 import { MultiEntityTrackInfo, EntityTrackInfo } from "./MultiEntityTrackInfo";
 
@@ -33,9 +31,15 @@ export interface Repository<T extends {}, K extends keyof T & string> {
    * @param entity 要移除的实体或者ID
    */
   remove(entityOrId: T | string): Promise<any>;
+  /**
+   * 根据ID查找实体
+   * @param entity 要查找的ID
+   * @returns 如果找到，则返回实体，否则返回`null`
+   */
+  find(id: string): Promise<T | null>;
 
-  saveMany(entity: Iterable<T>): Promise<any>;
-  removeMany(entity: Iterable<T>): Promise<any>;
+  saveMany(entities: Iterable<T>): Promise<any>;
+  removeMany(entities: Iterable<T>): Promise<any>;
 
   /**
    * 开始手动追踪变更，并且不执行实际的持久化
@@ -47,16 +51,10 @@ export interface Repository<T extends {}, K extends keyof T & string> {
    * @param state 状态
    */
   track<P extends keyof T & string>(entity: T, state: EntityTrackInfo<P>): void;
-  trackMany(entity: Iterable<T>, state: MultiEntityTrackInfo<T>): void;
+  trackMany(entities: Iterable<T>, states: MultiEntityTrackInfo<T>): void;
   /**
    * 持久化所有手动追踪的修改
    */
   endTrack(): Promise<any>;
 }
 
-export interface BaseRepository<T extends Xbase> extends 
-  Repository<Xbase, "id">,
-  IAsyncInitialize {
-  
-
-}
