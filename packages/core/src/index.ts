@@ -14,6 +14,7 @@ import { CompanyModule } from "./lib/domain/target/company";
 import { CohortModule } from "./lib/domain/target/cohort";
 import { GroupModule } from "./lib/domain/target/group";
 import { RelationModule } from "./lib/domain/target/relation";
+import { AuthorityModule } from "./lib/domain/target/authority";
 
 export * from "./App";
 export * from "./errors";
@@ -52,6 +53,7 @@ export function OrginoneServices(builder: ServiceBuilder) {
       };
     })
     .use(UserModule)
+    .use(AuthorityModule)
     .use(RelationModule)
     .use(CompanyModule)
     .use(CohortModule)

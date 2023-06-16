@@ -15,4 +15,8 @@ export default class CompanyModel extends CollectionImpl<XTarget> {
     let teamIds = this.relationModel.getTeamIdsByTargetId(targetId);
     return this.collection.filter((team) => teamIds.indexOf(team.id) != -1);
   }
+
+  targets(companyId: string): XTarget[] {
+    return [];
+  }
 }

@@ -21,4 +21,8 @@ export default class CohortModel extends CollectionImpl<XTarget> {
     cohorts.forEach((teamId) => this.relations.removeByKey(targetId, teamId));
     this.removeByIds(cohorts);
   }
+
+  targets(cohortId: string): XTarget[] {
+    return [];
+  }
 }

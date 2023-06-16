@@ -59,7 +59,7 @@ export default class RelationService {
     let memberTypes = getRelationTypes(team.typeName as TargetType);
     members = members
       .filter((i) => memberTypes.includes(i.typeName as TargetType))
-      .filter((i) => this.relations.has(team.id, i.id));
+      .filter((i) => this.relations.hasRelation(team.id, i.id));
     if (members.length > 0) {
       let memberIds = members.map((i) => i.id);
       const res = await this.kernel.pullAnyToTeam({
@@ -79,9 +79,9 @@ export default class RelationService {
 
   /**
    * 创建组织变更消息
-   * @param team
-   * @param operate
-   * @param sub
+   * @param team 
+   * @param operate 
+   * @param sub 
    */
   async createTargetMsg(
     team: XTarget,

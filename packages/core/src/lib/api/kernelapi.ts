@@ -356,11 +356,11 @@ export default class KernelApi {
   }
   /**
    * 查询组织权限树
-   * @param {model.IdModel} params 请求参数
+   * @param {model.IdPageModel} params 请求参数
    * @returns {model.ResultType<schema.XAuthority>} 请求结果
    */
   public async queryAuthorityTree(
-    params: model.IdModel
+    params: model.IdPageModel
   ): Promise<model.ResultType<schema.XAuthority>> {
     return await this.client.requestKernel({
       module: "target",

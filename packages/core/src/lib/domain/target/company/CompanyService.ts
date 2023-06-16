@@ -30,7 +30,7 @@ export default class CompanyService {
     return this.userStore.currentUser.value;
   }
 
-  async loadCompanies(): Promise<number> {
+  async loadUserCompanies(): Promise<number> {
     const res = await this.kernel.queryJoinedTargetById({
       id: this.userId,
       typeNames: companyTypes,

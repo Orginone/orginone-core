@@ -1,50 +1,27 @@
 import { XRelation } from "@/lib/base/schema";
-import { CollectionImpl } from "@/lib/model/ModelContext";
+import { CollectionImpl, IndexType } from "@/lib/model/ModelContext";
 
 export default class RelationModel extends CollectionImpl<XRelation> {
-  private _joinIndex = new Set();
+  async createModel(collection: XRelation[]): Promise<void> {
+    await super.createModel(collection);
+    super.registerIndexing(this.itemKey, IndexType.Unique);
+  }
 
   key(targetId: string, teamId: string): string {
     return targetId + "_" + teamId;
-  }
-
-  has(targetId: string, teamId: string): boolean {
-    return this._joinIndex.has(this.key(targetId, teamId));
   }
 
   itemKey(item: XRelation): string {
     return this.key(item.targetId, item.teamId);
   }
 
-  insert(item: XRelation): void {
-    let key: string = this.itemKey(item);
-    if (!this._joinIndex.has(key)) {
-      super.insert(item);
-      this._joinIndex.add(key);
-    }
+  hasRelation(targetId: string, teamId: string): boolean {
+    return super.has(this.key(targetId, teamId));
   }
 
   removeByKey(targetId: string, teamId: string) {
-    let relation = this.removeFirst(
-      (item) => item.targetId == targetId && item.teamId == teamId
-    );
-    if (relation) {
-      this._joinIndex.delete(this.itemKey(relation));
-    }
-  }
-
-  removeById(id: string): XRelation | undefined {
-    let item = super.removeById(id);
-    if (item) {
-      let key = this.itemKey(item);
-      this._joinIndex.delete(key);
-    }
-    return item;
-  }
-
-  clear(): void {
-    super.clear();
-    this._joinIndex.clear();
+    let removeKey = this.key(targetId, teamId);
+    this.removeFirst((item) => removeKey == this.itemKey(item));
   }
 
   getTeamIdsByTargetId(targetId: string): string[] {
