@@ -33,15 +33,6 @@ export default class UserModel implements ModelRoot<XTarget> {
 
   async createModel(_root: XTarget): Promise<void> {}
 
-  //   async createTarget(data: model.TargetModel): Promise<ITeam | undefined> {
-  //     switch (data.typeName) {
-  //       case TargetType.Cohort:
-  //         return this.createCohort(data);
-  //       default:
-  //         return this.createCompany(data);
-  //     }
-  //   }
-
   //   authenticate(orgIds: string[], authIds: string[]): boolean {
   //     return (
   //       this.givenIdentities

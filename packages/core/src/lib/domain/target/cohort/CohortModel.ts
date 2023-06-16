@@ -2,20 +2,23 @@ import { XTarget } from "@/lib/base/schema";
 import { CollectionImpl } from "@/lib/model/ModelContext";
 import RelationModel from "../relation/RelationModel";
 import { autowired } from "@/di";
-import { TargetType } from "@/lib/base/enums";
 
 export default class CohortModel extends CollectionImpl<XTarget> {
   @autowired(RelationModel)
-  private readonly relationModel: RelationModel = null!;
+  private readonly relations: RelationModel = null!;
 
   get cohorts(): XTarget[] {
     return this.collection;
   }
 
   getCohortsByTargetId(targetId: string): XTarget[] {
-    let teamIds = this.relationModel.getTeamIdsByTargetId(targetId);
-    return this.collection
-      .filter((item) => teamIds.indexOf(item.id) != -1)
-      .filter((item) => item.typeName == TargetType.Cohort);
+    let teamIds = this.relations.getTeamIdsByTargetId(targetId);
+    return this.collection.filter((item) => teamIds.indexOf(item.id) != -1);
+  }
+
+  removeByTargetId(targetId: string): void {
+    let cohorts = this.relations.getTeamIdsByTargetId(targetId);
+    cohorts.forEach((teamId) => this.relations.removeByKey(targetId, teamId));
+    this.removeByIds(cohorts);
   }
 }

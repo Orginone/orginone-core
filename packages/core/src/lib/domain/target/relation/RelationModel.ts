@@ -18,7 +18,7 @@ export default class RelationModel extends CollectionImpl<XRelation> {
 
   insert(item: XRelation): void {
     let key: string = this.itemKey(item);
-    if (this._joinIndex.has(key)) {
+    if (!this._joinIndex.has(key)) {
       super.insert(item);
       this._joinIndex.add(key);
     }

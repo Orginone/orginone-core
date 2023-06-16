@@ -30,7 +30,7 @@ export default class CompanyService {
     return this.userStore.currentUser.value;
   }
 
-  async loadCompanies(): Promise<void> {
+  async loadCompanies(): Promise<number> {
     const res = await this.kernel.queryJoinedTargetById({
       id: this.userId,
       typeNames: companyTypes,
@@ -40,7 +40,9 @@ export default class CompanyService {
       await this.companies.createModel(res.data.result ?? []);
       let teamIds = this.companies.collection.map((item) => item.id);
       this.relationService.generateRelations(this.userId, teamIds);
+      return teamIds.length;
     }
+    return 0;
   }
 
   async createCompany(data: model.TargetModel): Promise<XTarget | undefined> {

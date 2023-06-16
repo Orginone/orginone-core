@@ -15,7 +15,7 @@ export default class CohortService {
   private readonly userStore: Store<UserStore> = null!;
 
   @autowired(CohortModel)
-  private readonly cohortModel: CohortModel = null!;
+  private readonly cohorts: CohortModel = null!;
 
   @autowired(RelationService)
   private readonly relationService: RelationService = null!;
@@ -28,16 +28,21 @@ export default class CohortService {
     await this.loadCohorts(this.userId);
   }
 
-  async loadCohorts(targetId: string): Promise<void> {
+  async loadCohorts(targetId: string): Promise<number> {
     const res = await this.kernel.queryJoinedTargetById({
       id: targetId,
       typeNames: [TargetType.Cohort],
       page: PageAll,
     });
     if (res.success) {
-      await this.cohortModel.createModel(res.data.result ?? []);
-      let teamIds = this.cohortModel.collection.map((item) => item.id);
-      this.relationService.generateRelations(this.userId, teamIds);
+      let data = res.data.result ?? [];
+      this.cohorts.removeByTargetId(targetId);
+      this.cohorts.insertBatch(data);
+
+      let teamIds = data.map((item) => item.id);
+      this.relationService.generateRelations(targetId, teamIds);
+      return data.length;
     }
+    return 0;
   }
 }

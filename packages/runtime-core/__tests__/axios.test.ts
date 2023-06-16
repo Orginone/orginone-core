@@ -13,8 +13,11 @@ import { IStorage } from "@orginone/core/lib/storage/Storage";
 import MemoryCacheStorage from "@orginone/core/lib/storage/MemoryCacheStorage";
 import { ApiClient } from "@orginone/core/lib/network";
 import UserModel from "@orginone/core/lib/lib/domain/target/user/UserModel";
-// import TargetService from "@orginone/core/lib/lib/domain/target/TargetService";
 import UserService from "@orginone/core/lib/lib/domain/target/user/UserService";
+import CompanyModel from "@orginone/core/lib/lib/domain/target/company/CompanyModel";
+import CompanyService from "@orginone/core/lib/lib/domain/target/company/CompanyService";
+import CohortModel from "@orginone/core/lib/lib/domain/target/cohort/CohortModel";
+import CohortService from "@orginone/core/lib/lib/domain/target/cohort/CohortService";
 
 let account: string, pwd: string;
 
@@ -55,14 +58,34 @@ describe("node环境测试", () => {
   app.start();
 
   const userService = services.resolve(UserService);
-  const userModel = services.resolve(UserModel);
+  const user = services.resolve(UserModel);
+  const companyService = services.resolve(CompanyService);
+  const companies = services.resolve(CompanyModel);
+  const cohortService = services.resolve(CohortService);
+  const cohorts = services.resolve(CohortModel);
 
   test("测试登录", async () => {
     await userService.login(account, pwd);
-    let root = userModel.root;
-    expect(!!root).toEqual(true);
+    expect(!!user.root).toEqual(true);
+  });
 
-    // let companies = await userModel.loadCompanies();
-    // expect(companies.length > 0).toEqual(true);
+  test("身份加载", async () => {
+    await userService.loadGivenIdentities();
+    expect(user.givenIdentities.length > 0).toEqual(true);
+  });
+
+  test("加载单位", async () => {
+    await companyService.loadCompanies();
+    let targetIds = companies.getCompaniesByTargetId(user.root.id);
+    expect(targetIds.length).toEqual(companies.length);
+  });
+
+  test("加载单位的群组", async () => {
+    console.log("单位数量", companies.collection.length);
+    for (let company of companies.collection) {
+      let length = await cohortService.loadCohorts(company.id);
+      let companyCohorts = cohorts.getCohortsByTargetId(company.id);
+      expect(companyCohorts.length).toEqual(length);
+    }
   });
 });

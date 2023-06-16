@@ -11,6 +11,9 @@ import AccountApi from "./lib/api/account";
 import AnyStore from "./lib/api/anystore";
 import { UserModule } from "./lib/domain/target/user";
 import { CompanyModule } from "./lib/domain/target/company";
+import { CohortModule } from "./lib/domain/target/cohort";
+import { GroupModule } from "./lib/domain/target/group";
+import { RelationModule } from "./lib/domain/target/relation";
 
 export * from "./App";
 export * from "./errors";
@@ -48,6 +51,9 @@ export function OrginoneServices(builder: ServiceBuilder) {
         response: [fixPageResult],
       };
     })
+    .use(UserModule)
+    .use(RelationModule)
     .use(CompanyModule)
-    .use(UserModule);
+    .use(CohortModule)
+    .use(GroupModule);
 }

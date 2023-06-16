@@ -31,8 +31,7 @@ export class CollectionImpl<T extends Xbase> implements ModelCollection<T> {
 
   async createModel(collection: T[]): Promise<void> {
     this.clear();
-    this._collection.push(...collection);
-    this._collection.forEach((item) => this.insert(item));
+    collection.forEach((item) => this.insert(item));
   }
 
   getById(id: string): T | undefined {
