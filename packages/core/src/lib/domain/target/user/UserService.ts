@@ -7,6 +7,7 @@ import { AuthorizationStore } from "@/lib/store/authorization";
 import { UserStore } from "@/lib/store/user";
 import { Store } from "@/state/Store";
 import UserModel from "./UserModel";
+
 export default class UserService {
   @autowired(AccountApi)
   private readonly api: AccountApi = null!;
@@ -23,8 +24,6 @@ export default class UserService {
   @autowired(UserModel)
   private readonly userModel: UserModel = null!;
 
-  private _givenIdentityLoaded: boolean = false;
-
   async login(account: string, password: string) {
     const res = await this.api.login(account, password);
     this.auth.setAccessToken(res.data.accessToken);
@@ -38,12 +37,9 @@ export default class UserService {
   }
 
   async loadGivenIdentities(reload: boolean = false): Promise<void> {
-    if (!this._givenIdentityLoaded || reload) {
-      const res = await this.kernel.queryGivenIdentities();
-      if (res.success) {
-        this._givenIdentityLoaded = true;
-        this.userModel.givenIdentities = res.data?.result || [];
-      }
+    const res = await this.kernel.queryGivenIdentities();
+    if (res.success) {
+      this.userModel.givenIdentities = res.data?.result || [];
     }
   }
 

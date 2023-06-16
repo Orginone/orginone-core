@@ -24,12 +24,8 @@ export default class CohortService {
     return this.userStore.currentUser.value.id;
   }
 
-  private _cohortLoaded: boolean = false;
-
-  async loadUserCohorts(reload?: boolean): Promise<void> {
-    if (!this._cohortLoaded || reload) {
-      await this.loadCohorts(this.userId);
-    }
+  async loadUserCohorts(): Promise<void> {
+    await this.loadCohorts(this.userId);
   }
 
   async loadCohorts(targetId: string): Promise<void> {
@@ -39,7 +35,6 @@ export default class CohortService {
       page: PageAll,
     });
     if (res.success) {
-      this._cohortLoaded = true;
       await this.cohortModel.createModel(res.data.result ?? []);
       let teamIds = this.cohortModel.collection.map((item) => item.id);
       this.relationService.generateRelations(this.userId, teamIds);

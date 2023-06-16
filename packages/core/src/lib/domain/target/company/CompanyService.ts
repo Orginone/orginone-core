@@ -30,21 +30,16 @@ export default class CompanyService {
     return this.userStore.currentUser.value;
   }
 
-  private _companyLoaded: boolean = false;
-
-  async loadCompanies(reload?: boolean | undefined): Promise<void> {
-    if (!this._companyLoaded || reload) {
-      const res = await this.kernel.queryJoinedTargetById({
-        id: this.userId,
-        typeNames: companyTypes,
-        page: PageAll,
-      });
-      if (res.success) {
-        this._companyLoaded = true;
-        await this.companies.createModel(res.data.result ?? []);
-        let teamIds = this.companies.collection.map((item) => item.id);
-        this.relationService.generateRelations(this.userId, teamIds);
-      }
+  async loadCompanies(): Promise<void> {
+    const res = await this.kernel.queryJoinedTargetById({
+      id: this.userId,
+      typeNames: companyTypes,
+      page: PageAll,
+    });
+    if (res.success) {
+      await this.companies.createModel(res.data.result ?? []);
+      let teamIds = this.companies.collection.map((item) => item.id);
+      this.relationService.generateRelations(this.userId, teamIds);
     }
   }
 
