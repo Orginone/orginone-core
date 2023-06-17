@@ -13,34 +13,38 @@ import RelationService from "../relation/RelationService";
 import CompanyService from "../company/CompanyService";
 import CohortService from "../cohort/CohortService";
 import AuthorityService from "../authority/AuthorityService";
+import SpeciesService from "../../thing/base/species/speciesService";
 
-export default class UserService {
+export default class PersonService {
   @autowired(AccountApi)
-  private readonly api: AccountApi = null!;
+  readonly api: AccountApi = null!;
 
   @autowired(KernelApi)
-  private readonly kernel: KernelApi = null!;
+  readonly kernel: KernelApi = null!;
 
   @autowired("AuthorizationStore")
-  private readonly auth: Store<AuthorizationStore> = null!;
+  readonly auth: Store<AuthorizationStore> = null!;
 
   @autowired("UserStore")
-  private readonly userStore: Store<UserStore> = null!;
+  readonly userStore: Store<UserStore> = null!;
 
   @autowired(UserModel)
-  private readonly user: UserModel = null!;
+  readonly user: UserModel = null!;
 
   @autowired(RelationService)
-  private readonly relationService: RelationService = null!;
+  readonly relationService: RelationService = null!;
 
   @autowired(CompanyService)
-  private readonly companyService: CompanyService = null!;
+  readonly companyService: CompanyService = null!;
 
   @autowired(CohortService)
-  private readonly cohortService: CohortService = null!;
+  readonly cohortService: CohortService = null!;
 
   @autowired(AuthorityService)
-  private readonly authorityService: AuthorityService = null!;
+  readonly authorityService: AuthorityService = null!;
+
+  @autowired(SpeciesService)
+  readonly speciesService: SpeciesService = null!;
 
   get userId() {
     return this.user.root.id;
@@ -157,13 +161,13 @@ export default class UserService {
     await this.companyService.loadUserCompanies();
     await this.cohortService.loadUserCohorts();
     await this.authorityService.loadSuperAuth(this.userId);
-    // await this.loadSpecies(reload);
-    // for (const company of this.companys) {
-    //   await company.deepLoad(reload);
-    // }
-    // for (const cohort of this.cohorts) {
-    //   await cohort.deepLoad(reload);
-    // }
+    await this.speciesService.loadSpecies(this.user.root);
+    for (const company of this.user.companies.data) {
+      await this.companyService.deepLoad(company.id);
+    }
+    for (const cohort of this.user.cohorts.data) {
+      await this.cohortService.deepLoad(cohort.id);
+    }
     // this.superAuth?.deepLoad(reload);
   }
 }

@@ -8,19 +8,20 @@ import { UserStore } from "@/lib/store/user";
 import { Store } from "@/state";
 import RelationService from "../relation/RelationService";
 import CompanyModel from "./CompanyModel";
+import { RelationType } from "../relation/RelationModel";
 
 export default class CompanyService {
   @autowired("UserStore")
-  private readonly userStore: Store<UserStore> = null!;
+  readonly userStore: Store<UserStore> = null!;
 
   @autowired(KernelApi)
-  private readonly kernel: KernelApi = null!;
+  readonly kernel: KernelApi = null!;
 
   @autowired(CompanyModel)
-  private readonly companies: CompanyModel = null!;
+  readonly companies: CompanyModel = null!;
 
   @autowired(RelationService)
-  private readonly relationService: RelationService = null!;
+  readonly relationService: RelationService = null!;
 
   get userId() {
     return this.user.id;
@@ -38,8 +39,12 @@ export default class CompanyService {
     });
     if (res.success) {
       await this.companies.createModel(res.data.result ?? []);
-      let teamIds = this.companies.collection.map((item) => item.id);
-      this.relationService.generateRelations(this.userId, teamIds);
+      let teamIds = this.companies.data.map((item) => item.id);
+      this.relationService.generateRelations(
+        RelationType.Targets,
+        this.userId,
+        teamIds
+      );
       return teamIds.length;
     }
     return 0;
@@ -54,12 +59,12 @@ export default class CompanyService {
     data.teamName = data.teamName || data.name;
     const res = await this.kernel.createTarget(data);
     if (res.success && res.data?.id) {
-      await this.deepLoad();
+      await this.deepLoad(res.data.id);
       this.companies.insert(res.data);
       await this.relationService.pullMembers(res.data, [this.user]);
       return res.data;
     }
   }
 
-  async deepLoad(): Promise<void> {}
+  async deepLoad(companyId: string): Promise<void> {}
 }

@@ -1,20 +1,8 @@
+import { IState, StateAction } from "@/state";
 import { Xbase } from "../base/schema";
 
 export interface ModelRoot<T extends {}> {
   readonly root: T;
-  createModel(root: T): Promise<void>;
-}
-
-export interface ModelCollection<T extends {}> {
-  readonly collection: T[];
-  readonly length: number;
-  createModel(collection: T[]): Promise<void>;
-  getById(id: string): T | undefined;
-  insert(item: T): void;
-  insertBatch(items: T[]): void;
-  removeById(id: string): T | undefined;
-  removeByIds(ids: string[]): void;
-  clear(): void;
 }
 
 export enum IndexType {
@@ -22,19 +10,23 @@ export enum IndexType {
   Normal,
 }
 
-export class CollectionImpl<T extends Xbase> implements ModelCollection<T> {
-  private _collection: T[] = [];
+export class Repository<T extends Xbase> {
+  private _data: IState<T[]>;
   private _uniqueIndexing: ((item: T) => string)[] = [];
   private _uniqueIndex: Map<string, T> = new Map();
   private _normalIndexing: ((item: T) => string)[] = [];
   private _normalIndex: Map<String, T[]> = new Map();
 
-  get collection(): T[] {
-    return this._collection;
+  constructor(stateAction: StateAction) {
+    this._data = stateAction.create([]);
+  }
+
+  get data(): T[] {
+    return this._data.value;
   }
 
   get length(): number {
-    return this._collection.length;
+    return this._data.value.length;
   }
 
   has(key: string): boolean {
@@ -112,7 +104,7 @@ export class CollectionImpl<T extends Xbase> implements ModelCollection<T> {
 
   insert(item: T): void {
     this.checkUnique(item);
-    this._collection.push(item);
+    this._data.value.push(item);
     this._uniquePush(item);
     this._normalPush(item);
   }
@@ -130,18 +122,18 @@ export class CollectionImpl<T extends Xbase> implements ModelCollection<T> {
   }
 
   removeFirst(predicate: (value: T, index: number) => void): T | undefined {
-    let position = this._collection.findIndex(predicate);
-    let item = this.collection[position];
+    let position = this._data.value.findIndex(predicate);
+    let item = this.data[position];
     if (item) {
       this._uniqueDelete(item);
       this._normalDelete(item);
-      this._collection.splice(position, 1);
+      this._data.value.splice(position, 1);
       return item;
     }
   }
 
   clear(): void {
-    this._collection.splice(0, this.length);
+    this._data.value.splice(0, this.length);
     this._uniqueIndex.clear();
     this._normalIndex.clear();
   }

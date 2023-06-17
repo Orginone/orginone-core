@@ -6,6 +6,7 @@ import { UserStore } from "@/lib/store/user";
 import { Store } from "@/state";
 import CohortModel from "./CohortModel";
 import RelationService from "../relation/RelationService";
+import { RelationType } from "../relation/RelationModel";
 
 export default class CohortService {
   @autowired(KernelApi)
@@ -28,6 +29,11 @@ export default class CohortService {
     await this.loadCohorts(this.userId);
   }
 
+  /**
+   * 加载目标的群组
+   * @param targetId 目标 ID
+   * @returns 
+   */
   async loadCohorts(targetId: string): Promise<number> {
     const res = await this.kernel.queryJoinedTargetById({
       id: targetId,
@@ -40,9 +46,16 @@ export default class CohortService {
       this.cohorts.insertBatch(data);
 
       let teamIds = data.map((item) => item.id);
-      this.relationService.generateRelations(targetId, teamIds);
+      let relationType = RelationType.Targets;
+      this.relationService.generateRelations(relationType, targetId, teamIds);
       return data.length;
     }
     return 0;
   }
+
+  /**
+   * 深加载
+   * @param targetId
+   */
+  async deepLoad(targetId: string): Promise<void> {}
 }

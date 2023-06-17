@@ -1,11 +1,10 @@
 import { autowired } from "@/di";
-import { XRelation, XTarget } from "@/lib/base/schema";
-import RelationModel from "./RelationModel";
+import { XTarget } from "@/lib/base/schema";
+import RelationModel, { Relation, RelationType } from "./RelationModel";
 import { schema } from "@/lib/base";
 import KernelApi from "@/lib/api/kernelapi";
 import { OperateType, TargetType } from "@/lib/base/enums";
-import relationTypes from "@/lib/domain/target/relation/relationTypes";
-import getRelationTypes from "@/lib/domain/target/relation/relationTypes";
+import getTargetRelationTypes from "@/lib/domain/target/relation/relationTypes";
 import { UserStore } from "@/lib/store/user";
 import { Store } from "@/state";
 
@@ -29,12 +28,20 @@ export default class RelationService {
 
   /**
    * 建立关系（关系是双向的）
-   * @param targetId
-   * @param teamIds
+   * @param activeId
+   * @param passiveIds
    */
-  generateRelations(targetId: string, teamIds: string[]): void {
-    let relations = teamIds.map((teamId) => {
-      return { targetId: targetId, teamId: teamId } as XRelation;
+  generateRelations(
+    type: RelationType,
+    activeId: string,
+    passiveIds: string[]
+  ): void {
+    let relations = passiveIds.map((passiveId) => {
+      return {
+        typeName: type,
+        activeId: activeId,
+        passiveId: passiveId,
+      } as Relation;
     });
     this.relations.insertBatch(relations);
   }
@@ -45,7 +52,7 @@ export default class RelationService {
    * @param teamId
    */
   breakRelations(targetId: string, teamId: string): void {
-    this.relations.removeByKey(targetId, teamId);
+    this.relations.removeByKey(RelationType.Targets, targetId, teamId);
   }
 
   /**
@@ -56,10 +63,12 @@ export default class RelationService {
    * @returns
    */
   async pullMembers(team: XTarget, members: schema.XTarget[]) {
-    let memberTypes = getRelationTypes(team.typeName as TargetType);
+    let memberTypes = getTargetRelationTypes(team.typeName as TargetType);
     members = members
       .filter((i) => memberTypes.includes(i.typeName as TargetType))
-      .filter((i) => this.relations.hasRelation(team.id, i.id));
+      .filter((i) =>
+        this.relations.hasRelation(RelationType.Targets, team.id, i.id)
+      );
     if (members.length > 0) {
       let memberIds = members.map((i) => i.id);
       const res = await this.kernel.pullAnyToTeam({
@@ -67,7 +76,7 @@ export default class RelationService {
         subIds: memberIds,
       });
       if (res.success) {
-        this.generateRelations(team.id, memberIds);
+        this.generateRelations(RelationType.Targets, team.id, memberIds);
         members.forEach((a) => {
           this.createTargetMsg(team, OperateType.Add, a);
         });
@@ -79,9 +88,9 @@ export default class RelationService {
 
   /**
    * 创建组织变更消息
-   * @param team 
-   * @param operate 
-   * @param sub 
+   * @param team
+   * @param operate
+   * @param sub
    */
   async createTargetMsg(
     team: XTarget,

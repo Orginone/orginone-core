@@ -1,32 +1,51 @@
-import { XRelation } from "@/lib/base/schema";
-import { CollectionImpl, IndexType } from "@/lib/model/ModelContext";
+import { service } from "@/di";
+import { Xbase } from "@/lib/base/schema";
+import { Repository, IndexType } from "@/lib/model/ModelContext";
+import { StateAction } from "@/state";
 
-export default class RelationModel extends CollectionImpl<XRelation> {
-  async createModel(collection: XRelation[]): Promise<void> {
-    await super.createModel(collection);
+export interface Relation extends Xbase {
+  activeId: string;
+  passiveId: string;
+  typeName: RelationType;
+}
+
+export enum RelationType {
+  Targets,
+  TargetAuthority,
+}
+
+@service(["StateAction"])
+export default class RelationModel extends Repository<Relation> {
+  constructor(stateAction: StateAction) {
+    super(stateAction);
     super.registerIndexing(this.itemKey, IndexType.Unique);
   }
 
-  key(targetId: string, teamId: string): string {
-    return targetId + "_" + teamId;
+  key(typeName: RelationType, activeId: string, passiveId: string): string {
+    return typeName + "_" + activeId + "_" + passiveId;
   }
 
-  itemKey(item: XRelation): string {
-    return this.key(item.targetId, item.teamId);
+  itemKey(item: Relation): string {
+    return this.key(item.typeName, item.activeId, item.passiveId);
   }
 
-  hasRelation(targetId: string, teamId: string): boolean {
-    return super.has(this.key(targetId, teamId));
+  hasRelation(
+    typeName: RelationType,
+    activeId: string,
+    passiveId: string
+  ): boolean {
+    return super.has(this.key(typeName, activeId, passiveId));
   }
 
-  removeByKey(targetId: string, teamId: string) {
-    let removeKey = this.key(targetId, teamId);
+  removeByKey(typeName: RelationType, activeId: string, passiveId: string) {
+    let removeKey = this.key(typeName, activeId, passiveId);
     this.removeFirst((item) => removeKey == this.itemKey(item));
   }
 
-  getTeamIdsByTargetId(targetId: string): string[] {
-    return this.collection
-      .filter((item) => item.targetId == targetId)
-      .map((item) => item.teamId);
+  getPassiveIdsByActiveId(type: RelationType, activeId: string): string[] {
+    return this.data
+      .filter((item) => item.activeId == activeId)
+      .filter((item) => item.typeName == type)
+      .map((item) => item.passiveId);
   }
 }

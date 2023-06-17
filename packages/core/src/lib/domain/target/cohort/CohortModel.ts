@@ -1,24 +1,38 @@
+import { service } from "@/di";
 import { XTarget } from "@/lib/base/schema";
-import { CollectionImpl } from "@/lib/model/ModelContext";
-import RelationModel from "../relation/RelationModel";
-import { autowired } from "@/di";
+import { Repository } from "@/lib/model/ModelContext";
+import { StateAction } from "@/state";
+import RelationModel, { RelationType } from "../relation/RelationModel";
 
-export default class CohortModel extends CollectionImpl<XTarget> {
-  @autowired(RelationModel)
-  private readonly relations: RelationModel = null!;
+@service(["StateAction", RelationModel])
+export default class CohortModel extends Repository<XTarget> {
+  readonly relations: RelationModel;
+
+  constructor(stateAction: StateAction, relations: RelationModel) {
+    super(stateAction);
+    this.relations = relations;
+  }
 
   get cohorts(): XTarget[] {
-    return this.collection;
+    return this.data;
   }
 
   getCohortsByTargetId(targetId: string): XTarget[] {
-    let teamIds = this.relations.getTeamIdsByTargetId(targetId);
-    return this.collection.filter((item) => teamIds.indexOf(item.id) != -1);
+    let teamIds = this.relations.getPassiveIdsByActiveId(
+      RelationType.Targets,
+      targetId
+    );
+    return this.data.filter((item) => teamIds.indexOf(item.id) != -1);
   }
 
   removeByTargetId(targetId: string): void {
-    let cohorts = this.relations.getTeamIdsByTargetId(targetId);
-    cohorts.forEach((teamId) => this.relations.removeByKey(targetId, teamId));
+    let cohorts = this.relations.getPassiveIdsByActiveId(
+      RelationType.Targets,
+      targetId
+    );
+    cohorts.forEach((teamId) =>
+      this.relations.removeByKey(RelationType.Targets, targetId, teamId)
+    );
     this.removeByIds(cohorts);
   }
 

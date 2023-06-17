@@ -9,7 +9,7 @@ import { useHttpAuthorization } from "./network/interceptors/Authorization";
 import KernelApi from "./lib/api/kernelapi";
 import AccountApi from "./lib/api/account";
 import AnyStore from "./lib/api/anystore";
-import { UserModule } from "./lib/domain/target/user";
+import { UserModule } from "./lib/domain/target/person";
 import { CompanyModule } from "./lib/domain/target/company";
 import { CohortModule } from "./lib/domain/target/cohort";
 import { GroupModule } from "./lib/domain/target/group";

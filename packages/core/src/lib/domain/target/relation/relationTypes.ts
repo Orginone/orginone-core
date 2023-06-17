@@ -1,6 +1,6 @@
 import { TargetType } from "@/lib/base/enums";
 
-const relationTypes = {
+const targetRelationTypes = {
   [TargetType.Company]: [
     TargetType.Office,
     TargetType.Working,
@@ -58,8 +58,8 @@ const relationTypes = {
   [TargetType.Station]: [TargetType.Person],
 };
 
-function getRelationTypes(targetType: TargetType) {
-  return relationTypes[targetType];
+function getTargetRelationTypes(targetType: TargetType) {
+  return targetRelationTypes[targetType];
 }
 
-export default getRelationTypes;
+export default getTargetRelationTypes;

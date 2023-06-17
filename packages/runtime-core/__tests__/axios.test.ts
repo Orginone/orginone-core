@@ -81,7 +81,6 @@ describe("node环境测试", () => {
   });
 
   test("加载单位的群组", async () => {
-    console.log("单位数量", companies.collection.length);
     for (let company of companies.collection) {
       let length = await cohortService.loadCohorts(company.id);
       let companyCohorts = cohorts.getCohortsByTargetId(company.id);

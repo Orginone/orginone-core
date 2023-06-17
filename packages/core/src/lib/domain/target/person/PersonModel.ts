@@ -3,4 +3,6 @@ import { XTarget } from "@/lib/base/schema";
 import { Repository } from "@/lib/model/ModelContext";
 
 @service(["StateAction"])
-export default class GroupModel extends Repository<XTarget> {}
+export default class PersonModel extends Repository<XTarget> {
+  
+}
