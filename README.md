@@ -67,7 +67,7 @@ import { OrginoneServices } from "@orginone/core";
 // 创建配置
 const config = new ConfigurationManager<AppConfig>()
   .addConfig({
-    apiUrl: "http://orginone.cn:888/orginone"
+    apiUrl: "https://orginone.cn/orginone"
   });
 // 注册服务
 const builder = new ServiceBuilder()

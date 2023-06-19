@@ -3,5 +3,5 @@ import CohortModel from "./CohortModel";
 import CohortService from "./CohortService";
 
 export function CohortModule(builder: ServiceBuilder) {
-  builder.propertyInject(CohortModel).propertyInject(CohortService);
+  builder.constructorInject(CohortModel).propertyInject(CohortService);
 }

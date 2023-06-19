@@ -12,8 +12,8 @@ import { FakeState, StateAction } from "@orginone/core/lib/state";
 import { IStorage } from "@orginone/core/lib/storage/Storage";
 import MemoryCacheStorage from "@orginone/core/lib/storage/MemoryCacheStorage";
 import { ApiClient } from "@orginone/core/lib/network";
-import UserModel from "@orginone/core/lib/lib/domain/target/user/UserModel";
-import UserService from "@orginone/core/lib/lib/domain/target/user/UserService";
+import UserModel from "@orginone/core/lib/lib/domain/target/person/UserModel";
+import PersonService from "@orginone/core/lib/lib/domain/target/person/PersonService";
 import CompanyModel from "@orginone/core/lib/lib/domain/target/company/CompanyModel";
 import CompanyService from "@orginone/core/lib/lib/domain/target/company/CompanyService";
 import CohortModel from "@orginone/core/lib/lib/domain/target/cohort/CohortModel";
@@ -57,7 +57,7 @@ describe("node环境测试", () => {
   });
   app.start();
 
-  const userService = services.resolve(UserService);
+  const userService = services.resolve(PersonService);
   const user = services.resolve(UserModel);
   const companyService = services.resolve(CompanyService);
   const companies = services.resolve(CompanyModel);
@@ -75,13 +75,13 @@ describe("node环境测试", () => {
   });
 
   test("加载单位", async () => {
-    await companyService.loadCompanies();
+    await companyService.loadUserCompanies();
     let targetIds = companies.getCompaniesByTargetId(user.root.id);
     expect(targetIds.length).toEqual(companies.length);
   });
 
   test("加载单位的群组", async () => {
-    for (let company of companies.collection) {
+    for (let company of companies.data) {
       let length = await cohortService.loadCohorts(company.id);
       let companyCohorts = cohorts.getCohortsByTargetId(company.id);
       expect(companyCohorts.length).toEqual(length);
