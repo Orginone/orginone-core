@@ -9,7 +9,7 @@ import CompanyModel from "../company/CompanyModel";
 import SpeciesModel from "../../thing/base/species/speciesModel";
 
 /** 人员类型实现 */
-@service(["UserStore", "StateAction", CompanyModel, CohortModel, SpeciesModel])
+@service(["StateAction", "UserStore", CompanyModel, CohortModel, SpeciesModel])
 export default class UserModel implements ModelRoot<XTarget> {
   readonly stateAction: StateAction;
   readonly userStore: Store<UserStore>;

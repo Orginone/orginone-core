@@ -18,15 +18,18 @@ export enum RelationType {
 export default class RelationModel extends Repository<Relation> {
   constructor(stateAction: StateAction) {
     super(stateAction);
-    super.registerIndexing(this.itemKey, IndexType.Unique);
+    super.registerIndexing(
+      (item: Relation) => this.itemKey(item),
+      IndexType.Unique
+    );
   }
 
-  key(typeName: RelationType, activeId: string, passiveId: string): string {
+  index(typeName: RelationType, activeId: string, passiveId: string): string {
     return typeName + "_" + activeId + "_" + passiveId;
   }
 
   itemKey(item: Relation): string {
-    return this.key(item.typeName, item.activeId, item.passiveId);
+    return this.index(item.typeName, item.activeId, item.passiveId);
   }
 
   hasRelation(
@@ -34,11 +37,11 @@ export default class RelationModel extends Repository<Relation> {
     activeId: string,
     passiveId: string
   ): boolean {
-    return super.has(this.key(typeName, activeId, passiveId));
+    return super.has(this.index(typeName, activeId, passiveId));
   }
 
   removeByKey(typeName: RelationType, activeId: string, passiveId: string) {
-    let removeKey = this.key(typeName, activeId, passiveId);
+    let removeKey = this.index(typeName, activeId, passiveId);
     this.removeFirst((item) => removeKey == this.itemKey(item));
   }
 

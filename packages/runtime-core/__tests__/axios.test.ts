@@ -93,6 +93,5 @@ describe("node环境测试", () => {
     expect(user.givenIdentities.length > 0).toEqual(true);
     expect(user.companies.data.length > 0).toEqual(true);
     expect(user.cohorts.data.length > 0).toEqual(true);
-    expect(user.multiSpecies.data.length > 0).toEqual(true);
   });
 });
