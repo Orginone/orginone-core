@@ -6,25 +6,29 @@ import { UserStore } from "@/lib/store/user";
 import { StateAction, Store } from "@/state";
 import CohortModel from "../cohort/CohortModel";
 import CompanyModel from "../company/CompanyModel";
+import SpeciesModel from "../../thing/base/species/speciesModel";
 
 /** 人员类型实现 */
-@service(["UserStore", "StateAction", CompanyModel, CohortModel])
+@service(["UserStore", "StateAction", CompanyModel, CohortModel, SpeciesModel])
 export default class UserModel implements ModelRoot<XTarget> {
   readonly stateAction: StateAction;
   readonly userStore: Store<UserStore>;
   readonly companies: CompanyModel;
   readonly cohorts: CohortModel;
+  readonly multiSpecies: SpeciesModel;
 
   constructor(
     stateAction: StateAction,
     userStore: Store<UserStore>,
     companyModel: CompanyModel,
-    cohortModel: CohortModel
+    cohortModel: CohortModel,
+    speciesModel: SpeciesModel
   ) {
     this.stateAction = stateAction;
     this.userStore = userStore;
     this.companies = companyModel;
     this.cohorts = cohortModel;
+    this.multiSpecies = speciesModel;
   }
 
   async createModel(_root: XTarget): Promise<void> {}

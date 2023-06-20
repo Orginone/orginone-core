@@ -168,6 +168,5 @@ export default class PersonService {
     for (const cohort of this.user.cohorts.data) {
       await this.cohortService.deepLoad(cohort.id);
     }
-    // this.superAuth?.deepLoad(reload);
   }
 }

@@ -12,14 +12,14 @@ export default class AuthorityService {
   @autowired(AuthorityModel)
   private readonly authorities: AuthorityModel = null!;
 
-  async loadSuperAuth(targetId: string): Promise<void> {
+  async loadSuperAuth(belongId: string): Promise<void> {
     const res = await this.kernel.queryAuthorityTree({
-      id: targetId,
+      id: belongId,
       page: PageAll,
     });
     if (res.success && res.data?.id) {
-      this.authorities.removeFirst((item) => (item.id = res.data.id));
-      this.authorities.insert(res.data);
+      let data = res.data ?? [];
+      this.authorities.recursionInsert(belongId, [data]);
     }
   }
 
@@ -43,7 +43,7 @@ export default class AuthorityService {
     const res = await this.kernel.createAuthority(data);
     if (res.success && res.data?.id) {
       let authority = res.data;
-      await this.loadSuperAuth(authority.belongId);
+      this.authorities.insert(authority);
       return authority;
     }
   }
@@ -56,7 +56,7 @@ export default class AuthorityService {
     if (res.success && res.data?.id) {
       let authority = res.data;
       authority.typeName = "权限";
-      await this.loadSuperAuth(authority.belongId);
+      this.authorities.updateById(authority);
     }
     return res.success;
   }
@@ -70,13 +70,8 @@ export default class AuthorityService {
       id: authority.id,
     });
     if (res.success) {
-      await this.loadSuperAuth(authority.belongId);
+      this.authorities.removeById(authority.id);
     }
     return res.success;
   }
-
-  /**
-   * 深加载
-   */
-  async deepLoad(): Promise<void> {}
 }

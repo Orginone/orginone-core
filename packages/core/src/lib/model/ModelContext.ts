@@ -19,6 +19,7 @@ export class Repository<T extends Xbase> {
 
   constructor(stateAction: StateAction) {
     this._data = stateAction.create([]);
+    this.registerIndexing((item: T) => item.id, IndexType.Unique);
   }
 
   get data(): T[] {
@@ -31,12 +32,6 @@ export class Repository<T extends Xbase> {
 
   has(key: string): boolean {
     return this._uniqueIndex.has(key);
-  }
-
-  async createModel(collection: T[]): Promise<void> {
-    this._uniqueIndexing.push((item: T) => item.id);
-    this.clear();
-    collection.forEach((item) => this.insert(item));
   }
 
   registerIndexing(indexing: (item: T) => string, indexType: IndexType): void {
@@ -60,7 +55,7 @@ export class Repository<T extends Xbase> {
     });
   }
 
-  _uniquePush(item: T): void {
+  private _uniquePush(item: T): void {
     this._normalIndexing.forEach((indexing) => {
       let key = indexing(item);
       if (!this._normalIndex.has(key)) {
@@ -70,14 +65,14 @@ export class Repository<T extends Xbase> {
     });
   }
 
-  _uniqueDelete(item: T): void {
+  private _uniqueDelete(item: T): void {
     this._uniqueIndexing.forEach((indexing) => {
       let key = indexing(item);
       this._uniqueIndex.delete(key);
     });
   }
 
-  _normalPush(item: T): void {
+  private _normalPush(item: T): void {
     this._normalIndexing.forEach((indexing) => {
       let key = indexing(item);
       if (!this._normalIndex.has(key)) {
@@ -87,7 +82,7 @@ export class Repository<T extends Xbase> {
     });
   }
 
-  _normalDelete(item: T): void {
+  private _normalDelete(item: T): void {
     this._normalIndexing.forEach((indexing) => {
       let key = indexing(item);
       let arr = this._normalIndex.get(key);
@@ -100,6 +95,11 @@ export class Repository<T extends Xbase> {
 
   getById(id: string): T | undefined {
     return this._uniqueIndex.get(id);
+  }
+
+  updateById(item: T): void {
+    let index = this._data.value.findIndex((one) => one.id == item.id);
+    this._data.value[index] = item;
   }
 
   insert(item: T): void {
@@ -121,6 +121,10 @@ export class Repository<T extends Xbase> {
     ids.forEach((id) => this.removeById(id));
   }
 
+  removeWhere(predicate: (value: T, index: number) => void): void {
+    this._data.value = this._data.value.filter(predicate);
+  }
+
   removeFirst(predicate: (value: T, index: number) => void): T | undefined {
     let position = this._data.value.findIndex(predicate);
     let item = this.data[position];
@@ -133,7 +137,7 @@ export class Repository<T extends Xbase> {
   }
 
   clear(): void {
-    this._data.value.splice(0, this.length);
+    this._data.value = [];
     this._uniqueIndex.clear();
     this._normalIndex.clear();
   }

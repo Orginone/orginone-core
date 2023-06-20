@@ -57,7 +57,7 @@ describe("node环境测试", () => {
   });
   app.start();
 
-  const userService = services.resolve(PersonService);
+  const personService = services.resolve(PersonService);
   const user = services.resolve(UserModel);
   const companyService = services.resolve(CompanyService);
   const companies = services.resolve(CompanyModel);
@@ -65,12 +65,12 @@ describe("node环境测试", () => {
   const cohorts = services.resolve(CohortModel);
 
   test("测试登录", async () => {
-    await userService.login(account, pwd);
+    await personService.login(account, pwd);
     expect(!!user.root).toEqual(true);
   });
 
   test("身份加载", async () => {
-    await userService.loadGivenIdentities();
+    await personService.loadGivenIdentities();
     expect(user.givenIdentities.length > 0).toEqual(true);
   });
 
@@ -86,5 +86,13 @@ describe("node环境测试", () => {
       let companyCohorts = cohorts.getCohortsByTargetId(company.id);
       expect(companyCohorts.length).toEqual(length);
     }
+  });
+
+  test("测试深加载", async () => {
+    await personService.deepLoad();
+    expect(user.givenIdentities.length > 0).toEqual(true);
+    expect(user.companies.data.length > 0).toEqual(true);
+    expect(user.cohorts.data.length > 0).toEqual(true);
+    expect(user.multiSpecies.data.length > 0).toEqual(true);
   });
 });

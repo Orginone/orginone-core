@@ -13,10 +13,6 @@ export default class CompanyModel extends Repository<XTarget> {
     this.relations = relations;
   }
 
-  get companies(): XTarget[] {
-    return this.companies;
-  }
-
   getCompaniesByTargetId(targetId: string): XTarget[] {
     let teamIds = this.relations.getPassiveIdsByActiveId(
       RelationType.Targets,

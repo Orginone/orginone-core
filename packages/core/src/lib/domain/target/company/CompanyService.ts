@@ -38,7 +38,8 @@ export default class CompanyService {
       page: PageAll,
     });
     if (res.success) {
-      await this.companies.createModel(res.data.result ?? []);
+      this.companies.clear();
+      this.companies.insertBatch(res.data.result ?? []);
       let teamIds = this.companies.data.map((item) => item.id);
       this.relationService.generateRelations(
         RelationType.Targets,
