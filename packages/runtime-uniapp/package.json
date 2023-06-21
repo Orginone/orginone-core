@@ -34,6 +34,6 @@
     "@dcloudio/types": "^3.3.3"
   },
   "dependencies": {
-    "@orginone/core": "^0.2.5"
+    "@orginone/core": "^0.2.8"
   }
 }
