@@ -1,6 +1,6 @@
 {
   "name": "@orginone/runtime-core",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "运行时核心实现",
   "author": "LoveKicher <szlproche@163.com>",
   "homepage": "https://github.com/SwingCosmic/orginone-core#readme",
