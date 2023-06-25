@@ -29,7 +29,7 @@ export default class CompanyService extends TargetService {
     const target = await super.createTarget(data);
     if (target) {
       await this.deepLoad(target.id);
-      await this.relationService.pullMembers(target, [this.userModel]);
+      await this.relationService.pullMembers(target, [this.user]);
     }
     return target;
   }

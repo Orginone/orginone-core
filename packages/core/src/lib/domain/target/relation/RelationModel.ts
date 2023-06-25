@@ -56,7 +56,7 @@ export default class RelationModel extends Repository<Relation> {
     }
   }
   /**
-   * 一处对象/组织关系
+   * 移除对象/组织关系
    * @param targetId 对象
    * @param teamId 组织
    */
@@ -71,7 +71,7 @@ export default class RelationModel extends Repository<Relation> {
    * @returns
    */
   findTeamIds(type: RelationType, targetId: string): string[] {
-    return this.data
+    return this.data.value
       .filter((item) => item.targetId == targetId)
       .filter((item) => item.typeName == type)
       .map((item) => item.teamId);

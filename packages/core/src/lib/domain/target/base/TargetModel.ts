@@ -29,7 +29,7 @@ export default class TargetModel extends Repository<XTarget> {
 
   findTeams(targetId: string, targetTypes: string[]): XTarget[] {
     let teamIds = this.relations.findTeamIds(RelationType.Targets, targetId);
-    return this.data
+    return this.data.value
       .filter((team) => targetTypes.indexOf(team.typeName) != -1)
       .filter((team) => teamIds.indexOf(team.id) != -1);
   }

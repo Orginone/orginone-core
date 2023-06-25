@@ -25,7 +25,7 @@ export default class AuthorityModel extends Repository<XAuthority> {
   }
 
   getAuthorityByBelongId(belongId: string): XAuthority[] {
-    return this.data.filter((item) => item.belongId == belongId);
+    return this.data.value.filter((item) => item.belongId == belongId);
   }
 
   tree(belongId: string): Node<XAuthority>[] {

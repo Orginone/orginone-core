@@ -4,7 +4,7 @@ import { XTarget } from "@/lib/base/schema";
 import { ModelRoot } from "@/lib/model/ModelContext";
 import { UserStore } from "@/lib/store/user";
 import { StateAction, Store } from "@/state";
-import SpeciesModel from "../../thing/base/species/speciesModel";
+import SpeciesModel from "../../thing/species/speciesModel";
 import TargetModel from "../base/TargetModel";
 
 /** 人员类型实现 */

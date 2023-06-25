@@ -15,7 +15,7 @@ import { CohortModule } from "./lib/domain/target/cohort";
 import { GroupModule } from "./lib/domain/target/group";
 import { RelationModule } from "./lib/domain/target/relation";
 import { AuthorityModule } from "./lib/domain/target/authority";
-import { SpeciesModule } from "./lib/domain/thing/base/species";
+import { SpeciesModule } from "./lib/domain/thing/species";
 
 export * from "./App";
 export * from "./errors";

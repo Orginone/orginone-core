@@ -5,7 +5,7 @@ import { PageAll, companyTypes } from "@/lib/base/consts";
 import { TargetType } from "@/lib/base/enums";
 import { AuthorizationStore } from "@/lib/store/authorization";
 import { Store } from "@/state/Store";
-import SpeciesService from "../../thing/base/species/speciesService";
+import SpeciesService from "../../thing/species/speciesService";
 import AuthorityService from "../authority/AuthorityService";
 import TargetService from "../base/TargetService";
 import CohortService from "../cohort/CohortService";

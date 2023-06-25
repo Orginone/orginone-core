@@ -10,21 +10,17 @@ export enum IndexType {
 }
 
 export class Repository<T extends Xbase> {
-  private _data: IState<T[]>;
+  readonly data: IState<T[]>;
   private _uniqueIndexing: ((item: T) => string)[] = [];
   private _uniqueIndex: Map<string, T> = new Map();
 
   constructor(stateAction: StateAction) {
-    this._data = stateAction.create([]);
+    this.data = stateAction.create([]);
     this.registerIndexing((item: T) => item.id, IndexType.Unique);
   }
 
-  get data(): T[] {
-    return this._data.value;
-  }
-
   get length(): number {
-    return this._data.value.length;
+    return this.data.value.length;
   }
 
   has(key: string): boolean {
@@ -49,14 +45,14 @@ export class Repository<T extends Xbase> {
     return true;
   }
 
-  private _uniquePush(item: T): void {
+  private uniquePush(item: T): void {
     this._uniqueIndexing.forEach((indexing) => {
       let key = indexing(item);
       this._uniqueIndex.set(key, item);
     });
   }
 
-  private _uniqueDelete(item: T): void {
+  private uniqueDelete(item: T): void {
     this._uniqueIndexing.forEach((indexing) => {
       let key = indexing(item);
       this._uniqueIndex.delete(key);
@@ -77,8 +73,8 @@ export class Repository<T extends Xbase> {
   insert(item: T): void {
     let success = this.checkUnique(item);
     if (success) {
-      this._data.value.push(item);
-      this._uniquePush(item);
+      this.data.value.push(item);
+      this.uniquePush(item);
     } else {
       this.updateById(item);
     }
@@ -97,21 +93,21 @@ export class Repository<T extends Xbase> {
   }
 
   removeWhere(predicate: (value: T, index: number) => void): void {
-    this._data.value = this._data.value.filter(predicate);
+    this.data.value = this.data.value.filter(predicate);
   }
 
   removeFirst(predicate: (value: T, index: number) => void): T | undefined {
-    let position = this._data.value.findIndex(predicate);
-    let item = this.data[position];
+    let position = this.data.value.findIndex(predicate);
+    let item = this.data.value[position];
     if (item) {
-      this._uniqueDelete(item);
-      this._data.value.splice(position, 1);
+      this.uniqueDelete(item);
+      this.data.value.splice(position, 1);
       return item;
     }
   }
 
   clear(): void {
-    this._data.value = [];
+    this.data.value = [];
     this._uniqueIndex.clear();
   }
 }
