@@ -71,7 +71,6 @@ export type RegisterType = {
   // 头像
   avatar: string;
 };
-
 export type IdPair = {
   // 唯一ID
   id: string;
@@ -96,25 +95,43 @@ export type IdPageModel = {
   // 唯一ID
   id: string;
   // 分页
-  page: PageModel;
+  page: PageModel | undefined;
 };
 
 export type IdArrayModel = {
   // 唯一ID数组
   ids: string[];
   // 分页
-  page: PageModel;
+  page: PageModel | undefined;
 };
 
-export type LogModel = {
-  // 唯一ID
+export type EntityModel = {
+  // 雪花ID
   id: string;
-  //类型
-  type: string;
-  //模块
-  module: string;
-  //内容
-  content: string;
+  // 名称
+  name: string;
+  // 编号
+  code: string;
+  // 备注
+  remark: string;
+  // 图标
+  icon: string;
+  // 归属用户ID
+  belongId: string;
+  // 类型
+  typeName: string;
+  // 状态
+  status: number;
+  // 创建人员ID
+  createUser: string;
+  // 更新人员ID
+  updateUser: string;
+  // 修改次数
+  version: string;
+  // 创建时间
+  createTime: string;
+  // 更新时间
+  updateTime: string;
 };
 
 export type AuthorityModel = {
@@ -201,7 +218,7 @@ export type SearchModel = {
   // 类型数组
   typeNames: string[];
   // 分页
-  page: PageModel;
+  page: PageModel | undefined;
 };
 
 export type GetSubsModel = {
@@ -210,7 +227,7 @@ export type GetSubsModel = {
   // 子节点类型
   subTypeNames: string[];
   // 分页
-  page: PageModel;
+  page: PageModel | undefined;
 };
 
 export type GetJoinedModel = {
@@ -219,7 +236,7 @@ export type GetJoinedModel = {
   // 类型数组
   typeNames: string[];
   // 分页
-  page: PageModel;
+  page: PageModel | undefined;
 };
 
 export type MsgSendModel = {
@@ -231,45 +248,6 @@ export type MsgSendModel = {
   msgType: string;
   // 消息体
   msgBody: string;
-};
-
-export type IdentityMsgModel = {
-  // 接受数据
-  data: string;
-  // 是否剔除操作人
-  excludeOperater: boolean;
-  // 岗位Id
-  stationId: string;
-  // 身份Id
-  identityId: string;
-  // 组织集群
-  group: boolean;
-};
-
-export type TargetMsgModel = {
-  // 接受数据
-  data: string;
-  // 是否剔除操作人
-  excludeOperater: boolean;
-  // 用户Id
-  targetId: string;
-  // 组织集群
-  group: boolean;
-};
-
-export type TargetOperateModel = {
-  operate: string;
-  target: XTarget;
-  subTarget?: XTarget;
-  operater: XTarget;
-};
-
-export type IdentityOperateModel = {
-  operate: string;
-  operater: XTarget;
-  identity: XIdentity;
-  station?: XTarget;
-  subTarget?: XTarget;
 };
 
 export type MsgTagModel = {
@@ -286,14 +264,14 @@ export type MsgTagModel = {
 export type MsgSaveModel = {
   // 唯一ID
   id: string;
-  // 会话ID
-  sessionId: string;
   // 归属用户ID
   belongId: string;
   // 发起方Id
   fromId: string;
   // 接收方Id
   toId: string;
+  // 接收会话Id
+  sessionId: string;
   // 消息类型
   msgType: string;
   // 消息体
@@ -326,19 +304,19 @@ export type PropertyModel = {
   valueType: string;
   // 计量单位
   unit: string;
-  // 类别ID
+  // 附加信息
+  info: string;
+  // 目录ID
+  directoryId: string;
+  // 分类标签ID
   speciesId: string;
-  // 字典的类型ID
-  dictId: string;
   // 来源用户ID
   sourceId: string;
   // 备注
   remark: string;
-  // 附加信息
-  info: string;
 };
 
-export type DictModel = {
+export type DirectoryModel = {
   // 唯一ID
   id: string;
   // 名称
@@ -347,23 +325,10 @@ export type DictModel = {
   code: string;
   // 图标
   icon: string;
-  // 备注
-  remark: string;
-  // 分类ID
-  speciesId: string;
-};
-
-export type DictItemModel = {
-  // 唯一ID
-  id: string;
-  // 键
-  name: string;
-  // 值
-  value: string;
-  // 图标
-  icon: string;
-  // 字典的类型ID
-  dictId: string;
+  // 父目录ID
+  parentId: string;
+  // 共享用户ID
+  shareId: string;
   // 备注
   remark: string;
 };
@@ -375,16 +340,33 @@ export type SpeciesModel = {
   name: string;
   // 编号
   code: string;
-  // 图标
-  icon: string;
   // 类型
   typeName: string;
-  // 父类别Id
+  // 图标
+  icon: string;
+  // 备注
+  remark: string;
+  // 来源用户ID
+  sourceId: string;
+  // 目录ID
+  directoryId: string;
+};
+
+export type SpeciesItemModel = {
+  // 唯一ID
+  id: string;
+  // 键
+  name: string;
+  // 编号
+  code: string;
+  // 图标
+  icon: string;
+  // 附加信息
+  info: string;
+  // 类型ID
+  speciesId: string;
+  // 父类目ID
   parentId: string;
-  // 共享用户Id
-  shareId: string;
-  // 工作职权Id
-  authId: string;
   // 备注
   remark: string;
 };
@@ -396,20 +378,16 @@ export type AttributeModel = {
   name: string;
   // 编号
   code: string;
-  // 规则
+  // 编号
   rule: string;
-  // 值类型
-  valueType: string;
+  // 备注
+  remark: string;
   // 属性Id
   propId: string;
   // 工作职权Id
   authId: string;
-  // 表单项Id
+  // 单项Id
   formId: string;
-  // 字典项Id
-  dictId: string;
-  // 备注
-  remark: string;
 };
 
 export type FormModel = {
@@ -419,18 +397,37 @@ export type FormModel = {
   name: string;
   // 编号
   code: string;
-  // 图标
-  icon: string;
   // 规则
   rule: string;
+  // 图标
+  icon: string;
   // 类型
   typeName: string;
   // 备注
   remark: string;
-  // 类别Id
-  speciesId: string;
-  // 共享用户Id
-  shareId: string;
+  // 目录ID
+  directoryId: string;
+};
+
+export type ApplicationModel = {
+  // 唯一ID
+  id: string;
+  // 名称
+  name: string;
+  // 编号
+  code: string;
+  // 图标
+  icon: string;
+  // 类型
+  typeName: string;
+  // 备注
+  remark: string;
+  // 目录ID
+  directoryId: string;
+  // 父级ID
+  parentId: string;
+  // 资源
+  resource: string;
 };
 
 export type ThingModel = {
@@ -455,62 +452,17 @@ export type SetPropModel = {
   data: IdPair[] | undefined;
 };
 
-export type GetSpeciesModel = {
+export type GetDirectoryModel = {
   // 唯一ID
   id: string;
-  // 是否向上递归用户
-  upTeam: boolean;
-  // 当前归属用户ID
-  belongId: string;
-  // 过滤信息
-  filter: string;
-};
-
-export type GetSpeciesResourceModel = {
-  // 唯一ID
-  id: string;
-  // 分类唯一ID
-  speciesId: string;
-  // 当前归属用户ID
-  belongId: string;
   // 是否向上递归用户
   upTeam: boolean;
   // 分页
-  page: PageModel;
-};
-
-export type OrderModel = {
-  // 唯一ID
-  id: string;
-  // 存证ID
-  nftId: string;
-  // 名称
-  name: string;
-  // 编号
-  code: string;
-  // 价格
-  price: number;
-  // 归属用户ID
-  belongId: string;
-  // 市场ID
-  marketId: string;
-  // 订单内容
-  content: string;
-};
-
-export type OrderPayModel = {
-  // 唯一ID
-  id: string;
-  // 支付总价
-  price: number;
-  // 支付方式
-  paymentType: string;
-  // 备注
-  remark: string;
+  page: PageModel | undefined;
 };
 
 export type WorkDefineModel = {
-  // 流程Id
+  // 流程ID
   id: string;
   // 流程名称
   name: string;
@@ -518,16 +470,16 @@ export type WorkDefineModel = {
   code: string;
   // 图标
   icon: string;
-  // 规则
+  // 备注
+  remark: string;
+  // 共享组织ID
+  shareId: string;
+  // 应用ID
+  applicationId: string;
+  // 是否创建实体
   rule: string;
   // 流程节点
   resource: WorkNodeModel | undefined;
-  // 备注
-  remark: string;
-  // 共享组织Id
-  shareId: string;
-  // 归属分类Id
-  speciesId: string;
 };
 
 export type WorkInstanceModel = {
@@ -543,16 +495,10 @@ export type WorkInstanceModel = {
   title: string;
   // 回调地址
   hook: string;
-  // 申请组织Id
+  // 对应父流程实例节点任务Id
+  taskId: string;
+  // 发起用户ID
   applyId: string;
-};
-export type QueryWorkReq = {
-  // 共享组织Id
-  shareId: string;
-  // 办事定义Id
-  defineId: string;
-  // 分页
-  page: PageModel;
 };
 
 export type WorkNodeModel = {
@@ -575,6 +521,8 @@ export type WorkNodeModel = {
   destId: string;
   // 节点目标名称
   destName: string;
+  // 节点归属组织
+  belongId: string;
   // 节点归属定义Id
   defineId: string;
   // 绑定的单信息
@@ -602,7 +550,7 @@ export type QueryTaskReq = {
 };
 
 export type ApprovalTaskReq = {
-  // 流程定义Id
+  // 任务Id
   id: string;
   // 状态
   status: number;
@@ -612,6 +560,44 @@ export type ApprovalTaskReq = {
   data: string;
 };
 
+export type TargetMessageModel = {
+  // 内容
+  data: string;
+  // 是否剔除当前操作人
+  excludeOperater: boolean;
+  // 目标用户Id集合
+  targetId: string;
+  // 组织集群
+  group: boolean;
+};
+
+export type IdentityMessageModel = {
+  // 内容
+  data: string;
+  // 是否剔除当前操作人
+  excludeOperater: boolean;
+  // 身份Id
+  identityId: string;
+  // 岗位Id
+  stationId: string;
+  // 组织集群
+  group: boolean;
+};
+
+export type TargetOperateModel = {
+  operate: string;
+  target: XTarget;
+  subTarget?: XTarget;
+  operater: XTarget;
+};
+
+export type IdentityOperateModel = {
+  operate: string;
+  operater: XTarget;
+  identity: XIdentity;
+  station?: XTarget;
+  subTarget?: XTarget;
+};
 /**
  * 文件系统项分享数据
  */
@@ -645,9 +631,9 @@ export type FileItemModel = {
   /** 完整路径 */
   key: string;
   /** 创建时间 */
-  dateCreated: Date;
+  dateCreated: string;
   /** 修改时间 */
-  dateModified: Date;
+  dateModified: string;
   /** 文件类型 */
   contentType?: string;
   /** 是否是目录 */
@@ -694,6 +680,23 @@ export type FileChunkData = {
   data: number[];
   /** 分片数据编码字符串 */
   dataUrl: string;
+};
+
+/** 任务模型 */
+export type TaskModel = {
+  name: string;
+  size: number;
+  finished: number;
+  createTime: Date;
+};
+
+/** 操作命令模型 */
+export type OperateModel = {
+  cmd: string;
+  sort: number;
+  label: string;
+  iconType: string;
+  menus?: OperateModel[];
 };
 
 /** 请求失败 */

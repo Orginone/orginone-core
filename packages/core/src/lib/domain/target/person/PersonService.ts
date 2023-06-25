@@ -76,7 +76,7 @@ export default class PersonService {
    * 加载身份
    */
   async loadGivenIdentities(): Promise<void> {
-    const res = await this.kernel.queryGivenIdentities();
+    const res = await this.kernel.queryGivedIdentitys();
     if (res.success) {
       this.user.givenIdentities = res.data?.result || [];
     }
@@ -161,7 +161,6 @@ export default class PersonService {
     await this.companyService.loadUserCompanies();
     await this.cohortService.loadUserCohorts();
     await this.authorityService.loadSuperAuth(this.userId);
-    await this.speciesService.loadSpecies(this.user.root);
     for (const company of this.user.companies.data) {
       await this.companyService.deepLoad(company.id);
     }
