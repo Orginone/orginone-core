@@ -7,15 +7,12 @@ export interface ModelRoot<T extends {}> {
 
 export enum IndexType {
   Unique,
-  Normal,
 }
 
 export class Repository<T extends Xbase> {
   private _data: IState<T[]>;
   private _uniqueIndexing: ((item: T) => string)[] = [];
   private _uniqueIndex: Map<string, T> = new Map();
-  private _normalIndexing: ((item: T) => string)[] = [];
-  private _normalIndex: Map<String, T[]> = new Map();
 
   constructor(stateAction: StateAction) {
     this._data = stateAction.create([]);
@@ -39,29 +36,23 @@ export class Repository<T extends Xbase> {
       case IndexType.Unique:
         this._uniqueIndexing.push(indexing);
         break;
-      case IndexType.Normal:
-        this._normalIndexing.push(indexing);
-        break;
     }
   }
 
-  checkUnique(item: T): void {
-    this._uniqueIndexing.forEach((indexing) => {
+  checkUnique(item: T): boolean {
+    for (let indexing of this._uniqueIndexing) {
       let key = indexing(item);
       if (this._uniqueIndex.has(key)) {
-        console.log("错误对象：", item);
-        throw new Error(`已存在键：${key}, 插入 Model 失败！`);
+        return false;
       }
-    });
+    }
+    return true;
   }
 
   private _uniquePush(item: T): void {
-    this._normalIndexing.forEach((indexing) => {
+    this._uniqueIndexing.forEach((indexing) => {
       let key = indexing(item);
-      if (!this._normalIndex.has(key)) {
-        this._normalIndex.set(key, []);
-      }
-      this._normalIndex.get(key)?.push(item);
+      this._uniqueIndex.set(key, item);
     });
   }
 
@@ -72,41 +63,25 @@ export class Repository<T extends Xbase> {
     });
   }
 
-  private _normalPush(item: T): void {
-    this._normalIndexing.forEach((indexing) => {
-      let key = indexing(item);
-      if (!this._normalIndex.has(key)) {
-        this._normalIndex.set(key, []);
-      }
-      this._normalIndex.get(key)?.push(item);
-    });
-  }
-
-  private _normalDelete(item: T): void {
-    this._normalIndexing.forEach((indexing) => {
-      let key = indexing(item);
-      let arr = this._normalIndex.get(key);
-      if (arr) {
-        let position = arr.findIndex((i) => i.id == item.id);
-        arr?.splice(position, 1);
-      }
-    });
-  }
-
   getById(id: string): T | undefined {
     return this._uniqueIndex.get(id);
   }
 
   updateById(item: T): void {
-    let index = this._data.value.findIndex((one) => one.id == item.id);
-    this._data.value[index] = item;
+    let old = this.getById(item.id);
+    if (old) {
+      Object.assign(old, item);
+    }
   }
 
   insert(item: T): void {
-    this.checkUnique(item);
-    this._data.value.push(item);
-    this._uniquePush(item);
-    this._normalPush(item);
+    let success = this.checkUnique(item);
+    if (success) {
+      this._data.value.push(item);
+      this._uniquePush(item);
+    } else {
+      this.updateById(item);
+    }
   }
 
   insertBatch(items: T[]): void {
@@ -130,7 +105,6 @@ export class Repository<T extends Xbase> {
     let item = this.data[position];
     if (item) {
       this._uniqueDelete(item);
-      this._normalDelete(item);
       this._data.value.splice(position, 1);
       return item;
     }
@@ -139,6 +113,5 @@ export class Repository<T extends Xbase> {
   clear(): void {
     this._data.value = [];
     this._uniqueIndex.clear();
-    this._normalIndex.clear();
   }
 }

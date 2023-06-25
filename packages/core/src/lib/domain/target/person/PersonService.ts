@@ -1,38 +1,26 @@
-import { autowired, service } from "@/di";
+import { autowired } from "@/di";
 import { AccountApi } from "@/lib/api";
-import KernelApi from "@/lib/api/kernelapi";
-import { model, schema } from "@/lib/base";
-import { XTarget } from "@/lib/base/schema";
-import { AuthorizationStore } from "@/lib/store/authorization";
-import { UserStore } from "@/lib/store/user";
-import { Store } from "@/state/Store";
-import UserModel from "./UserModel";
-import { OperateType, TargetType } from "@/lib/base/enums";
+import { schema } from "@/lib/base";
 import { PageAll, companyTypes } from "@/lib/base/consts";
-import RelationService from "../relation/RelationService";
-import CompanyService from "../company/CompanyService";
-import CohortService from "../cohort/CohortService";
-import AuthorityService from "../authority/AuthorityService";
+import { TargetType } from "@/lib/base/enums";
+import { AuthorizationStore } from "@/lib/store/authorization";
+import { Store } from "@/state/Store";
 import SpeciesService from "../../thing/base/species/speciesService";
+import AuthorityService from "../authority/AuthorityService";
+import TargetService from "../base/TargetService";
+import CohortService from "../cohort/CohortService";
+import CompanyService from "../company/CompanyService";
+import UserModel from "./UserModel";
 
-export default class PersonService {
+export default class PersonService extends TargetService {
   @autowired(AccountApi)
   readonly api: AccountApi = null!;
-
-  @autowired(KernelApi)
-  readonly kernel: KernelApi = null!;
 
   @autowired("AuthorizationStore")
   readonly auth: Store<AuthorizationStore> = null!;
 
-  @autowired("UserStore")
-  readonly userStore: Store<UserStore> = null!;
-
   @autowired(UserModel)
-  readonly user: UserModel = null!;
-
-  @autowired(RelationService)
-  readonly relationService: RelationService = null!;
+  readonly currentUser: UserModel = null!;
 
   @autowired(CompanyService)
   readonly companyService: CompanyService = null!;
@@ -46,10 +34,6 @@ export default class PersonService {
   @autowired(SpeciesService)
   readonly speciesService: SpeciesService = null!;
 
-  get userId() {
-    return this.user.root.id;
-  }
-
   /**
    * 登录
    * @param account
@@ -62,23 +46,12 @@ export default class PersonService {
   }
 
   /**
-   * 创建组织
-   * @param target
-   * @returns
-   */
-  async createTarget(
-    target: model.TargetModel
-  ): Promise<model.ResultType<XTarget>> {
-    return await this.kernel.createTarget(target);
-  }
-
-  /**
    * 加载身份
    */
   async loadGivenIdentities(): Promise<void> {
     const res = await this.kernel.queryGivedIdentitys();
     if (res.success) {
-      this.user.givenIdentities = res.data?.result || [];
+      this.currentUser.givenIdentities = res.data?.result || [];
     }
   }
 
@@ -88,7 +61,7 @@ export default class PersonService {
    * @param teamId
    */
   removeGivenIdentity(identityIds: string[], teamId?: string): void {
-    let idProofs = this.user.givenIdentities.filter((a) =>
+    let idProofs = this.currentUser.givenIdentities.filter((a) =>
       identityIds.includes(a.identityId)
     );
     if (teamId) {
@@ -96,8 +69,8 @@ export default class PersonService {
     } else {
       idProofs = idProofs.filter((a) => a.teamId == undefined);
     }
-    this.user.givenIdentities = this.user.givenIdentities.filter((a) =>
-      idProofs.every((i) => i.id !== a.identity?.id)
+    this.currentUser.givenIdentities = this.currentUser.givenIdentities.filter(
+      (a) => idProofs.every((i) => i.id !== a.identity?.id)
     );
   }
 
@@ -112,7 +85,7 @@ export default class PersonService {
     );
     for (const member of members) {
       if (member.typeName === TargetType.Person) {
-        await this.relationService.pullMembers(member, [this.user.root]);
+        await this.relationService.pullMembers(member, [this.currentUser.root]);
       }
       await this.kernel.applyJoinTeam({
         id: member.id,
@@ -140,19 +113,6 @@ export default class PersonService {
   }
 
   /**
-   * 删除用户
-   * @returns
-   */
-  async delete(): Promise<boolean> {
-    let remove = OperateType.Remove;
-    await this.relationService.createTargetMsg(this.user.root, remove);
-    const res = await this.kernel.deleteTarget({
-      id: this.userId,
-    });
-    return res.success;
-  }
-
-  /**
    * 深加载
    * @param reload
    */
@@ -161,10 +121,10 @@ export default class PersonService {
     await this.companyService.loadUserCompanies();
     await this.cohortService.loadUserCohorts();
     await this.authorityService.loadSuperAuth(this.userId);
-    for (const company of this.user.companies.data) {
+    for (const company of this.currentUser.companies) {
       await this.companyService.deepLoad(company.id);
     }
-    for (const cohort of this.user.cohorts.data) {
+    for (const cohort of this.currentUser.cohorts) {
       await this.cohortService.deepLoad(cohort.id);
     }
   }
